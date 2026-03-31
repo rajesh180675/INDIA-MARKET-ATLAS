@@ -107,7 +107,8 @@ function getInitialTheme(): Theme {
     return "dark";
   }
 
-  return typeof window.matchMedia === "function" && window.matchMedia("(prefers-color-scheme: light)").matches
+  return typeof window.matchMedia === "function" &&
+    window.matchMedia("(prefers-color-scheme: light)").matches
     ? "light"
     : "dark";
 }
@@ -118,15 +119,21 @@ function convertToCsv(rows: Array<Record<string, string | number>>) {
   }
 
   const headers = Object.keys(rows[0]);
-  const escape = (value: string | number) => `"${String(value).replace(/"/g, '""')}"`;
+  const escape = (value: string | number) =>
+    `"${String(value).replace(/"/g, '""')}"`;
 
   return [
     headers.join(","),
-    ...rows.map((row) => headers.map((header) => escape(row[header] ?? "")).join(",")),
+    ...rows.map((row) =>
+      headers.map((header) => escape(row[header] ?? "")).join(","),
+    ),
   ].join("\n");
 }
 
-function downloadCsv(filename: string, rows: Array<Record<string, string | number>>) {
+function downloadCsv(
+  filename: string,
+  rows: Array<Record<string, string | number>>,
+) {
   if (typeof window === "undefined") {
     return;
   }
@@ -154,17 +161,40 @@ function SectionHeading({
 }) {
   return (
     <div className="max-w-3xl space-y-4">
-      <p className="text-xs font-semibold uppercase tracking-[0.32em] text-amber-300">{eyebrow}</p>
-      <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">{title}</h2>
-      <p className="text-base leading-7 text-slate-300 sm:text-lg">{subtitle}</p>
+      <p className="text-xs font-semibold uppercase tracking-[0.32em] text-amber-300">
+        {eyebrow}
+      </p>
+      <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+        {title}
+      </h2>
+      <p className="text-base leading-7 text-slate-300 sm:text-lg">
+        {subtitle}
+      </p>
     </div>
   );
 }
 
-function GradientPanel({ children, className = "", innerClassName = "" }: { children: ReactNode; className?: string; innerClassName?: string }) {
+function GradientPanel({
+  children,
+  className = "",
+  innerClassName = "",
+}: {
+  children: ReactNode;
+  className?: string;
+  innerClassName?: string;
+}) {
   return (
-    <div className={cn("rounded-[32px] bg-[linear-gradient(135deg,rgba(255,255,255,0.18),rgba(255,255,255,0.04),rgba(255,255,255,0.08))] p-px", className)}>
-      <div className={cn("glass-card rounded-[32px] p-6 sm:p-7", innerClassName)}>{children}</div>
+    <div
+      className={cn(
+        "rounded-[32px] bg-[linear-gradient(135deg,rgba(255,255,255,0.18),rgba(255,255,255,0.04),rgba(255,255,255,0.08))] p-px",
+        className,
+      )}
+    >
+      <div
+        className={cn("glass-card rounded-[32px] p-6 sm:p-7", innerClassName)}
+      >
+        {children}
+      </div>
     </div>
   );
 }
@@ -200,7 +230,13 @@ function ProgressMetric({
         <p className="text-sm font-semibold text-slate-200">{value}</p>
       </div>
       <div className="h-3 overflow-hidden rounded-full bg-slate-900/80 ring-1 ring-white/5">
-        <div className={cn("progress-fill h-full rounded-full bg-gradient-to-r", toneClasses[tone])} style={{ width: `${clampPercent(max)}%` }} />
+        <div
+          className={cn(
+            "progress-fill h-full rounded-full bg-gradient-to-r",
+            toneClasses[tone],
+          )}
+          style={{ width: `${clampPercent(max)}%` }}
+        />
       </div>
     </div>
   );
@@ -234,8 +270,12 @@ function App() {
   const [theme, setTheme] = useState<Theme>(getInitialTheme);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState(navItems[0].id);
-  const [activeRegime, setActiveRegime] = useState(marketRegimes[4]?.id ?? fallbackRegime.id);
-  const [selectedSipYear, setSelectedSipYear] = useState(sipDematGrowth[sipDematGrowth.length - 1]?.year ?? fallbackSipPoint.year);
+  const [activeRegime, setActiveRegime] = useState(
+    marketRegimes[4]?.id ?? fallbackRegime.id,
+  );
+  const [selectedSipYear, setSelectedSipYear] = useState(
+    sipDematGrowth[sipDematGrowth.length - 1]?.year ?? fallbackSipPoint.year,
+  );
   const [projectionCagr, setProjectionCagr] = useState(10.1);
   const [projectionInflation, setProjectionInflation] = useState(5);
 
@@ -262,7 +302,8 @@ function App() {
         }
 
         const rect = element.getBoundingClientRect();
-        const withinViewport = rect.top <= window.innerHeight * 0.42 && rect.bottom >= 180;
+        const withinViewport =
+          rect.top <= window.innerHeight * 0.42 && rect.bottom >= 180;
         if (!withinViewport) {
           return;
         }
@@ -287,14 +328,27 @@ function App() {
     };
   }, []);
 
-  const selectedRegime = marketRegimes.find((regime) => regime.id === activeRegime) ?? fallbackRegime;
+  const selectedRegime =
+    marketRegimes.find((regime) => regime.id === activeRegime) ??
+    fallbackRegime;
   const selectedRegimeTone = regimeToneClasses[selectedRegime.tone];
-  const selectedSipPoint = sipDematGrowth.find((point) => point.year === selectedSipYear) ?? fallbackSipPoint;
+  const selectedSipPoint =
+    sipDematGrowth.find((point) => point.year === selectedSipYear) ??
+    fallbackSipPoint;
 
   const worldFinal = fallbackWorldFinal;
-  const maxDemat = Math.max(...sipDematGrowth.map((point) => point.dematCrore), 1);
-  const maxSip = Math.max(...sipDematGrowth.map((point) => point.sipMonthlyCr), 1);
-  const maxCrash = Math.max(...crashEvents.map((event) => Math.abs(event.decline)), 1);
+  const maxDemat = Math.max(
+    ...sipDematGrowth.map((point) => point.dematCrore),
+    1,
+  );
+  const maxSip = Math.max(
+    ...sipDematGrowth.map((point) => point.sipMonthlyCr),
+    1,
+  );
+  const maxCrash = Math.max(
+    ...crashEvents.map((event) => Math.abs(event.decline)),
+    1,
+  );
 
   const medianRecovery = useMemo(() => {
     const recoveries = crashEvents
@@ -311,8 +365,11 @@ function App() {
   }, []);
 
   const projectionYears = 25;
-  const projectedSensex2050 = Math.round(80000 * Math.pow(1 + projectionCagr / 100, projectionYears));
-  const realCagr = ((1 + projectionCagr / 100) / (1 + projectionInflation / 100) - 1) * 100;
+  const projectedSensex2050 = Math.round(
+    80000 * Math.pow(1 + projectionCagr / 100, projectionYears),
+  );
+  const realCagr =
+    ((1 + projectionCagr / 100) / (1 + projectionInflation / 100) - 1) * 100;
   const realMultiple = Math.pow(1 + realCagr / 100, projectionYears);
   const projectedRealValue = Math.round(80000 * realMultiple);
 
@@ -383,8 +440,12 @@ function App() {
       <header className="sticky top-0 z-50 border-b border-white/10 bg-slate-950/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4 sm:px-8">
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-amber-300">India Market Atlas</p>
-            <h1 className="text-sm font-medium text-white sm:text-base">1947–2025 stock market deep-dive</h1>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-amber-300">
+              India Market Atlas
+            </p>
+            <h1 className="text-sm font-medium text-white sm:text-base">
+              1947–2025 stock market deep-dive
+            </h1>
           </div>
 
           <nav className="hidden items-center gap-1 xl:flex">
@@ -403,7 +464,11 @@ function App() {
                     <motion.span
                       layoutId="active-nav-pill"
                       className="absolute inset-0 rounded-full border border-white/10 bg-white/10 shadow-lg shadow-black/10"
-                      transition={{ type: "spring", stiffness: 380, damping: 34 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 380,
+                        damping: 34,
+                      }}
                     />
                   ) : null}
                   <span className="relative z-10">{item.label}</span>
@@ -420,7 +485,12 @@ function App() {
             >
               Export CSV
             </button>
-            <ThemeToggle theme={theme} onToggle={() => setTheme((current) => (current === "dark" ? "light" : "dark"))} />
+            <ThemeToggle
+              theme={theme}
+              onToggle={() =>
+                setTheme((current) => (current === "dark" ? "light" : "dark"))
+              }
+            />
           </div>
 
           <button
@@ -429,7 +499,9 @@ function App() {
             className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 p-3 text-slate-100 transition hover:bg-white/10 lg:hidden"
             aria-label="Toggle menu"
           >
-            <span className="text-lg leading-none">{menuOpen ? "×" : "☰"}</span>
+            <span className="text-lg leading-none">
+              {menuOpen ? "×" : "☰"}
+            </span>
           </button>
         </div>
 
@@ -444,7 +516,14 @@ function App() {
             >
               <div className="flex flex-col gap-3">
                 <div className="flex items-center justify-between gap-3">
-                  <ThemeToggle theme={theme} onToggle={() => setTheme((current) => (current === "dark" ? "light" : "dark"))} />
+                  <ThemeToggle
+                    theme={theme}
+                    onToggle={() =>
+                      setTheme((current) =>
+                        current === "dark" ? "light" : "dark",
+                      )
+                    }
+                  />
                   <button
                     type="button"
                     onClick={handleDownloadIndexCsv}
@@ -495,17 +574,27 @@ function App() {
 
               <div className="space-y-6">
                 <h2 className="max-w-5xl text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
-                  A deeper React experience for the complete history of India’s stock market.
+                  A deeper React experience for the complete history of India’s
+                  stock market.
                 </h2>
                 <p className="max-w-3xl text-lg leading-8 text-slate-300 sm:text-xl">
-                  The site now goes beyond a beautiful narrative page: scrollspy navigation, interactive era filtering, downloadable datasets, a real light/dark mode, and framer-motion driven reveals that make the research feel alive.
+                  The site now goes beyond a beautiful narrative page: scrollspy
+                  navigation, interactive era filtering, downloadable datasets,
+                  a real light/dark mode, and framer-motion driven reveals that
+                  make the research feel alive.
                 </p>
               </div>
 
               <div className="flex flex-wrap gap-3 text-sm">
-                <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-4 py-2 text-emerald-200">₹100 → ₹1,53,600 nominal</span>
-                <span className="rounded-full border border-sky-400/20 bg-sky-400/10 px-4 py-2 text-sky-200">Era filters + scrollspy navigation</span>
-                <span className="rounded-full border border-violet-400/20 bg-violet-400/10 px-4 py-2 text-violet-200">CSV export + 2050 projector</span>
+                <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-4 py-2 text-emerald-200">
+                  ₹100 → ₹1,53,600 nominal
+                </span>
+                <span className="rounded-full border border-sky-400/20 bg-sky-400/10 px-4 py-2 text-sky-200">
+                  Era filters + scrollspy navigation
+                </span>
+                <span className="rounded-full border border-violet-400/20 bg-violet-400/10 px-4 py-2 text-violet-200">
+                  CSV export + 2050 projector
+                </span>
               </div>
 
               <div className="flex flex-wrap gap-4">
@@ -535,40 +624,65 @@ function App() {
               <GradientPanel>
                 <div className="flex flex-wrap items-center justify-between gap-4">
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">Forensic takeaway</p>
-                    <h3 className="mt-2 text-2xl font-semibold text-white">What actually changed?</h3>
+                    <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">
+                      Forensic takeaway
+                    </p>
+                    <h3 className="mt-2 text-2xl font-semibold text-white">
+                      What actually changed?
+                    </h3>
                   </div>
-                  <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-200">Policy + participation</span>
+                  <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-200">
+                    Policy + participation
+                  </span>
                 </div>
 
                 <div className="mt-6 grid gap-4 sm:grid-cols-2">
                   <div className="rounded-2xl border border-white/10 bg-slate-950/55 p-4">
                     <p className="text-sm text-slate-400">Then</p>
-                    <p className="mt-2 text-2xl font-semibold text-white">Suppressed, illiquid, policy-heavy</p>
-                    <p className="mt-3 text-sm leading-6 text-slate-300">The first 32 years were dominated by regulation, wars, inflation, and state hostility to private capital.</p>
+                    <p className="mt-2 text-2xl font-semibold text-white">
+                      Suppressed, illiquid, policy-heavy
+                    </p>
+                    <p className="mt-3 text-sm leading-6 text-slate-300">
+                      The first 32 years were dominated by regulation, wars,
+                      inflation, and state hostility to private capital.
+                    </p>
                   </div>
                   <div className="rounded-2xl border border-white/10 bg-slate-950/55 p-4">
                     <p className="text-sm text-slate-400">Now</p>
-                    <p className="mt-2 text-2xl font-semibold text-white">Financialized, retail-backed, globally tracked</p>
-                    <p className="mt-3 text-sm leading-6 text-slate-300">India’s market now benefits from deeper institutions, domestic flows, and broader sector representation.</p>
+                    <p className="mt-2 text-2xl font-semibold text-white">
+                      Financialized, retail-backed, globally tracked
+                    </p>
+                    <p className="mt-3 text-sm leading-6 text-slate-300">
+                      India’s market now benefits from deeper institutions,
+                      domestic flows, and broader sector representation.
+                    </p>
                   </div>
                 </div>
 
                 <div className="mt-6 rounded-2xl border border-amber-400/20 bg-amber-400/10 p-5">
-                  <p className="text-xs font-semibold uppercase tracking-[0.26em] text-amber-200">New in this version</p>
-                  <p className="mt-3 text-base leading-7 text-amber-50">You can now filter the chart by era, jump with active navigation, switch themes, and export key data tables directly from the page.</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.26em] text-amber-200">
+                    New in this version
+                  </p>
+                  <p className="mt-3 text-base leading-7 text-amber-50">
+                    You can now filter the chart by era, jump with active
+                    navigation, switch themes, and export key data tables
+                    directly from the page.
+                  </p>
                 </div>
               </GradientPanel>
             </MotionReveal>
           </div>
         </section>
 
-        <section id="overview" className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-14">
+        <section
+          id="overview"
+          className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-14"
+        >
           <MotionReveal>
             <SectionHeading
               eyebrow="Overview"
               title="Animated stats for the entire 78-year record"
-              subtitle="These headline metrics animate into view and frame the whole analysis: regime change, real returns, financialization, and the post-1979 acceleration that transformed Indian equities." 
+              subtitle="These headline metrics animate into view and frame the whole analysis: regime change, real returns, financialization, and the post-1979 acceleration that transformed Indian equities."
             />
           </MotionReveal>
 
@@ -576,7 +690,9 @@ function App() {
             {keyStats.map((stat, index) => (
               <MotionReveal key={stat.label} delay={index * 0.04}>
                 <GradientPanel innerClassName="h-full">
-                  <p className="text-sm font-medium text-slate-400">{stat.label}</p>
+                  <p className="text-sm font-medium text-slate-400">
+                    {stat.label}
+                  </p>
                   <AnimatedCounter
                     value={stat.value}
                     prefix={stat.prefix}
@@ -584,19 +700,24 @@ function App() {
                     decimals={stat.decimals ?? 0}
                     className="mt-4 block text-4xl font-semibold tracking-tight text-white"
                   />
-                  <p className="mt-4 text-sm leading-6 text-slate-300">{stat.note}</p>
+                  <p className="mt-4 text-sm leading-6 text-slate-300">
+                    {stat.note}
+                  </p>
                 </GradientPanel>
               </MotionReveal>
             ))}
           </div>
         </section>
 
-        <section id="chart" className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-14">
+        <section
+          id="chart"
+          className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-14"
+        >
           <MotionReveal>
             <SectionHeading
               eyebrow="Interactive chart"
-              title="A candlestick-based 78-year chart with MA 20/50/100/200 and technical overlays"
-              subtitle="The core visual now reconstructs monthly candles from the long-run annual series so you can inspect trend structure with moving averages, Bollinger Bands, crash markers, volume, RSI, MACD, and era filters without losing the historical context." 
+              title="A truthful long-horizon chart with native pan and zoom, plus an optional technical lens"
+              subtitle="The core visual now opens in an honest full-history mode that fits the complete 1947–2025 dataset on screen, then lets you zoom into regimes with native gestures. A separate technical reconstruction mode still exists for users who want market-style overlays without confusing reconstructed data for real traded monthly bars."
             />
           </MotionReveal>
 
@@ -616,9 +737,19 @@ function App() {
             <div className="space-y-6">
               <MotionReveal delay={0.05}>
                 <GradientPanel>
-                  <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">Chart reading guide</p>
-                  <h3 className="mt-3 text-2xl font-semibold text-white">Why the filters matter</h3>
-                  <p className="mt-4 text-sm leading-7 text-slate-300">The full chart is useful for perspective, but the era windows expose the hidden geometry of the story: socialist stagnation, low-base rerating, reform volatility, and structural steepening after 2003.</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">
+                    Chart reading guide
+                  </p>
+                  <h3 className="mt-3 text-2xl font-semibold text-white">
+                    Why this version reads better
+                  </h3>
+                  <p className="mt-4 text-sm leading-7 text-slate-300">
+                    The chart no longer asks you to horizontally scroll through
+                    an over-wide SVG to understand the story. You can start with
+                    the whole history, zoom with intent, pan naturally, and only
+                    switch into the technical reconstruction when you actually
+                    want that lens.
+                  </p>
                   <div className="mt-5 flex flex-wrap gap-3">
                     <button
                       type="button"
@@ -627,7 +758,10 @@ function App() {
                     >
                       Download index CSV
                     </button>
-                    <a href="#data" className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white transition hover:bg-white/10">
+                    <a
+                      href="#data"
+                      className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white transition hover:bg-white/10"
+                    >
                       Jump to reference table
                     </a>
                   </div>
@@ -636,28 +770,30 @@ function App() {
 
               <MotionReveal delay={0.1}>
                 <GradientPanel>
-                  <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">Visual thesis</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">
+                    Visual thesis
+                  </p>
                   <div className="mt-4 space-y-4">
                     <ProgressMetric
-                      label="Policy regime impact"
-                      value="Very high"
-                      max={92}
-                      tone="amber"
-                      description="The first half of the story was shaped more by the state than by earnings growth."
+                      label="Whole-history clarity"
+                      value="Restored"
+                      max={95}
+                      tone="sky"
+                      description="You can now see the entire 78-year range immediately, then zoom into any era without losing context."
                     />
                     <ProgressMetric
-                      label="Compounding after reform"
-                      value="Explosive"
-                      max={86}
+                      label="Interaction quality"
+                      value="Native"
+                      max={90}
                       tone="emerald"
-                      description="The slope changed structurally once liberalization and institutions deepened."
+                      description="Drag, wheel, and touch interactions now do the real work instead of button-based panning."
                     />
                     <ProgressMetric
-                      label="Crash recurrence"
-                      value="Persistent"
-                      max={58}
-                      tone="rose"
-                      description="Major shocks are normal in Indian equities and repeat every few years."
+                      label="Analytical honesty"
+                      value="Higher"
+                      max={82}
+                      tone="amber"
+                      description="The long-horizon view prioritizes the annual source data, while the technical mode is clearly labeled as reconstructed."
                     />
                   </div>
                 </GradientPanel>
@@ -666,12 +802,15 @@ function App() {
           </div>
         </section>
 
-        <section id="structure" className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-14">
+        <section
+          id="structure"
+          className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-14"
+        >
           <MotionReveal>
             <SectionHeading
               eyebrow="Structure"
               title="Regime explorer, sector evolution, and market breadth on one canvas"
-              subtitle="This section surfaces the deeper market structure behind price: what led each era, what risks dominated it, and how India’s market breadth evolved from a tightly controlled niche to a mass-owned system." 
+              subtitle="This section surfaces the deeper market structure behind price: what led each era, what risks dominated it, and how India’s market breadth evolved from a tightly controlled niche to a mass-owned system."
             />
           </MotionReveal>
 
@@ -695,14 +834,38 @@ function App() {
                     >
                       <div className="flex items-start justify-between gap-4">
                         <div>
-                          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">{regime.years}</p>
-                          <h3 className="mt-2 text-lg font-semibold text-white">{regime.name}</h3>
+                          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">
+                            {regime.years}
+                          </p>
+                          <h3 className="mt-2 text-lg font-semibold text-white">
+                            {regime.name}
+                          </h3>
                         </div>
-                        <span className={cn("rounded-full border px-3 py-1 text-xs font-medium", tone.badge)}>{regime.returns}</span>
+                        <span
+                          className={cn(
+                            "rounded-full border px-3 py-1 text-xs font-medium",
+                            tone.badge,
+                          )}
+                        >
+                          {regime.returns}
+                        </span>
                       </div>
-                      <p className="mt-3 text-sm leading-6 text-slate-300">{regime.summary}</p>
-                      <div className={cn("mt-4 h-1.5 rounded-full bg-white/5", active && `bg-gradient-to-r ${tone.ring}`)}>
-                        <div className={cn("h-full rounded-full", tone.accent, active ? "w-full" : "w-0")} />
+                      <p className="mt-3 text-sm leading-6 text-slate-300">
+                        {regime.summary}
+                      </p>
+                      <div
+                        className={cn(
+                          "mt-4 h-1.5 rounded-full bg-white/5",
+                          active && `bg-gradient-to-r ${tone.ring}`,
+                        )}
+                      >
+                        <div
+                          className={cn(
+                            "h-full rounded-full",
+                            tone.accent,
+                            active ? "w-full" : "w-0",
+                          )}
+                        />
                       </div>
                     </button>
                   </MotionReveal>
@@ -714,23 +877,40 @@ function App() {
               <MotionReveal>
                 <GradientPanel>
                   <div className="flex flex-wrap items-center gap-3">
-                    <h3 className="text-3xl font-semibold tracking-tight text-white">{selectedRegime.name}</h3>
-                    <span className={cn("rounded-full border px-3 py-1 text-xs font-medium", selectedRegimeTone.badge)}>{selectedRegime.years}</span>
+                    <h3 className="text-3xl font-semibold tracking-tight text-white">
+                      {selectedRegime.name}
+                    </h3>
+                    <span
+                      className={cn(
+                        "rounded-full border px-3 py-1 text-xs font-medium",
+                        selectedRegimeTone.badge,
+                      )}
+                    >
+                      {selectedRegime.years}
+                    </span>
                   </div>
-                  <p className="mt-4 text-base leading-7 text-slate-200">{selectedRegime.summary}</p>
+                  <p className="mt-4 text-base leading-7 text-slate-200">
+                    {selectedRegime.summary}
+                  </p>
 
                   <div className="mt-6 grid gap-4 md:grid-cols-2">
                     <div className="rounded-2xl border border-white/10 bg-slate-950/55 p-5">
                       <p className="text-sm text-slate-400">Primary driver</p>
-                      <p className="mt-3 text-sm leading-7 text-white">{selectedRegime.driver}</p>
+                      <p className="mt-3 text-sm leading-7 text-white">
+                        {selectedRegime.driver}
+                      </p>
                     </div>
                     <div className="rounded-2xl border border-white/10 bg-slate-950/55 p-5">
                       <p className="text-sm text-slate-400">Dominant risk</p>
-                      <p className="mt-3 text-sm leading-7 text-white">{selectedRegime.risk}</p>
+                      <p className="mt-3 text-sm leading-7 text-white">
+                        {selectedRegime.risk}
+                      </p>
                     </div>
                     <div className="rounded-2xl border border-white/10 bg-slate-950/55 p-5 md:col-span-2">
                       <p className="text-sm text-slate-400">Investor lesson</p>
-                      <p className="mt-3 text-sm leading-7 text-white">{selectedRegime.lesson}</p>
+                      <p className="mt-3 text-sm leading-7 text-white">
+                        {selectedRegime.lesson}
+                      </p>
                     </div>
                   </div>
                 </GradientPanel>
@@ -739,26 +919,44 @@ function App() {
               <div className="grid gap-5 xl:grid-cols-2">
                 <MotionReveal delay={0.05}>
                   <GradientPanel>
-                    <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">Sector evolution</p>
+                    <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">
+                      Sector evolution
+                    </p>
                     <div className="mt-5 space-y-4">
                       {sectorEvolution.map((snapshot) => (
-                        <div key={snapshot.year} className="rounded-2xl border border-white/10 bg-slate-950/55 p-4">
+                        <div
+                          key={snapshot.year}
+                          className="rounded-2xl border border-white/10 bg-slate-950/55 p-4"
+                        >
                           <div className="flex flex-wrap items-center justify-between gap-3">
                             <div>
-                              <p className="text-xs uppercase tracking-[0.24em] text-slate-400">{snapshot.era}</p>
-                              <h4 className="mt-1 text-lg font-semibold text-white">{snapshot.year}</h4>
+                              <p className="text-xs uppercase tracking-[0.24em] text-slate-400">
+                                {snapshot.era}
+                              </p>
+                              <h4 className="mt-1 text-lg font-semibold text-white">
+                                {snapshot.year}
+                              </h4>
                             </div>
-                            <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300">{snapshot.dominant}</span>
+                            <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300">
+                              {snapshot.dominant}
+                            </span>
                           </div>
                           <div className="mt-4 flex flex-wrap gap-2">
                             {snapshot.challengers.map((challenger) => (
-                              <span key={challenger} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300">
+                              <span
+                                key={challenger}
+                                className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300"
+                              >
                                 {challenger}
                               </span>
                             ))}
                           </div>
-                          <p className="mt-4 text-sm leading-6 text-slate-300">{snapshot.note}</p>
-                          <p className="mt-2 text-xs leading-6 text-slate-400">{snapshot.breadthSignal}</p>
+                          <p className="mt-4 text-sm leading-6 text-slate-300">
+                            {snapshot.note}
+                          </p>
+                          <p className="mt-2 text-xs leading-6 text-slate-400">
+                            {snapshot.breadthSignal}
+                          </p>
                         </div>
                       ))}
                     </div>
@@ -767,22 +965,41 @@ function App() {
 
                 <MotionReveal delay={0.1}>
                   <GradientPanel>
-                    <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">Market breadth timeline</p>
+                    <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">
+                      Market breadth timeline
+                    </p>
                     <div className="mt-5 space-y-4">
                       {marketBreadth.map((point) => (
-                        <div key={point.year} className="rounded-2xl border border-white/10 bg-slate-950/55 p-4">
+                        <div
+                          key={point.year}
+                          className="rounded-2xl border border-white/10 bg-slate-950/55 p-4"
+                        >
                           <div className="flex items-start justify-between gap-4">
                             <div>
-                              <h4 className="text-lg font-semibold text-white">{point.year}</h4>
-                              <p className="mt-2 text-sm leading-6 text-slate-300">{point.note}</p>
+                              <h4 className="text-lg font-semibold text-white">
+                                {point.year}
+                              </h4>
+                              <p className="mt-2 text-sm leading-6 text-slate-300">
+                                {point.note}
+                              </p>
                             </div>
-                            <span className="rounded-full border border-sky-400/20 bg-sky-400/10 px-3 py-1 text-xs text-sky-200">MCap/GDP {point.marketCapToGdp}%</span>
+                            <span className="rounded-full border border-sky-400/20 bg-sky-400/10 px-3 py-1 text-xs text-sky-200">
+                              MCap/GDP {point.marketCapToGdp}%
+                            </span>
                           </div>
                           <div className="mt-4 grid grid-cols-2 gap-3 text-xs text-slate-300">
-                            <div className="rounded-xl border border-white/10 bg-white/5 p-3">₹{formatNumber(point.marketCapLakhCr)}L Cr MCap</div>
-                            <div className="rounded-xl border border-white/10 bg-white/5 p-3">{formatNumber(point.listedCompaniesK, 1)}K listed</div>
-                            <div className="rounded-xl border border-white/10 bg-white/5 p-3">{formatNumber(point.dematCrore, 1)} Cr demat</div>
-                            <div className="rounded-xl border border-white/10 bg-white/5 p-3">₹{formatNumber(point.dailyTurnoverCr)} Cr turnover</div>
+                            <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+                              ₹{formatNumber(point.marketCapLakhCr)}L Cr MCap
+                            </div>
+                            <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+                              {formatNumber(point.listedCompaniesK, 1)}K listed
+                            </div>
+                            <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+                              {formatNumber(point.dematCrore, 1)} Cr demat
+                            </div>
+                            <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+                              ₹{formatNumber(point.dailyTurnoverCr)} Cr turnover
+                            </div>
                           </div>
                         </div>
                       ))}
@@ -794,12 +1011,15 @@ function App() {
           </div>
         </section>
 
-        <section id="retail" className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-14">
+        <section
+          id="retail"
+          className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-14"
+        >
           <MotionReveal>
             <SectionHeading
               eyebrow="Retail engine"
               title="SIP and demat growth tracker"
-              subtitle="This remains one of the biggest structural upgrades on the site: a dedicated section for the household-participation wave that changed the market’s resilience after 2020." 
+              subtitle="This remains one of the biggest structural upgrades on the site: a dedicated section for the household-participation wave that changed the market’s resilience after 2020."
             />
           </MotionReveal>
 
@@ -808,10 +1028,16 @@ function App() {
               <GradientPanel>
                 <div className="flex items-center justify-between gap-4">
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">Interactive retail tracker</p>
-                    <h3 className="mt-2 text-2xl font-semibold text-white">Select a year from 2016 to 2025</h3>
+                    <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">
+                      Interactive retail tracker
+                    </p>
+                    <h3 className="mt-2 text-2xl font-semibold text-white">
+                      Select a year from 2016 to 2025
+                    </h3>
                   </div>
-                  <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-200">Selected: {selectedSipPoint.year}</span>
+                  <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-200">
+                    Selected: {selectedSipPoint.year}
+                  </span>
                 </div>
 
                 <div className="mt-6 rounded-2xl border border-white/10 bg-slate-950/55 p-5">
@@ -821,7 +1047,9 @@ function App() {
                     max={sipDematGrowth[sipDematGrowth.length - 1]?.year}
                     step={1}
                     value={selectedSipYear}
-                    onChange={(event) => setSelectedSipYear(Number(event.target.value))}
+                    onChange={(event) =>
+                      setSelectedSipYear(Number(event.target.value))
+                    }
                     className="w-full"
                   />
 
@@ -877,8 +1105,12 @@ function App() {
               <GradientPanel>
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">Retail surge timeline</p>
-                    <h3 className="mt-2 text-2xl font-semibold text-white">Domestic flows became structural</h3>
+                    <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">
+                      Retail surge timeline
+                    </p>
+                    <h3 className="mt-2 text-2xl font-semibold text-white">
+                      Domestic flows became structural
+                    </h3>
                   </div>
                   <button
                     type="button"
@@ -904,30 +1136,48 @@ function App() {
                             : "border-white/10 bg-white/5 hover:bg-white/10",
                         )}
                       >
-                        <p className="text-xs uppercase tracking-[0.22em] text-slate-400">{point.year}</p>
-                        <p className="mt-2 text-lg font-semibold text-white">{formatNumber(point.dematCrore, 1)} Cr</p>
-                        <p className="mt-1 text-xs text-slate-400">Demat accounts</p>
-                        <p className="mt-3 text-sm font-medium text-sky-200">₹{formatNumber(point.sipMonthlyCr)} Cr/mo</p>
+                        <p className="text-xs uppercase tracking-[0.22em] text-slate-400">
+                          {point.year}
+                        </p>
+                        <p className="mt-2 text-lg font-semibold text-white">
+                          {formatNumber(point.dematCrore, 1)} Cr
+                        </p>
+                        <p className="mt-1 text-xs text-slate-400">
+                          Demat accounts
+                        </p>
+                        <p className="mt-3 text-sm font-medium text-sky-200">
+                          ₹{formatNumber(point.sipMonthlyCr)} Cr/mo
+                        </p>
                       </button>
                     );
                   })}
                 </div>
 
                 <div className="mt-6 rounded-2xl border border-amber-400/20 bg-amber-400/10 p-5">
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-amber-200">Why this matters</p>
-                  <p className="mt-3 text-sm leading-7 text-amber-50">The 2020s are the first era in which retail participation is not a side-story. It is a structural market force that can absorb part of the FPI volatility older cycles could not handle.</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-amber-200">
+                    Why this matters
+                  </p>
+                  <p className="mt-3 text-sm leading-7 text-amber-50">
+                    The 2020s are the first era in which retail participation is
+                    not a side-story. It is a structural market force that can
+                    absorb part of the FPI volatility older cycles could not
+                    handle.
+                  </p>
                 </div>
               </GradientPanel>
             </MotionReveal>
           </div>
         </section>
 
-        <section id="world" className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-14">
+        <section
+          id="world"
+          className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-14"
+        >
           <MotionReveal>
             <SectionHeading
               eyebrow="India vs world"
-              title="India, the USA, and China on one interactive scale"
-              subtitle="The comparison is now a real chart instead of a static statement. India wins on local-currency multiple over the 1990–2025 period, but currency drag still matters for global investors." 
+              title="India, the USA, and China on one interactive scale with the same navigation model"
+              subtitle="The comparison chart now uses the same fit-all, zoom, and pan logic as the main explorer. India still wins on local-currency multiple over the 1990–2025 period, but currency drag remains the permanent haircut global investors have to respect."
             />
           </MotionReveal>
 
@@ -954,29 +1204,45 @@ function App() {
                     >
                       {card.label}
                     </p>
-                    <p className="mt-4 text-4xl font-semibold tracking-tight text-white">{card.value}</p>
-                    <p className="mt-3 text-sm leading-6 text-slate-300">{card.note}</p>
+                    <p className="mt-4 text-4xl font-semibold tracking-tight text-white">
+                      {card.value}
+                    </p>
+                    <p className="mt-3 text-sm leading-6 text-slate-300">
+                      {card.note}
+                    </p>
                   </GradientPanel>
                 </MotionReveal>
               ))}
 
               <MotionReveal delay={0.14}>
                 <GradientPanel>
-                  <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">Currency lens</p>
-                  <h3 className="mt-3 text-2xl font-semibold text-white">Local outperformance, global haircut</h3>
-                  <p className="mt-4 text-sm leading-7 text-slate-300">India’s local-currency returns are spectacular, but long-run rupee depreciation compresses the edge in USD terms. The correct conclusion is not that India loses — it is that currency remains a permanent emerging-market risk factor.</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">
+                    Currency lens
+                  </p>
+                  <h3 className="mt-3 text-2xl font-semibold text-white">
+                    Local outperformance, global haircut
+                  </h3>
+                  <p className="mt-4 text-sm leading-7 text-slate-300">
+                    India’s local-currency returns are spectacular, but long-run
+                    rupee depreciation compresses the edge in USD terms. The
+                    correct conclusion is not that India loses — it is that
+                    currency remains a permanent emerging-market risk factor.
+                  </p>
                 </GradientPanel>
               </MotionReveal>
             </div>
           </div>
         </section>
 
-        <section id="crashes" className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-14">
+        <section
+          id="crashes"
+          className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-14"
+        >
           <MotionReveal>
             <SectionHeading
               eyebrow="Crashes & windows"
               title="The market kept breaking — and patience kept winning"
-              subtitle="This section still reinforces the core behavioral finding: drawdowns were frequent, scary, and often violent, yet long windows kept neutralizing terrible entry points." 
+              subtitle="This section still reinforces the core behavioral finding: drawdowns were frequent, scary, and often violent, yet long windows kept neutralizing terrible entry points."
             />
           </MotionReveal>
 
@@ -985,33 +1251,62 @@ function App() {
               <GradientPanel>
                 <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
                   <div>
-                    <h3 className="text-xl font-semibold text-white">Major drawdown map</h3>
-                    <p className="mt-1 text-sm text-slate-400">The severity of the fall mattered less than the discipline to stay invested.</p>
+                    <h3 className="text-xl font-semibold text-white">
+                      Major drawdown map
+                    </h3>
+                    <p className="mt-1 text-sm text-slate-400">
+                      The severity of the fall mattered less than the discipline
+                      to stay invested.
+                    </p>
                   </div>
-                  <span className="rounded-full border border-rose-400/20 bg-rose-400/10 px-4 py-2 text-sm text-rose-200">Median recovery: {medianRecovery} months</span>
+                  <span className="rounded-full border border-rose-400/20 bg-rose-400/10 px-4 py-2 text-sm text-rose-200">
+                    Median recovery: {medianRecovery} months
+                  </span>
                 </div>
 
                 <div className="space-y-5">
                   {crashEvents.map((crash) => (
-                    <div key={`${crash.name}-${crash.period}`} className="rounded-3xl border border-white/10 bg-slate-950/55 p-5">
+                    <div
+                      key={`${crash.name}-${crash.period}`}
+                      className="rounded-3xl border border-white/10 bg-slate-950/55 p-5"
+                    >
                       <div className="flex flex-wrap items-center justify-between gap-3">
                         <div>
-                          <p className="text-sm font-medium text-slate-400">{crash.period}</p>
-                          <h4 className="text-lg font-semibold text-white">{crash.name}</h4>
+                          <p className="text-sm font-medium text-slate-400">
+                            {crash.period}
+                          </p>
+                          <h4 className="text-lg font-semibold text-white">
+                            {crash.name}
+                          </h4>
                         </div>
-                        <div className="rounded-full border border-rose-400/20 bg-rose-400/10 px-3 py-1 text-sm font-medium text-rose-200">{crash.decline}%</div>
+                        <div className="rounded-full border border-rose-400/20 bg-rose-400/10 px-3 py-1 text-sm font-medium text-rose-200">
+                          {crash.decline}%
+                        </div>
                       </div>
 
                       <div className="mt-4 h-3 overflow-hidden rounded-full bg-slate-900/80 ring-1 ring-white/5">
-                        <div className="progress-fill h-full rounded-full bg-gradient-to-r from-rose-500 via-orange-400 to-amber-300" style={{ width: `${(Math.abs(crash.decline) / maxCrash) * 100}%` }} />
+                        <div
+                          className="progress-fill h-full rounded-full bg-gradient-to-r from-rose-500 via-orange-400 to-amber-300"
+                          style={{
+                            width: `${(Math.abs(crash.decline) / maxCrash) * 100}%`,
+                          }}
+                        />
                       </div>
 
                       <div className="mt-4 flex flex-wrap gap-3 text-sm text-slate-300">
-                        <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1">{crash.monthsToBottom} months to bottom</span>
-                        <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1">{crash.monthsToRecover === null ? "Recovery ongoing" : `${crash.monthsToRecover} months to recover`}</span>
+                        <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1">
+                          {crash.monthsToBottom} months to bottom
+                        </span>
+                        <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1">
+                          {crash.monthsToRecover === null
+                            ? "Recovery ongoing"
+                            : `${crash.monthsToRecover} months to recover`}
+                        </span>
                       </div>
 
-                      <p className="mt-4 text-sm leading-6 text-slate-400">{crash.note}</p>
+                      <p className="mt-4 text-sm leading-6 text-slate-400">
+                        {crash.note}
+                      </p>
                     </div>
                   ))}
                 </div>
@@ -1021,21 +1316,41 @@ function App() {
             <div className="space-y-6">
               <MotionReveal delay={0.05}>
                 <GradientPanel className="bg-[linear-gradient(135deg,rgba(16,185,129,0.22),rgba(255,255,255,0.08),rgba(56,189,248,0.12))]">
-                  <p className="text-xs font-semibold uppercase tracking-[0.28em] text-emerald-200">Patience premium</p>
-                  <h3 className="mt-3 text-3xl font-semibold tracking-tight text-white">No 15-year window in the supplied Sensex dataset fell below 9% CAGR.</h3>
-                  <p className="mt-4 text-base leading-7 text-emerald-50">The strongest edge in Indian equities was never perfect timing. It was remaining invested through the exact moments that felt least survivable.</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.28em] text-emerald-200">
+                    Patience premium
+                  </p>
+                  <h3 className="mt-3 text-3xl font-semibold tracking-tight text-white">
+                    No 15-year window in the supplied Sensex dataset fell below
+                    9% CAGR.
+                  </h3>
+                  <p className="mt-4 text-base leading-7 text-emerald-50">
+                    The strongest edge in Indian equities was never perfect
+                    timing. It was remaining invested through the exact moments
+                    that felt least survivable.
+                  </p>
                 </GradientPanel>
               </MotionReveal>
 
               <MotionReveal delay={0.1}>
                 <GradientPanel>
-                  <h3 className="text-xl font-semibold text-white">15-year rolling windows</h3>
+                  <h3 className="text-xl font-semibold text-white">
+                    15-year rolling windows
+                  </h3>
                   <div className="mt-5 grid gap-4 sm:grid-cols-2">
                     {rollingWindows.map((window) => (
-                      <div key={window.period} className="rounded-2xl border border-white/10 bg-slate-950/55 p-5">
-                        <p className="text-sm text-slate-400">{window.period}</p>
-                        <p className="mt-2 text-3xl font-semibold text-white">{window.cagr.toFixed(1)}%</p>
-                        <p className="mt-2 text-sm leading-6 text-slate-300">{window.verdict}</p>
+                      <div
+                        key={window.period}
+                        className="rounded-2xl border border-white/10 bg-slate-950/55 p-5"
+                      >
+                        <p className="text-sm text-slate-400">
+                          {window.period}
+                        </p>
+                        <p className="mt-2 text-3xl font-semibold text-white">
+                          {window.cagr.toFixed(1)}%
+                        </p>
+                        <p className="mt-2 text-sm leading-6 text-slate-300">
+                          {window.verdict}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -1044,27 +1359,54 @@ function App() {
 
               <MotionReveal delay={0.14}>
                 <GradientPanel>
-                  <h3 className="text-xl font-semibold text-white">Decade return bars</h3>
+                  <h3 className="text-xl font-semibold text-white">
+                    Decade return bars
+                  </h3>
                   <div className="mt-5 space-y-5">
                     {decadeReturns.map((period) => (
-                      <div key={period.period} className="rounded-2xl border border-white/10 bg-slate-950/55 p-4">
+                      <div
+                        key={period.period}
+                        className="rounded-2xl border border-white/10 bg-slate-950/55 p-4"
+                      >
                         <div className="mb-4 flex items-center justify-between gap-3">
-                          <p className="text-sm font-medium text-white">{period.period}</p>
-                          <span className="text-xs text-slate-400">Nominal vs real CAGR</span>
+                          <p className="text-sm font-medium text-white">
+                            {period.period}
+                          </p>
+                          <span className="text-xs text-slate-400">
+                            Nominal vs real CAGR
+                          </span>
                         </div>
                         <ProgressMetric
                           label="Nominal"
                           value={`${period.nominal > 0 ? "+" : ""}${period.nominal.toFixed(1)}%`}
-                          max={Math.max(Math.abs(period.nominal) * 4.2, period.nominal === 0 ? 8 : 18)}
-                          tone={period.nominal >= 10 ? "emerald" : period.nominal >= 0 ? "amber" : "rose"}
+                          max={Math.max(
+                            Math.abs(period.nominal) * 4.2,
+                            period.nominal === 0 ? 8 : 18,
+                          )}
+                          tone={
+                            period.nominal >= 10
+                              ? "emerald"
+                              : period.nominal >= 0
+                                ? "amber"
+                                : "rose"
+                          }
                           description="Headline annualized return"
                         />
                         <div className="mt-4" />
                         <ProgressMetric
                           label="Real"
                           value={`${period.real > 0 ? "+" : ""}${period.real.toFixed(1)}%`}
-                          max={Math.max(Math.abs(period.real) * 5.4, period.real === 0 ? 8 : 18)}
-                          tone={period.real >= 5 ? "emerald" : period.real >= 0 ? "amber" : "rose"}
+                          max={Math.max(
+                            Math.abs(period.real) * 5.4,
+                            period.real === 0 ? 8 : 18,
+                          )}
+                          tone={
+                            period.real >= 5
+                              ? "emerald"
+                              : period.real >= 0
+                                ? "amber"
+                                : "rose"
+                          }
                           description="Inflation-adjusted annualized return"
                         />
                       </div>
@@ -1076,12 +1418,15 @@ function App() {
           </div>
         </section>
 
-        <section id="projector" className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-14">
+        <section
+          id="projector"
+          className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-14"
+        >
           <MotionReveal>
             <SectionHeading
               eyebrow="2050 projector"
               title="Preset scenarios plus a custom return-and-inflation simulator"
-              subtitle="The long-term framing is now interactive: click a preset path or build your own projection using nominal CAGR and inflation assumptions." 
+              subtitle="The long-term framing is now interactive: click a preset path or build your own projection using nominal CAGR and inflation assumptions."
             />
           </MotionReveal>
 
@@ -1090,10 +1435,16 @@ function App() {
               <GradientPanel>
                 <div className="flex items-center justify-between gap-4">
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">Scenario table</p>
-                    <h3 className="mt-2 text-2xl font-semibold text-white">Preset 2050 paths</h3>
+                    <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">
+                      Scenario table
+                    </p>
+                    <h3 className="mt-2 text-2xl font-semibold text-white">
+                      Preset 2050 paths
+                    </h3>
                   </div>
-                  <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300">Click to load</span>
+                  <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300">
+                    Click to load
+                  </span>
                 </div>
 
                 <div className="mt-6 space-y-4">
@@ -1105,21 +1456,38 @@ function App() {
                         setProjectionCagr(scenario.cagr);
                         setProjectionInflation(scenario.inflation);
                       }}
-                      className={cn("w-full rounded-2xl border p-5 text-left transition hover:bg-white/10", scenarioToneClasses[scenario.tone])}
+                      className={cn(
+                        "w-full rounded-2xl border p-5 text-left transition hover:bg-white/10",
+                        scenarioToneClasses[scenario.tone],
+                      )}
                     >
                       <div className="flex flex-wrap items-center justify-between gap-3">
                         <div>
-                          <p className="text-xs uppercase tracking-[0.24em] opacity-80">{scenario.probability}</p>
-                          <h4 className="mt-1 text-lg font-semibold text-white">{scenario.name}</h4>
+                          <p className="text-xs uppercase tracking-[0.24em] opacity-80">
+                            {scenario.probability}
+                          </p>
+                          <h4 className="mt-1 text-lg font-semibold text-white">
+                            {scenario.name}
+                          </h4>
                         </div>
-                        <span className="rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs font-medium text-white">{scenario.cagr}% CAGR</span>
+                        <span className="rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs font-medium text-white">
+                          {scenario.cagr}% CAGR
+                        </span>
                       </div>
                       <div className="mt-4 grid gap-3 text-sm sm:grid-cols-3">
-                        <div className="rounded-xl border border-white/10 bg-black/10 p-3">2050: {formatNumber(scenario.projectedSensex2050)}</div>
-                        <div className="rounded-xl border border-white/10 bg-black/10 p-3">Inflation: {scenario.inflation}%</div>
-                        <div className="rounded-xl border border-white/10 bg-black/10 p-3">Real multiple: {scenario.realMultiple.toFixed(2)}x</div>
+                        <div className="rounded-xl border border-white/10 bg-black/10 p-3">
+                          2050: {formatNumber(scenario.projectedSensex2050)}
+                        </div>
+                        <div className="rounded-xl border border-white/10 bg-black/10 p-3">
+                          Inflation: {scenario.inflation}%
+                        </div>
+                        <div className="rounded-xl border border-white/10 bg-black/10 p-3">
+                          Real multiple: {scenario.realMultiple.toFixed(2)}x
+                        </div>
                       </div>
-                      <p className="mt-4 text-sm leading-6 text-slate-100/90">{scenario.note}</p>
+                      <p className="mt-4 text-sm leading-6 text-slate-100/90">
+                        {scenario.note}
+                      </p>
                     </button>
                   ))}
                 </div>
@@ -1130,17 +1498,30 @@ function App() {
               <GradientPanel>
                 <div className="flex items-center justify-between gap-4">
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">Custom simulator</p>
-                    <h3 className="mt-2 text-2xl font-semibold text-white">Build your own 2050 view</h3>
+                    <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">
+                      Custom simulator
+                    </p>
+                    <h3 className="mt-2 text-2xl font-semibold text-white">
+                      Build your own 2050 view
+                    </h3>
                   </div>
-                  <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-200">25-year horizon</span>
+                  <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-200">
+                    25-year horizon
+                  </span>
                 </div>
 
                 <div className="mt-6 grid gap-6">
                   <div className="rounded-2xl border border-white/10 bg-slate-950/55 p-5">
                     <div className="flex items-center justify-between gap-4">
-                      <label htmlFor="cagr" className="text-sm font-medium text-white">Nominal CAGR assumption</label>
-                      <span className="text-sm font-semibold text-slate-200">{projectionCagr.toFixed(1)}%</span>
+                      <label
+                        htmlFor="cagr"
+                        className="text-sm font-medium text-white"
+                      >
+                        Nominal CAGR assumption
+                      </label>
+                      <span className="text-sm font-semibold text-slate-200">
+                        {projectionCagr.toFixed(1)}%
+                      </span>
                     </div>
                     <input
                       id="cagr"
@@ -1149,15 +1530,24 @@ function App() {
                       max={15}
                       step={0.1}
                       value={projectionCagr}
-                      onChange={(event) => setProjectionCagr(Number(event.target.value))}
+                      onChange={(event) =>
+                        setProjectionCagr(Number(event.target.value))
+                      }
                       className="mt-4 w-full"
                     />
                   </div>
 
                   <div className="rounded-2xl border border-white/10 bg-slate-950/55 p-5">
                     <div className="flex items-center justify-between gap-4">
-                      <label htmlFor="inflation" className="text-sm font-medium text-white">Inflation assumption</label>
-                      <span className="text-sm font-semibold text-slate-200">{projectionInflation.toFixed(1)}%</span>
+                      <label
+                        htmlFor="inflation"
+                        className="text-sm font-medium text-white"
+                      >
+                        Inflation assumption
+                      </label>
+                      <span className="text-sm font-semibold text-slate-200">
+                        {projectionInflation.toFixed(1)}%
+                      </span>
                     </div>
                     <input
                       id="inflation"
@@ -1166,7 +1556,9 @@ function App() {
                       max={7}
                       step={0.1}
                       value={projectionInflation}
-                      onChange={(event) => setProjectionInflation(Number(event.target.value))}
+                      onChange={(event) =>
+                        setProjectionInflation(Number(event.target.value))
+                      }
                       className="mt-4 w-full"
                     />
                   </div>
@@ -1174,16 +1566,28 @@ function App() {
 
                 <div className="mt-6 grid gap-4 md:grid-cols-3">
                   <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-                    <p className="text-sm text-slate-400">Projected 2050 Sensex</p>
-                    <p className="mt-2 text-3xl font-semibold text-white">{formatNumber(projectedSensex2050)}</p>
+                    <p className="text-sm text-slate-400">
+                      Projected 2050 Sensex
+                    </p>
+                    <p className="mt-2 text-3xl font-semibold text-white">
+                      {formatNumber(projectedSensex2050)}
+                    </p>
                   </div>
                   <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-                    <p className="text-sm text-slate-400">Real CAGR after inflation</p>
-                    <p className="mt-2 text-3xl font-semibold text-white">{realCagr.toFixed(1)}%</p>
+                    <p className="text-sm text-slate-400">
+                      Real CAGR after inflation
+                    </p>
+                    <p className="mt-2 text-3xl font-semibold text-white">
+                      {realCagr.toFixed(1)}%
+                    </p>
                   </div>
                   <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-                    <p className="text-sm text-slate-400">Real 2025-rupee value</p>
-                    <p className="mt-2 text-3xl font-semibold text-white">{formatNumber(projectedRealValue)}</p>
+                    <p className="text-sm text-slate-400">
+                      Real 2025-rupee value
+                    </p>
+                    <p className="mt-2 text-3xl font-semibold text-white">
+                      {formatNumber(projectedRealValue)}
+                    </p>
                   </div>
                 </div>
 
@@ -1208,12 +1612,15 @@ function App() {
           </div>
         </section>
 
-        <section id="insights" className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-14">
+        <section
+          id="insights"
+          className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-14"
+        >
           <MotionReveal>
             <SectionHeading
               eyebrow="Ten deep insights"
               title="Structural lessons that survive beyond one rally or one correction"
-              subtitle="The original insight list remains central, but now sits inside a denser, more interactive environment with stronger context and data exports around it." 
+              subtitle="The original insight list remains central, but now sits inside a denser, more interactive environment with stronger context and data exports around it."
             />
           </MotionReveal>
 
@@ -1222,22 +1629,31 @@ function App() {
               <MotionReveal key={insight.title} delay={index * 0.035}>
                 <GradientPanel innerClassName="h-full">
                   <div className="flex items-center gap-4">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 text-sm font-semibold text-white">{String(index + 1).padStart(2, "0")}</div>
-                    <h3 className="text-xl font-semibold text-white">{insight.title}</h3>
+                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 text-sm font-semibold text-white">
+                      {String(index + 1).padStart(2, "0")}
+                    </div>
+                    <h3 className="text-xl font-semibold text-white">
+                      {insight.title}
+                    </h3>
                   </div>
-                  <p className="mt-5 text-sm leading-7 text-slate-300">{insight.body}</p>
+                  <p className="mt-5 text-sm leading-7 text-slate-300">
+                    {insight.body}
+                  </p>
                 </GradientPanel>
               </MotionReveal>
             ))}
           </div>
         </section>
 
-        <section id="data" className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-14">
+        <section
+          id="data"
+          className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-14"
+        >
           <MotionReveal>
             <SectionHeading
               eyebrow="Reference table & exports"
               title="A denser data layer, plus downloadable CSV outputs"
-              subtitle="This final section keeps the experience anchored to reference rows while making the research portable. You can now export the index series, master table, and retail participation dataset directly from the interface." 
+              subtitle="This final section keeps the experience anchored to reference rows while making the research portable. You can now export the index series, master table, and retail participation dataset directly from the interface."
             />
           </MotionReveal>
 
@@ -1245,9 +1661,16 @@ function App() {
             <GradientPanel>
               <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">Download center</p>
-                  <h3 className="mt-2 text-2xl font-semibold text-white">Take the data with you</h3>
-                  <p className="mt-3 text-sm leading-7 text-slate-300">All exports are client-side CSV downloads generated from the same structured React data used throughout the site.</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">
+                    Download center
+                  </p>
+                  <h3 className="mt-2 text-2xl font-semibold text-white">
+                    Take the data with you
+                  </h3>
+                  <p className="mt-3 text-sm leading-7 text-slate-300">
+                    All exports are client-side CSV downloads generated from the
+                    same structured React data used throughout the site.
+                  </p>
                 </div>
                 <div className="flex flex-wrap gap-3 lg:justify-end">
                   <button
@@ -1284,15 +1707,29 @@ function App() {
                     <div className="flex flex-wrap items-center justify-between gap-3">
                       <div>
                         <p className="text-sm text-slate-400">{row.year}</p>
-                        <h3 className="text-2xl font-semibold text-white">Index {row.normalizedIndex}</h3>
+                        <h3 className="text-2xl font-semibold text-white">
+                          Index {row.normalizedIndex}
+                        </h3>
                       </div>
-                      <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm text-slate-300">{row.sensex === "—" ? "Pre-Sensex" : `Sensex ${row.sensex}`}</span>
+                      <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm text-slate-300">
+                        {row.sensex === "—"
+                          ? "Pre-Sensex"
+                          : `Sensex ${row.sensex}`}
+                      </span>
                     </div>
-                    <p className="mt-3 text-sm leading-6 text-slate-300">{row.event}</p>
+                    <p className="mt-3 text-sm leading-6 text-slate-300">
+                      {row.event}
+                    </p>
                     <div className="mt-4 flex flex-wrap gap-3 text-xs text-slate-400">
-                      <span className="rounded-full border border-white/10 bg-slate-950/60 px-3 py-1">YoY: {row.yoy}</span>
-                      <span className="rounded-full border border-white/10 bg-slate-950/60 px-3 py-1">CAGR from 1947: {row.cagrFrom1947}</span>
-                      <span className="rounded-full border border-white/10 bg-slate-950/60 px-3 py-1">INR/USD: {row.inrUsd}</span>
+                      <span className="rounded-full border border-white/10 bg-slate-950/60 px-3 py-1">
+                        YoY: {row.yoy}
+                      </span>
+                      <span className="rounded-full border border-white/10 bg-slate-950/60 px-3 py-1">
+                        CAGR from 1947: {row.cagrFrom1947}
+                      </span>
+                      <span className="rounded-full border border-white/10 bg-slate-950/60 px-3 py-1">
+                        INR/USD: {row.inrUsd}
+                      </span>
                     </div>
                   </GradientPanel>
                 </MotionReveal>
@@ -1302,8 +1739,12 @@ function App() {
             <MotionReveal delay={0.08}>
               <GradientPanel innerClassName="overflow-hidden p-0">
                 <div className="border-b border-white/10 px-6 py-5">
-                  <h3 className="text-xl font-semibold text-white">Master table</h3>
-                  <p className="mt-1 text-sm text-slate-400">Selected rows from Independence through the 2025 estimate.</p>
+                  <h3 className="text-xl font-semibold text-white">
+                    Master table
+                  </h3>
+                  <p className="mt-1 text-sm text-slate-400">
+                    Selected rows from Independence through the 2025 estimate.
+                  </p>
                 </div>
 
                 <div className="overflow-x-auto">
@@ -1311,24 +1752,45 @@ function App() {
                     <thead className="bg-white/5 text-slate-300">
                       <tr>
                         <th className="px-4 py-3 font-medium">Year</th>
-                        <th className="px-4 py-3 font-medium">Normalized index</th>
+                        <th className="px-4 py-3 font-medium">
+                          Normalized index
+                        </th>
                         <th className="px-4 py-3 font-medium">Sensex</th>
                         <th className="px-4 py-3 font-medium">YoY</th>
-                        <th className="px-4 py-3 font-medium">CAGR from 1947</th>
+                        <th className="px-4 py-3 font-medium">
+                          CAGR from 1947
+                        </th>
                         <th className="px-4 py-3 font-medium">INR/USD</th>
                         <th className="px-4 py-3 font-medium">Key event</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-white/5 text-slate-200">
                       {masterTable.map((row) => (
-                        <tr key={`${row.year}-${row.event}`} className="align-top hover:bg-white/[0.03]">
-                          <td className="whitespace-nowrap px-4 py-4 font-medium text-white">{row.year}</td>
-                          <td className="whitespace-nowrap px-4 py-4">{row.normalizedIndex}</td>
-                          <td className="whitespace-nowrap px-4 py-4">{row.sensex}</td>
-                          <td className="whitespace-nowrap px-4 py-4">{row.yoy}</td>
-                          <td className="whitespace-nowrap px-4 py-4">{row.cagrFrom1947}</td>
-                          <td className="whitespace-nowrap px-4 py-4">{row.inrUsd}</td>
-                          <td className="min-w-[260px] px-4 py-4 text-slate-300">{row.event}</td>
+                        <tr
+                          key={`${row.year}-${row.event}`}
+                          className="align-top hover:bg-white/[0.03]"
+                        >
+                          <td className="whitespace-nowrap px-4 py-4 font-medium text-white">
+                            {row.year}
+                          </td>
+                          <td className="whitespace-nowrap px-4 py-4">
+                            {row.normalizedIndex}
+                          </td>
+                          <td className="whitespace-nowrap px-4 py-4">
+                            {row.sensex}
+                          </td>
+                          <td className="whitespace-nowrap px-4 py-4">
+                            {row.yoy}
+                          </td>
+                          <td className="whitespace-nowrap px-4 py-4">
+                            {row.cagrFrom1947}
+                          </td>
+                          <td className="whitespace-nowrap px-4 py-4">
+                            {row.inrUsd}
+                          </td>
+                          <td className="min-w-[260px] px-4 py-4 text-slate-300">
+                            {row.event}
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -1344,18 +1806,38 @@ function App() {
             <GradientPanel className="bg-[linear-gradient(135deg,rgba(251,146,60,0.18),rgba(255,255,255,0.08),rgba(16,185,129,0.12))]">
               <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.32em] text-amber-200">Final synthesis</p>
-                  <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">The market rewarded endurance, not comfort.</h2>
-                  <p className="mt-5 max-w-3xl text-base leading-8 text-slate-200 sm:text-lg">Across wars, devaluations, scams, sanctions, recessions, and pandemics, Indian equities eventually kept compounding. The investors most likely to fail were the ones who used leverage they could not sustain, concentrated in weak names, or exited permanently after crashes.</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.32em] text-amber-200">
+                    Final synthesis
+                  </p>
+                  <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+                    The market rewarded endurance, not comfort.
+                  </h2>
+                  <p className="mt-5 max-w-3xl text-base leading-8 text-slate-200 sm:text-lg">
+                    Across wars, devaluations, scams, sanctions, recessions, and
+                    pandemics, Indian equities eventually kept compounding. The
+                    investors most likely to fail were the ones who used
+                    leverage they could not sustain, concentrated in weak names,
+                    or exited permanently after crashes.
+                  </p>
                 </div>
 
                 <div className="rounded-[28px] border border-white/10 bg-slate-950/55 p-6">
-                  <h3 className="text-xl font-semibold text-white">Durable playbook</h3>
+                  <h3 className="text-xl font-semibold text-white">
+                    Durable playbook
+                  </h3>
                   <ul className="mt-5 space-y-4 text-sm leading-7 text-slate-200">
-                    <li>• Buy quality or buy the index — survivorship matters.</li>
+                    <li>
+                      • Buy quality or buy the index — survivorship matters.
+                    </li>
                     <li>• Diversify across regimes, not just sectors.</li>
-                    <li>• Respect inflation, currency drag, and valuation starting points.</li>
-                    <li>• Treat crashes as part of the asset class, not proof that the story ended.</li>
+                    <li>
+                      • Respect inflation, currency drag, and valuation starting
+                      points.
+                    </li>
+                    <li>
+                      • Treat crashes as part of the asset class, not proof that
+                      the story ended.
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -1363,8 +1845,14 @@ function App() {
           </MotionReveal>
 
           <footer className="mt-8 flex flex-col gap-3 border-t border-white/10 pt-6 text-sm text-slate-400 sm:flex-row sm:items-center sm:justify-between">
-            <p>Built with React, Vite, Tailwind-style utilities, and Framer Motion for a Vercel-ready research experience.</p>
-            <p>Note: several pre-1979, SIP, breadth, and comparison values remain normalized or rounded analytical approximations.</p>
+            <p>
+              Built with React, Vite, Tailwind-style utilities, and Framer
+              Motion for a Vercel-ready research experience.
+            </p>
+            <p>
+              Note: several pre-1979, SIP, breadth, and comparison values remain
+              normalized or rounded analytical approximations.
+            </p>
           </footer>
         </section>
       </main>
