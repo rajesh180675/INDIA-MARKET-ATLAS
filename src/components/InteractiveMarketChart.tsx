@@ -1155,6 +1155,7 @@ export default function InteractiveMarketChart({
 
   return (
     <div
+      data-testid="main-market-chart"
       className="relative overflow-hidden rounded-[32px] p-4 sm:p-6"
       style={{
         background: "var(--chart-panel-bg)",

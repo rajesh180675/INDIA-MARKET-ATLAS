@@ -295,6 +295,7 @@ export default function ComparisonChart({
 
   return (
     <div
+      data-testid="comparison-chart"
       className="relative rounded-[30px] p-4 sm:p-6"
       style={{
         background: "var(--chart-panel-bg)",
