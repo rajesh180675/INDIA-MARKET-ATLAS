@@ -3,6 +3,7 @@ import {
   aggregateCandles,
   buildDrawdown,
   buildMonthlyCandles,
+  rangeBoundsByYear,
   summarizeSeries,
   type Candle,
 } from "./marketChartUtils";
@@ -91,5 +92,20 @@ describe("marketChartUtils", () => {
     expect(monthly[11]?.year).toBe(2024);
     expect(monthly[23]?.year).toBe(2025);
     expect(monthly[23]?.close).toBe(110);
+  });
+
+  test("rangeBoundsByYear returns the correct slice for a selected era", () => {
+    const values = [
+      { year: 1947 },
+      { year: 1948 },
+      { year: 1949 },
+      { year: 1950 },
+      { year: 1951 },
+    ];
+
+    expect(rangeBoundsByYear(values, 1949, 1950)).toEqual({
+      startIndex: 2,
+      endIndex: 3,
+    });
   });
 });

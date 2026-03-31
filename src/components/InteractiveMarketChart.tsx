@@ -22,6 +22,7 @@ import {
   formatNumber,
   formatPercent,
   parseRegimeYears,
+  rangeBoundsByYear,
   rangeFilters,
   summarizeSeries,
   type TechnicalPane,
@@ -155,7 +156,7 @@ export default function InteractiveMarketChart({
   const palette = usePalette(theme);
   const chartRef = useRef<ReactECharts | null>(null);
 
-  const [mode, setMode] = useState<ChartMode>("long");
+  const [mode, setMode] = useState<ChartMode>("technical");
   const [selectedRangeKey, setSelectedRangeKey] = useState("all");
   const [compareRangeKey, setCompareRangeKey] = useState("reform");
   const [compareMode, setCompareMode] = useState(false);
@@ -269,31 +270,80 @@ export default function InteractiveMarketChart({
     yearlyVolatility[yearlyVolatility.length - 1] ?? null;
   const latestYearYoy = yearlyYoy[yearlyYoy.length - 1] ?? null;
 
-  const technicalCandles = useMemo(() => {
-    const scopedCrashEvents = crashEvents.filter(
-      (event) =>
-        event.year >= selectedRange.start && event.year <= selectedRange.end,
-    );
-    const monthly = buildMonthlyCandles(filteredYearly, scopedCrashEvents);
+  const allTechnicalCandles = useMemo(() => {
+    const monthly = buildMonthlyCandles(data, crashEvents);
     return aggregateCandles(monthly, bucketSizeForTimeframe(timeframe));
-  }, [
-    crashEvents,
-    filteredYearly,
-    selectedRange.end,
-    selectedRange.start,
-    timeframe,
-  ]);
+  }, [crashEvents, data, timeframe]);
 
-  const techLabels = technicalCandles.map((candle) => candle.label);
-  const techYears = technicalCandles.map((candle) => candle.year);
-  const techCloses = technicalCandles.map((candle) => candle.close);
-  const techVolumes = technicalCandles.map((candle) => candle.volume);
-  const ma20 = buildSma(techCloses, 20);
-  const ma50 = buildSma(techCloses, 50);
-  const ma200 = buildSma(techCloses, 200);
-  const rsi14 = buildRsi(techCloses, 14);
-  const macd = buildMacd(techCloses);
-  const techDrawdown = buildDrawdown(techCloses);
+  const allTechLabels = allTechnicalCandles.map((candle) => candle.label);
+  const allTechYears = allTechnicalCandles.map((candle) => candle.year);
+  const allTechCloses = allTechnicalCandles.map((candle) => candle.close);
+  const allTechVolumes = allTechnicalCandles.map((candle) => candle.volume);
+  const allMa20 = buildSma(allTechCloses, 20);
+  const allMa50 = buildSma(allTechCloses, 50);
+  const allMa200 = buildSma(allTechCloses, 200);
+  const allRsi14 = buildRsi(allTechCloses, 14);
+  const allMacd = buildMacd(allTechCloses);
+  const allTechDrawdown = buildDrawdown(allTechCloses);
+  const technicalRangeBounds = rangeBoundsByYear(
+    allTechnicalCandles,
+    selectedRange.start,
+    selectedRange.end,
+  );
+  const technicalCandles = allTechnicalCandles.slice(
+    technicalRangeBounds.startIndex,
+    technicalRangeBounds.endIndex + 1,
+  );
+  const techLabels = allTechLabels.slice(
+    technicalRangeBounds.startIndex,
+    technicalRangeBounds.endIndex + 1,
+  );
+  const techYears = allTechYears.slice(
+    technicalRangeBounds.startIndex,
+    technicalRangeBounds.endIndex + 1,
+  );
+  const techCloses = allTechCloses.slice(
+    technicalRangeBounds.startIndex,
+    technicalRangeBounds.endIndex + 1,
+  );
+  const techVolumes = allTechVolumes.slice(
+    technicalRangeBounds.startIndex,
+    technicalRangeBounds.endIndex + 1,
+  );
+  const ma20 = allMa20.slice(
+    technicalRangeBounds.startIndex,
+    technicalRangeBounds.endIndex + 1,
+  );
+  const ma50 = allMa50.slice(
+    technicalRangeBounds.startIndex,
+    technicalRangeBounds.endIndex + 1,
+  );
+  const ma200 = allMa200.slice(
+    technicalRangeBounds.startIndex,
+    technicalRangeBounds.endIndex + 1,
+  );
+  const rsi14 = allRsi14.slice(
+    technicalRangeBounds.startIndex,
+    technicalRangeBounds.endIndex + 1,
+  );
+  const macd = {
+    macd: allMacd.macd.slice(
+      technicalRangeBounds.startIndex,
+      technicalRangeBounds.endIndex + 1,
+    ),
+    signal: allMacd.signal.slice(
+      technicalRangeBounds.startIndex,
+      technicalRangeBounds.endIndex + 1,
+    ),
+    histogram: allMacd.histogram.slice(
+      technicalRangeBounds.startIndex,
+      technicalRangeBounds.endIndex + 1,
+    ),
+  };
+  const techDrawdown = allTechDrawdown.slice(
+    technicalRangeBounds.startIndex,
+    technicalRangeBounds.endIndex + 1,
+  );
   const techWindow = zoomWindowFromPercent(
     techCloses.length,
     zoomState.start,
@@ -698,8 +748,22 @@ export default function InteractiveMarketChart({
       backgroundColor,
       animationDuration: 400,
       textStyle: { color: palette.text, fontFamily: "inherit" },
+      legend: {
+        top: 0,
+        left: 58,
+        itemWidth: 14,
+        itemHeight: 8,
+        textStyle: { color: palette.muted },
+        selectedMode: false,
+        data: [
+          "Technical reconstruction",
+          ...(showMA20 ? ["MA 20"] : []),
+          ...(showMA50 ? ["MA 50"] : []),
+          ...(showMA200 ? ["MA 200"] : []),
+        ],
+      },
       grid: [
-        { left: 58, right: 24, top: 28, height: firstHeight },
+        { left: 58, right: 24, top: 52, height: firstHeight },
         {
           left: 58,
           right: 24,
@@ -875,6 +939,7 @@ export default function InteractiveMarketChart({
         {
           name: "Technical reconstruction",
           type: "candlestick",
+          z: 2,
           data: candleData,
           itemStyle: {
             color: palette.bull,
@@ -889,8 +954,10 @@ export default function InteractiveMarketChart({
                 name: "MA 20",
                 type: "line",
                 showSymbol: false,
+                z: 4,
                 smooth: true,
-                lineStyle: { width: 1.8, color: palette.ma20 },
+                connectNulls: false,
+                lineStyle: { width: 2.2, color: palette.ma20 },
                 data: ma20,
               },
             ]
@@ -901,8 +968,10 @@ export default function InteractiveMarketChart({
                 name: "MA 50",
                 type: "line",
                 showSymbol: false,
+                z: 4,
                 smooth: true,
-                lineStyle: { width: 1.8, color: palette.ma50 },
+                connectNulls: false,
+                lineStyle: { width: 2.2, color: palette.ma50 },
                 data: ma50,
               },
             ]
@@ -913,8 +982,10 @@ export default function InteractiveMarketChart({
                 name: "MA 200",
                 type: "line",
                 showSymbol: false,
+                z: 4,
                 smooth: true,
-                lineStyle: { width: 2, color: palette.ma200 },
+                connectNulls: false,
+                lineStyle: { width: 2.4, color: palette.ma200 },
                 data: ma200,
               },
             ]
@@ -1150,8 +1221,33 @@ export default function InteractiveMarketChart({
       : (techDrawdown.at(-1) ?? null);
   const activeNote =
     mode === "long"
-      ? "Truthful long-horizon view using annual normalized index data."
-      : "Illustrative technical reconstruction built from annual data, not exchange-traded OHLC bars.";
+      ? "Structural long-horizon context using annual normalized index data."
+      : "Primary candlestick desk built from reconstructed monthly bars, with indicators computed on the full history before range filtering.";
+  const chartHeight = isFullscreen
+    ? "calc(100vh - 210px)"
+    : mode === "technical"
+      ? 760
+      : 660;
+  const movingAverageCards = [
+    {
+      label: "MA 20",
+      active: showMA20,
+      color: palette.ma20,
+      value: ma20[ma20.length - 1],
+    },
+    {
+      label: "MA 50",
+      active: showMA50,
+      color: palette.ma50,
+      value: ma50[ma50.length - 1],
+    },
+    {
+      label: "MA 200",
+      active: showMA200,
+      color: palette.ma200,
+      value: ma200[ma200.length - 1],
+    },
+  ];
 
   return (
     <div
@@ -1191,8 +1287,8 @@ export default function InteractiveMarketChart({
                 Market explorer
               </p>
               <h3 className="mt-2 text-2xl font-semibold text-white">
-                State-of-the-art pan and zoom without losing the full 1947–2025
-                story
+                Professional candlestick desk with expand-to-window review and
+                full-history context
               </h3>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -1201,7 +1297,7 @@ export default function InteractiveMarketChart({
                 onClick={() => setIsFullscreen((current) => !current)}
                 className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200 transition hover:bg-white/10"
               >
-                {isFullscreen ? "Exit fullscreen" : "Fullscreen"}
+                {isFullscreen ? "Collapse window" : "Expand to window"}
               </button>
               <button
                 type="button"
@@ -1216,17 +1312,6 @@ export default function InteractiveMarketChart({
           <div className="flex flex-wrap gap-2">
             <button
               type="button"
-              onClick={() => setMode("long")}
-              className={
-                mode === "long"
-                  ? "rounded-full border border-emerald-400/35 bg-emerald-400/12 px-3 py-1.5 text-sm font-medium text-emerald-200"
-                  : "rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-sm text-slate-300 transition hover:bg-white/10"
-              }
-            >
-              Long Horizon
-            </button>
-            <button
-              type="button"
               onClick={() => setMode("technical")}
               className={
                 mode === "technical"
@@ -1234,7 +1319,18 @@ export default function InteractiveMarketChart({
                   : "rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-sm text-slate-300 transition hover:bg-white/10"
               }
             >
-              Technical Reconstruction
+              Candlestick Desk
+            </button>
+            <button
+              type="button"
+              onClick={() => setMode("long")}
+              className={
+                mode === "long"
+                  ? "rounded-full border border-emerald-400/35 bg-emerald-400/12 px-3 py-1.5 text-sm font-medium text-emerald-200"
+                  : "rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-sm text-slate-300 transition hover:bg-white/10"
+              }
+            >
+              Long Horizon Context
             </button>
             <button
               type="button"
@@ -1399,8 +1495,8 @@ export default function InteractiveMarketChart({
             <div className="flex flex-wrap items-center gap-3 text-xs text-slate-400">
               <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1">
                 {mode === "long"
-                  ? "Truthful annual view"
-                  : "Explicitly reconstructed technical view"}
+                  ? "Structural annual context"
+                  : "Candlestick-first technical view"}
               </span>
               <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1">
                 {selectedRange.label}
@@ -1418,16 +1514,47 @@ export default function InteractiveMarketChart({
             <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-slate-300">
               <p className="text-[11px] uppercase tracking-[0.18em] text-slate-400">
                 {mode === "long"
-                  ? "Why this chart is better"
-                  : "Why this technical mode is safer"}
+                  ? "Why this context view matters"
+                  : "Why this trading view works better"}
               </p>
               <p className="mt-2 leading-7">
                 {mode === "long"
-                  ? "The default view shows the full dataset honestly, fits the entire history on first load, and lets users zoom into eras with native gestures instead of horizontal scroll."
-                  : "This mode keeps the richer financial language, but it is clearly labeled as reconstructed so it does not pretend to be real traded monthly OHLC data."}
+                  ? "Use this mode to reset to the truthful annual structure, compare regimes, and understand where the current candle window sits in the full compounding story."
+                  : "This desk now opens directly in candlesticks, exposes the moving averages clearly, and keeps the full-history indicator calculations intact when you zoom into a shorter era."}
               </p>
             </div>
           </div>
+
+          {mode === "technical" ? (
+            <div className="grid gap-3 md:grid-cols-3">
+              {movingAverageCards.map((average) => (
+                <div
+                  key={average.label}
+                  className="rounded-2xl border border-white/10 bg-white/5 p-4"
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="text-sm text-slate-300">{average.label}</p>
+                    <span
+                      className="inline-flex h-2.5 w-2.5 rounded-full"
+                      style={{
+                        backgroundColor: average.active
+                          ? average.color
+                          : palette.gridStrong,
+                      }}
+                    />
+                  </div>
+                  <p className="mt-2 text-2xl font-semibold text-white">
+                    {formatNumber(average.value, 0)}
+                  </p>
+                  <p className="mt-2 text-sm text-slate-400">
+                    {average.active
+                      ? "Rendered from full-history calculations and displayed inside the current window."
+                      : "Overlay hidden. Toggle it back on above."}
+                  </p>
+                </div>
+              ))}
+            </div>
+          ) : null}
 
           <div className="rounded-[28px] border border-white/8 bg-black/10 p-2">
             <ReactECharts
@@ -1438,7 +1565,7 @@ export default function InteractiveMarketChart({
               opts={{ renderer: "canvas" }}
               onEvents={onChartEvents}
               style={{
-                height: isFullscreen ? 760 : mode === "long" ? 620 : 700,
+                height: chartHeight,
                 width: "100%",
               }}
             />
@@ -1678,11 +1805,11 @@ export default function InteractiveMarketChart({
 
       <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 p-4">
         <p className="text-sm text-slate-400">Important note</p>
-        <p className="mt-2 text-sm leading-6 text-slate-300">
-          The default chart is now optimized for honesty and range navigation.
-          The technical mode still exists, but it is explicitly framed as a
-          reconstruction derived from annual data so the interface looks premium
-          without overstating the underlying granularity.
+          <p className="mt-2 text-sm leading-6 text-slate-300">
+          The default chart now opens in a professional candlestick desk with
+          visible moving averages and an expand-to-window path. The structural
+          long-horizon context is still one click away so the app keeps both
+          technical readability and data honesty.
         </p>
       </div>
     </div>

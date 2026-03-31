@@ -716,12 +716,12 @@ function App() {
           <MotionReveal>
             <SectionHeading
               eyebrow="Interactive chart"
-              title="A truthful long-horizon chart with native pan and zoom, plus an optional technical lens"
-              subtitle="The core visual now opens in an honest full-history mode that fits the complete 1947–2025 dataset on screen, then lets you zoom into regimes with native gestures. A separate technical reconstruction mode still exists for users who want market-style overlays without confusing reconstructed data for real traded monthly bars."
+              title="A professional candlestick chart first, with expand-to-window viewing and a structural context mode"
+              subtitle="The primary chart now opens as a technical desk: candlesticks, clearer moving averages, native pan and zoom, and a larger footprint so the tape is easier to read. The long-horizon context view is still available when you need the truthful annual structure behind the reconstruction."
             />
           </MotionReveal>
 
-          <div className="mt-10 grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
+          <div className="mt-10 space-y-6">
             <MotionReveal>
               <GradientPanel>
                 <InteractiveMarketChart
@@ -734,21 +734,20 @@ function App() {
               </GradientPanel>
             </MotionReveal>
 
-            <div className="space-y-6">
+            <div className="grid gap-6 xl:grid-cols-3">
               <MotionReveal delay={0.05}>
-                <GradientPanel>
+                <GradientPanel innerClassName="h-full">
                   <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">
                     Chart reading guide
                   </p>
                   <h3 className="mt-3 text-2xl font-semibold text-white">
-                    Why this version reads better
+                    What changed in the desk
                   </h3>
                   <p className="mt-4 text-sm leading-7 text-slate-300">
-                    The chart no longer asks you to horizontally scroll through
-                    an over-wide SVG to understand the story. You can start with
-                    the whole history, zoom with intent, pan naturally, and only
-                    switch into the technical reconstruction when you actually
-                    want that lens.
+                    The chart now opens where most users actually want to work:
+                    in candlesticks, with a larger plotting surface, direct
+                    expand-to-window viewing, and visible moving average
+                    overlays that hold up when you switch ranges.
                   </p>
                   <div className="mt-5 flex flex-wrap gap-3">
                     <button
@@ -769,33 +768,48 @@ function App() {
               </MotionReveal>
 
               <MotionReveal delay={0.1}>
-                <GradientPanel>
+                <GradientPanel innerClassName="h-full">
                   <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">
-                    Visual thesis
+                    Technical quality
                   </p>
                   <div className="mt-4 space-y-4">
                     <ProgressMetric
-                      label="Whole-history clarity"
-                      value="Restored"
-                      max={95}
+                      label="Candlestick readability"
+                      value="Primary"
+                      max={96}
                       tone="sky"
-                      description="You can now see the entire 78-year range immediately, then zoom into any era without losing context."
+                      description="The main chart starts in a trading-desk view instead of asking users to switch modes first."
                     />
                     <ProgressMetric
-                      label="Interaction quality"
-                      value="Native"
-                      max={90}
+                      label="Range-aware indicators"
+                      value="Fixed"
+                      max={93}
                       tone="emerald"
-                      description="Drag, wheel, and touch interactions now do the real work instead of button-based panning."
+                      description="Moving averages are computed on the full history first, then displayed inside the selected era so they do not break in shorter windows."
                     />
                     <ProgressMetric
-                      label="Analytical honesty"
-                      value="Higher"
-                      max={82}
+                      label="Expand mode"
+                      value="Prominent"
+                      max={90}
                       tone="amber"
-                      description="The long-horizon view prioritizes the annual source data, while the technical mode is clearly labeled as reconstructed."
+                      description="The chart can now be expanded into a larger window without sacrificing the current zoom state."
                     />
                   </div>
+                </GradientPanel>
+              </MotionReveal>
+
+              <MotionReveal delay={0.15}>
+                <GradientPanel innerClassName="h-full">
+                  <p className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">
+                    Data integrity
+                  </p>
+                  <p className="mt-4 text-sm leading-7 text-slate-300">
+                    The candlestick desk is still clearly framed as a
+                    reconstruction from annual source data. When you need the
+                    plain structural record, the long-horizon context mode is
+                    still built into the same panel with the same pan and zoom
+                    behavior.
+                  </p>
                 </GradientPanel>
               </MotionReveal>
             </div>

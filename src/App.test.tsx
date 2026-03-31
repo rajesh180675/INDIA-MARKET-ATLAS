@@ -4,14 +4,14 @@ import { describe, expect, test } from "vitest";
 import App from "./App";
 
 describe("App", () => {
-  test("renders the redesigned charts and allows switching main chart modes", async () => {
+  test("renders the candlestick desk and allows switching chart modes", async () => {
     const user = userEvent.setup();
 
     render(<App />);
 
     expect(
       screen.getByText(
-        /A truthful long-horizon chart with native pan and zoom, plus an optional technical lens/i,
+        /A professional candlestick chart first, with expand-to-window viewing and a structural context mode/i,
       ),
     ).toBeInTheDocument();
 
@@ -19,20 +19,26 @@ describe("App", () => {
     const comparisonChart = screen.getByTestId("comparison-chart");
 
     expect(
-      within(mainChart).getByRole("button", { name: /Long Horizon/i }),
+      within(mainChart).getByRole("button", { name: /Candlestick Desk/i }),
     ).toBeInTheDocument();
     expect(
       within(comparisonChart).getByRole("button", { name: /Fit all/i }),
     ).toBeInTheDocument();
+    expect(
+      within(mainChart).getByRole("button", { name: /^MA 20$/i }),
+    ).toBeInTheDocument();
+    expect(
+      within(mainChart).getByRole("button", { name: /Expand to window/i }),
+    ).toBeInTheDocument();
 
     await user.click(
       within(mainChart).getByRole("button", {
-        name: /Technical Reconstruction/i,
+        name: /Long Horizon Context/i,
       }),
     );
 
     expect(
-      within(mainChart).getByText(/Illustrative technical reconstruction/i),
+      within(mainChart).getByText(/Structural annual context/i),
     ).toBeInTheDocument();
 
     await user.click(

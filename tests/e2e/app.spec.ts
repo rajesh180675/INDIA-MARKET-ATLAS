@@ -24,7 +24,7 @@ test("home page loads, charts render, and interactive toggles work without brows
   ).toBeVisible();
   await expect(
     page.getByRole("heading", {
-      name: /A truthful long-horizon chart with native pan and zoom, plus an optional technical lens/i,
+      name: /A professional candlestick chart first, with expand-to-window viewing and a structural context mode/i,
     }),
   ).toBeVisible();
 
@@ -39,12 +39,18 @@ test("home page loads, charts render, and interactive toggles work without brows
     ),
   ).toHaveCount(0);
 
-  await mainChart.getByRole("button", { name: /Technical Reconstruction/i }).click();
-  await expect(mainChart.getByText(/Illustrative technical reconstruction/i)).toBeVisible();
+  await expect(
+    mainChart.getByRole("button", { name: /^MA 20$/i }),
+  ).toBeVisible();
+  await expect(
+    mainChart.getByRole("button", { name: /Expand to window/i }),
+  ).toBeVisible();
+  await mainChart.getByRole("button", { name: /Long Horizon Context/i }).click();
+  await expect(mainChart.getByText(/Structural annual context/i)).toBeVisible();
   await mainChart.getByRole("button", { name: /Compare off/i }).click();
   await expect(mainChart.getByText(/Compare ranges/i)).toBeVisible();
-  await mainChart.getByRole("button", { name: /Long Horizon/i }).click();
-  await expect(mainChart.getByText(/Source-faithful/i)).toBeVisible();
+  await mainChart.getByRole("button", { name: /Candlestick Desk/i }).click();
+  await expect(mainChart.getByText(/Candlestick-first technical view/i)).toBeVisible();
 
   await comparisonChart.getByRole("button", { name: /Last 10Y/i }).click();
   await expect(comparisonChart.getByText(/Visible span/i)).toBeVisible();

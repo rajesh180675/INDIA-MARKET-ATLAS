@@ -330,6 +330,28 @@ export function buildDrawdown(values: number[]) {
   });
 }
 
+export function rangeBoundsByYear<T extends { year: number }>(
+  values: T[],
+  startYear: number,
+  endYear: number,
+) {
+  if (values.length === 0) {
+    return { startIndex: 0, endIndex: 0 };
+  }
+
+  let startIndex = values.findIndex((value) => value.year >= startYear);
+  if (startIndex === -1) {
+    startIndex = 0;
+  }
+
+  let endIndex = values.length - 1;
+  while (endIndex > startIndex && values[endIndex].year > endYear) {
+    endIndex -= 1;
+  }
+
+  return { startIndex, endIndex: Math.max(endIndex, startIndex) };
+}
+
 export function zoomWindowFromPercent(
   length: number,
   startPercent: number,
