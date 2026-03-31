@@ -368,8 +368,6 @@ export default function InteractiveMarketChart({
   );
 
   const latestCandle = technicalCandles[technicalCandles.length - 1] ?? null;
-  const latestRsi = rsi14[rsi14.length - 1] ?? null;
-  const latestMacdHistogram = macd.histogram[macd.histogram.length - 1] ?? null;
   const latestPriceVsMa200 =
     latestCandle && ma200[ma200.length - 1] != null
       ? (latestCandle.close / Number(ma200[ma200.length - 1]) - 1) * 100
@@ -1283,28 +1281,72 @@ export default function InteractiveMarketChart({
   const chartHeight = isFullscreen
     ? "calc(100vh - 210px)"
     : mode === "technical"
-      ? 760
+      ? 860
       : 660;
-  const movingAverageCards = [
-    {
-      label: "MA 20",
-      active: showMA20,
-      color: palette.ma20,
-      value: ma20[ma20.length - 1],
-    },
-    {
-      label: "MA 50",
-      active: showMA50,
-      color: palette.ma50,
-      value: ma50[ma50.length - 1],
-    },
-    {
-      label: "MA 200",
-      active: showMA200,
-      color: palette.ma200,
-      value: ma200[ma200.length - 1],
-    },
-  ];
+  const summaryCards =
+    mode === "long"
+      ? [
+          {
+            label: "Visible window",
+            value: summary.years,
+            note: selectedRange.note,
+          },
+          {
+            label: "Window CAGR",
+            value: formatPercent(summary.cagr, 1),
+            note: "Annualized move across the current zoom window.",
+          },
+          {
+            label: "Total move",
+            value: `${summary.totalMove != null && summary.totalMove >= 0 ? "+" : ""}${formatPercent(summary.totalMove, 0)}`,
+            note: `${summary.startLabel} → ${summary.endLabel}`,
+          },
+          {
+            label: "Max drawdown",
+            value: formatPercent(summary.maxDrawdown, 1),
+            note: "Worst peak-to-trough move inside the visible window.",
+          },
+        ]
+      : [
+          {
+            label: "Visible window",
+            value: summary.years,
+            note: selectedRange.note,
+          },
+          {
+            label: "Window CAGR",
+            value: formatPercent(summary.cagr, 1),
+            note: "Annualized move across the visible candle range.",
+          },
+          {
+            label: "Price vs MA 200",
+            value: `${latestPriceVsMa200 != null && latestPriceVsMa200 >= 0 ? "+" : ""}${formatPercent(latestPriceVsMa200, 1)}`,
+            note: "Distance between the latest reconstructed close and the long trend.",
+          },
+          {
+            label: "Drawdown now",
+            value: formatPercent(activeDrawdown, 1),
+            note: "Current distance from the visible-window peak.",
+          },
+        ];
+  const statusPills =
+    mode === "long"
+      ? [
+          `Latest YoY ${latestYearYoy != null && latestYearYoy >= 0 ? "+" : ""}${formatPercent(latestYearYoy, 1)}`,
+          `Latest index ${formatNumber(latestYearPoint?.value)}`,
+          `Volatility ${formatPercent(activeVolatility, 1)}`,
+          "Context mode active",
+        ]
+      : [
+          `MA 20 ${formatNumber(ma20[ma20.length - 1], 0)}`,
+          `MA 50 ${formatNumber(ma50[ma50.length - 1], 0)}`,
+          `MA 200 ${formatNumber(ma200[ma200.length - 1], 0)}`,
+          showVolume ? "Volume on" : "Volume off",
+          technicalPane === "none"
+            ? "Price action only"
+            : `${technicalPane.toUpperCase()} pane on`,
+          `Volatility ${formatPercent(activeVolatility, 1)}`,
+        ];
 
   return (
     <div
@@ -1595,37 +1637,6 @@ export default function InteractiveMarketChart({
             </div>
           </div>
 
-          {mode === "technical" ? (
-            <div className="grid gap-3 md:grid-cols-3">
-              {movingAverageCards.map((average) => (
-                <div
-                  key={average.label}
-                  className="rounded-2xl border border-white/10 bg-white/5 p-4"
-                >
-                  <div className="flex items-center justify-between gap-3">
-                    <p className="text-sm text-slate-300">{average.label}</p>
-                    <span
-                      className="inline-flex h-2.5 w-2.5 rounded-full"
-                      style={{
-                        backgroundColor: average.active
-                          ? average.color
-                          : palette.gridStrong,
-                      }}
-                    />
-                  </div>
-                  <p className="mt-2 text-2xl font-semibold text-white">
-                    {formatNumber(average.value, 0)}
-                  </p>
-                  <p className="mt-2 text-sm text-slate-400">
-                    {average.active
-                      ? "Rendered from full-history calculations and displayed inside the current window."
-                      : "Overlay hidden. Toggle it back on above."}
-                  </p>
-                </div>
-              ))}
-            </div>
-          ) : null}
-
           <div className="rounded-[28px] border border-white/8 bg-black/10 p-2">
             <ReactECharts
               ref={chartRef}
@@ -1639,6 +1650,17 @@ export default function InteractiveMarketChart({
                 width: "100%",
               }}
             />
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            {statusPills.map((pill) => (
+              <span
+                key={pill}
+                className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300"
+              >
+                {pill}
+              </span>
+            ))}
           </div>
         </div>
 
@@ -1655,124 +1677,26 @@ export default function InteractiveMarketChart({
         ) : null}
       </div>
 
-      <div className="mt-6 grid gap-4 lg:grid-cols-3 xl:grid-cols-6">
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-          <p className="text-sm text-slate-400">Visible window</p>
-          <p className="mt-2 text-2xl font-semibold text-white">
-            {summary.years}
-          </p>
-          <p className="mt-2 text-sm text-slate-300">{selectedRange.note}</p>
-        </div>
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-          <p className="text-sm text-slate-400">Window CAGR</p>
-          <p className="mt-2 text-2xl font-semibold text-white">
-            {formatPercent(summary.cagr, 1)}
-          </p>
-          <p className="mt-2 text-sm text-slate-300">
-            Annualized move across the current zoom window.
-          </p>
-        </div>
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-          <p className="text-sm text-slate-400">Total move</p>
-          <p className="mt-2 text-2xl font-semibold text-white">
-            {summary.totalMove != null && summary.totalMove >= 0 ? "+" : ""}
-            {formatPercent(summary.totalMove, 0)}
-          </p>
-          <p className="mt-2 text-sm text-slate-300">
-            {summary.startLabel} → {summary.endLabel}
-          </p>
-        </div>
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-          <p className="text-sm text-slate-400">Max drawdown</p>
-          <p className="mt-2 text-2xl font-semibold text-white">
-            {formatPercent(summary.maxDrawdown, 1)}
-          </p>
-          <p className="mt-2 text-sm text-slate-300">
-            Worst peak-to-trough move inside the visible window.
-          </p>
-        </div>
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-          <p className="text-sm text-slate-400">
-            {mode === "long"
-              ? "Latest YoY move"
-              : technicalPane === "none"
-                ? "Price action mode"
-              : technicalPane === "rsi"
-                ? "Latest RSI 14"
-                : "Latest MACD hist"}
-          </p>
-          <p className="mt-2 text-2xl font-semibold text-white">
-            {mode === "long"
-              ? `${latestYearYoy != null && latestYearYoy >= 0 ? "+" : ""}${formatPercent(latestYearYoy, 1)}`
-              : technicalPane === "none"
-                ? "Active"
-              : technicalPane === "rsi"
-                ? formatNumber(latestRsi, 1)
-                : formatNumber(latestMacdHistogram, 1)}
-          </p>
-          <p className="mt-2 text-sm text-slate-300">
-            {mode === "long"
-              ? "Latest annual change in the selected range."
-              : technicalPane === "none"
-                ? "Pure price-action mode with no lower indicator pane visible."
-                : `Momentum read from the ${technicalPane.toUpperCase()} pane.`}
-          </p>
-        </div>
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-          <p className="text-sm text-slate-400">
-            {mode === "long" ? "Latest index level" : "Price vs MA 200"}
-          </p>
-          <p className="mt-2 text-2xl font-semibold text-white">
-            {mode === "long"
-              ? formatNumber(latestYearPoint?.value)
-              : `${latestPriceVsMa200 != null && latestPriceVsMa200 >= 0 ? "+" : ""}${formatPercent(latestPriceVsMa200, 1)}`}
-          </p>
-          <p className="mt-2 text-sm text-slate-300">
-            {mode === "long"
-              ? `Latest point in ${selectedRange.label}.`
-              : "How stretched the reconstructed close is versus the long trend."}
-          </p>
-        </div>
+      <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+        {summaryCards.map((card) => (
+          <div
+            key={card.label}
+            className="rounded-2xl border border-white/10 bg-white/5 p-4"
+          >
+            <p className="text-sm text-slate-400">{card.label}</p>
+            <p className="mt-2 text-2xl font-semibold text-white">
+              {card.value}
+            </p>
+            <p className="mt-2 text-sm text-slate-300">{card.note}</p>
+          </div>
+        ))}
       </div>
 
-      <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-          <p className="text-sm text-slate-400">Drawdown now</p>
-          <p className="mt-2 text-xl font-semibold text-white">
-            {formatPercent(activeDrawdown, 1)}
-          </p>
-          <p className="mt-2 text-sm text-slate-300">
-            Current distance from the visible-window peak.
-          </p>
-        </div>
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-          <p className="text-sm text-slate-400">Volatility lens</p>
-          <p className="mt-2 text-xl font-semibold text-white">
-            {formatPercent(activeVolatility, 1)}
-          </p>
-          <p className="mt-2 text-sm text-slate-300">
-            {mode === "long"
-              ? "Annualized volatility estimate on annual closes."
-              : "Annualized volatility estimate on reconstructed candles."}
-          </p>
-        </div>
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-          <p className="text-sm text-slate-400">Interaction model</p>
-          <p className="mt-2 text-xl font-semibold text-white">
-            Native pan + zoom
-          </p>
-          <p className="mt-2 text-sm text-slate-300">
-            Wheel zoom, touch pinch, drag pan, and fit-all without
-            horizontal-scroll hacks.
-          </p>
-        </div>
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-          <p className="text-sm text-slate-400">Integrity note</p>
-          <p className="mt-2 text-xl font-semibold text-white">
-            {mode === "long" ? "Source-faithful" : "Clearly labeled"}
-          </p>
-          <p className="mt-2 text-sm text-slate-300">{activeNote}</p>
-        </div>
+      <div className="mt-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+        <p className="text-xs uppercase tracking-[0.18em] text-slate-400">
+          Desk note
+        </p>
+        <p className="mt-2 text-sm leading-6 text-slate-300">{activeNote}</p>
       </div>
 
       {compareMode ? (
@@ -1879,15 +1803,6 @@ export default function InteractiveMarketChart({
         </div>
       ) : null}
 
-      <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 p-4">
-        <p className="text-sm text-slate-400">Important note</p>
-        <p className="mt-2 text-sm leading-6 text-slate-300">
-          The default chart now opens in a professional candlestick desk with
-          the price action maximized first. The structural long-horizon context
-          is still one click away, and lower technical panes stay optional so
-          the tape remains easier to read.
-        </p>
-      </div>
     </div>
   );
 }
