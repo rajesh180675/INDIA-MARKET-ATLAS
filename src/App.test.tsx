@@ -28,6 +28,9 @@ describe("App", () => {
       within(mainChart).getByRole("button", { name: /^MA 20$/i }),
     ).toBeInTheDocument();
     expect(
+      within(mainChart).getByRole("button", { name: /Price action only/i }),
+    ).toBeInTheDocument();
+    expect(
       within(mainChart).getByRole("button", { name: /Expand to window/i }),
     ).toBeInTheDocument();
 

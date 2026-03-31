@@ -22,7 +22,7 @@ export type Candle = {
 
 export type TimeframeKey = "month" | "quarter" | "year";
 export type ChartMode = "long" | "technical";
-export type TechnicalPane = "rsi" | "macd";
+export type TechnicalPane = "none" | "rsi" | "macd";
 
 export const monthLabels = [
   "Jan",

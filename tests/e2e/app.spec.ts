@@ -43,6 +43,9 @@ test("home page loads, charts render, and interactive toggles work without brows
     mainChart.getByRole("button", { name: /^MA 20$/i }),
   ).toBeVisible();
   await expect(
+    mainChart.getByRole("button", { name: /Price action only/i }),
+  ).toBeVisible();
+  await expect(
     mainChart.getByRole("button", { name: /Expand to window/i }),
   ).toBeVisible();
   await mainChart.getByRole("button", { name: /Long Horizon Context/i }).click();

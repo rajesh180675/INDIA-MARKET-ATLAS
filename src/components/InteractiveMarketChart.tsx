@@ -161,9 +161,9 @@ export default function InteractiveMarketChart({
   const [compareRangeKey, setCompareRangeKey] = useState("reform");
   const [compareMode, setCompareMode] = useState(false);
   const [timeframe, setTimeframe] = useState<TimeframeKey>("quarter");
-  const [technicalPane, setTechnicalPane] = useState<TechnicalPane>("rsi");
+  const [technicalPane, setTechnicalPane] = useState<TechnicalPane>("none");
   const [zoomState, setZoomState] = useState<ZoomState>({ start: 0, end: 100 });
-  const [showVolume, setShowVolume] = useState(true);
+  const [showVolume, setShowVolume] = useState(false);
   const [showMilestones, setShowMilestones] = useState(true);
   const [showCrashes, setShowCrashes] = useState(true);
   const [showMA20, setShowMA20] = useState(true);
@@ -724,9 +724,36 @@ export default function InteractiveMarketChart({
       };
     }
 
-    const paneHeight = showVolume ? "16%" : "0%";
-    const thirdTop = showVolume ? "74%" : "66%";
-    const firstHeight = showVolume ? "46%" : "56%";
+    const hasVolumePane = showVolume;
+    const hasSecondaryPane = technicalPane !== "none";
+    const firstHeight =
+      hasVolumePane && hasSecondaryPane
+        ? "46%"
+        : hasVolumePane || hasSecondaryPane
+          ? "58%"
+          : "74%";
+    const volumeTop =
+      hasVolumePane && hasSecondaryPane
+        ? "58%"
+        : hasVolumePane
+          ? "70%"
+          : "999%";
+    const volumeHeight = hasVolumePane
+      ? hasSecondaryPane
+        ? "12%"
+        : "14%"
+      : "0%";
+    const secondaryTop =
+      hasVolumePane && hasSecondaryPane
+        ? "74%"
+        : hasSecondaryPane
+          ? "70%"
+          : "999%";
+    const secondaryHeight = hasSecondaryPane
+      ? hasVolumePane
+        ? "16%"
+        : "14%"
+      : "0%";
     const candleData = technicalCandles.map((candle) => [
       candle.open,
       candle.close,
@@ -767,10 +794,10 @@ export default function InteractiveMarketChart({
         {
           left: 58,
           right: 24,
-          top: showVolume ? "58%" : "999%",
-          height: paneHeight,
+          top: volumeTop,
+          height: volumeHeight,
         },
-        { left: 58, right: 24, top: thirdTop, height: "16%" },
+        { left: 58, right: 24, top: secondaryTop, height: secondaryHeight },
       ],
       axisPointer: {
         link: [{ xAxisIndex: [0, 1, 2] }],
@@ -820,8 +847,18 @@ export default function InteractiveMarketChart({
                   <span style="color:${palette.subtle}">MA20</span><strong>${formatNumber(ma20[index])}</strong>
                   <span style="color:${palette.subtle}">MA50</span><strong>${formatNumber(ma50[index])}</strong>
                   <span style="color:${palette.subtle}">MA200</span><strong>${formatNumber(ma200[index])}</strong>
-                  <span style="color:${palette.subtle}">${technicalPane === "rsi" ? "RSI 14" : "MACD hist"}</span>
-                  <strong>${technicalPane === "rsi" ? formatNumber(rsi14[index], 1) : formatNumber(macd.histogram[index], 1)}</strong>
+                  ${
+                    technicalPane === "none"
+                      ? ""
+                      : `<span style="color:${palette.subtle}">${
+                          technicalPane === "rsi" ? "RSI 14" : "MACD hist"
+                        }</span>
+                  <strong>${
+                    technicalPane === "rsi"
+                      ? formatNumber(rsi14[index], 1)
+                      : formatNumber(macd.histogram[index], 1)
+                  }</strong>`
+                  }
                 </div>`
               : "",
             `<div style="margin-top:10px;font-size:12px;line-height:1.6;color:${palette.muted}">${note}</div>`,
@@ -886,15 +923,20 @@ export default function InteractiveMarketChart({
           axisLabel: { show: false },
           axisTick: { show: false },
           splitLine: { show: false },
-          show: showVolume,
+          show: hasVolumePane,
         },
         {
           type: "category",
           gridIndex: 2,
           data: techLabels,
           axisLine: { lineStyle: { color: palette.gridStrong } },
-          axisLabel: { color: palette.axis, hideOverlap: true },
+          axisLabel: {
+            color: palette.axis,
+            hideOverlap: true,
+            show: hasSecondaryPane,
+          },
           splitLine: { show: false },
+          show: hasSecondaryPane,
         },
       ],
       yAxis: [
@@ -917,13 +959,23 @@ export default function InteractiveMarketChart({
             formatter: (value: number) => formatNumber(value),
           },
           splitLine: { show: false },
-          show: showVolume,
+          show: hasVolumePane,
         },
         {
           type: "value",
           gridIndex: 2,
-          min: technicalPane === "rsi" ? 0 : "dataMin",
-          max: technicalPane === "rsi" ? 100 : "dataMax",
+          min:
+            technicalPane === "rsi"
+              ? 0
+              : technicalPane === "macd"
+                ? "dataMin"
+                : 0,
+          max:
+            technicalPane === "rsi"
+              ? 100
+              : technicalPane === "macd"
+                ? "dataMax"
+                : 100,
           axisLine: { show: false },
           axisLabel: {
             color: palette.axis,
@@ -933,6 +985,7 @@ export default function InteractiveMarketChart({
                 : formatNumber(value, 1),
           },
           splitLine: { lineStyle: { color: palette.grid } },
+          show: hasSecondaryPane,
         },
       ],
       series: [
@@ -1076,7 +1129,8 @@ export default function InteractiveMarketChart({
                 data: rsi14,
               },
             ]
-          : [
+          : technicalPane === "macd"
+            ? [
               {
                 name: "MACD histogram",
                 type: "bar",
@@ -1110,7 +1164,8 @@ export default function InteractiveMarketChart({
                 lineStyle: { width: 1.6, color: palette.ma20, type: "dashed" },
                 data: macd.signal,
               },
-            ]),
+            ]
+            : []),
       ],
     };
   }, [
@@ -1222,7 +1277,9 @@ export default function InteractiveMarketChart({
   const activeNote =
     mode === "long"
       ? "Structural long-horizon context using annual normalized index data."
-      : "Primary candlestick desk built from reconstructed monthly bars, with indicators computed on the full history before range filtering.";
+      : technicalPane === "none"
+        ? "Primary candlestick desk with the price action maximized. Add volume or RSI/MACD only when you need them."
+        : "Primary candlestick desk built from reconstructed monthly bars, with indicators computed on the full history before range filtering.";
   const chartHeight = isFullscreen
     ? "calc(100vh - 210px)"
     : mode === "technical"
@@ -1398,7 +1455,7 @@ export default function InteractiveMarketChart({
           {mode === "technical" ? (
             <div className="space-y-3 rounded-[24px] border border-white/10 bg-white/5 p-4">
               <div className="flex flex-wrap gap-2">
-                {(["month", "quarter", "year"] as TimeframeKey[]).map(
+              {(["month", "quarter", "year"] as TimeframeKey[]).map(
                   (option) => (
                     <button
                       key={option}
@@ -1418,6 +1475,17 @@ export default function InteractiveMarketChart({
                     </button>
                   ),
                 )}
+                <button
+                  type="button"
+                  onClick={() => setTechnicalPane("none")}
+                  className={
+                    technicalPane === "none"
+                      ? "rounded-full border border-amber-400/35 bg-amber-400/12 px-3 py-1.5 text-xs font-medium text-amber-200"
+                      : "rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300 transition hover:bg-white/10"
+                  }
+                >
+                  Price action only
+                </button>
                 <button
                   type="button"
                   onClick={() => setTechnicalPane("rsi")}
@@ -1520,7 +1588,9 @@ export default function InteractiveMarketChart({
               <p className="mt-2 leading-7">
                 {mode === "long"
                   ? "Use this mode to reset to the truthful annual structure, compare regimes, and understand where the current candle window sits in the full compounding story."
-                  : "This desk now opens directly in candlesticks, exposes the moving averages clearly, and keeps the full-history indicator calculations intact when you zoom into a shorter era."}
+                  : technicalPane === "none"
+                    ? "The default technical view now maximizes the candlestick price action. Lower panes stay hidden until you explicitly turn on volume, RSI, or MACD."
+                    : "This desk now opens directly in candlesticks, exposes the moving averages clearly, and keeps the full-history indicator calculations intact when you zoom into a shorter era."}
               </p>
             </div>
           </div>
@@ -1625,6 +1695,8 @@ export default function InteractiveMarketChart({
           <p className="text-sm text-slate-400">
             {mode === "long"
               ? "Latest YoY move"
+              : technicalPane === "none"
+                ? "Price action mode"
               : technicalPane === "rsi"
                 ? "Latest RSI 14"
                 : "Latest MACD hist"}
@@ -1632,6 +1704,8 @@ export default function InteractiveMarketChart({
           <p className="mt-2 text-2xl font-semibold text-white">
             {mode === "long"
               ? `${latestYearYoy != null && latestYearYoy >= 0 ? "+" : ""}${formatPercent(latestYearYoy, 1)}`
+              : technicalPane === "none"
+                ? "Active"
               : technicalPane === "rsi"
                 ? formatNumber(latestRsi, 1)
                 : formatNumber(latestMacdHistogram, 1)}
@@ -1639,7 +1713,9 @@ export default function InteractiveMarketChart({
           <p className="mt-2 text-sm text-slate-300">
             {mode === "long"
               ? "Latest annual change in the selected range."
-              : `Momentum read from the ${technicalPane.toUpperCase()} pane.`}
+              : technicalPane === "none"
+                ? "Pure price-action mode with no lower indicator pane visible."
+                : `Momentum read from the ${technicalPane.toUpperCase()} pane.`}
           </p>
         </div>
         <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
@@ -1805,11 +1881,11 @@ export default function InteractiveMarketChart({
 
       <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 p-4">
         <p className="text-sm text-slate-400">Important note</p>
-          <p className="mt-2 text-sm leading-6 text-slate-300">
+        <p className="mt-2 text-sm leading-6 text-slate-300">
           The default chart now opens in a professional candlestick desk with
-          visible moving averages and an expand-to-window path. The structural
-          long-horizon context is still one click away so the app keeps both
-          technical readability and data honesty.
+          the price action maximized first. The structural long-horizon context
+          is still one click away, and lower technical panes stay optional so
+          the tape remains easier to read.
         </p>
       </div>
     </div>
