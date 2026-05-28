@@ -22,6 +22,7 @@ const ProjectorSection = lazy(() => import("./features/projector"));
 const InsightsSection = lazy(() => import("./features/insights"));
 const DataTableSection = lazy(() => import("./features/data-table"));
 const MacroSection = lazy(() => import("./features/macro"));
+const RealReturnsSection = lazy(() => import("./features/real-returns"));
 
 const navItems = [
   { id: "overview", label: "Overview" },
@@ -33,6 +34,7 @@ const navItems = [
   { id: "projector", label: "2050" },
   { id: "insights", label: "Insights" },
   { id: "macro", label: "Macro" },
+  { id: "real-returns", label: "Real Returns" },
   { id: "data", label: "Data" },
 ];
 
@@ -336,6 +338,7 @@ function AppContent() {
           <SectionErrorBoundary name="projector"><ProjectorSection /></SectionErrorBoundary>
           <SectionErrorBoundary name="insights"><InsightsSection /></SectionErrorBoundary>
           <SectionErrorBoundary name="macro"><MacroSection /></SectionErrorBoundary>
+          <SectionErrorBoundary name="real-returns"><RealReturnsSection /></SectionErrorBoundary>
           <SectionErrorBoundary name="data"><DataTableSection /></SectionErrorBoundary>
         </Suspense>
 
