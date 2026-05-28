@@ -5,16 +5,19 @@
 import * as echarts from "echarts/core";
 import { LineChart, ScatterChart } from "echarts/charts";
 import {
-  TitleComponent,
-  TooltipComponent,
-  GridComponent,
   DataZoomComponent,
+  DatasetComponent,
+  GridComponent,
   LegendComponent,
-  MarkLineComponent,
   MarkAreaComponent,
+  MarkLineComponent,
+  TitleComponent,
   ToolboxComponent,
+  TooltipComponent,
+  TransformComponent,
 } from "echarts/components";
 import { CanvasRenderer } from "echarts/renderers";
+import { UniversalTransition } from "echarts/features";
 
 echarts.use([
   LineChart,
@@ -23,11 +26,14 @@ echarts.use([
   TooltipComponent,
   GridComponent,
   DataZoomComponent,
+  DatasetComponent,
   LegendComponent,
   MarkLineComponent,
   MarkAreaComponent,
   ToolboxComponent,
+  TransformComponent,
   CanvasRenderer,
+  UniversalTransition,
 ]);
 
 export default echarts;
