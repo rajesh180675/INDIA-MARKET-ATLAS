@@ -17,11 +17,21 @@ test("home page loads, charts render, and interactive toggles work without brows
 
   await page.goto("/");
 
-  await expect(
-    page.getByRole("heading", {
-      name: /A deeper React experience for the complete history of India’s stock market/i,
-    }),
-  ).toBeVisible();
+  // Wait for React to mount — check for any content first
+  await page.waitForSelector("#root > *", { timeout: 10000 });
+
+  // Debug: if the expected heading isn't found, dump what IS on the page
+  const heroHeading = page.getByRole("heading", {
+    name: /A deeper React experience for the complete history of India's stock market/i,
+  });
+
+  if (!(await heroHeading.isVisible({ timeout: 5000 }).catch(() => false))) {
+    const bodyText = await page.evaluate(() => document.body.innerText.slice(0, 2000));
+    const pageErrors = consoleErrors.join("\n");
+    throw new Error(
+      `Hero heading not found.\n\nPage content (first 2000 chars):\n${bodyText}\n\nConsole errors:\n${pageErrors}`
+    );
+  }
   await expect(
     page.getByRole("heading", {
       name: /A professional candlestick chart first, with expand-to-window viewing and a structural context mode/i,
