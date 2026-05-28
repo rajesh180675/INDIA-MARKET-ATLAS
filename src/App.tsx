@@ -29,10 +29,12 @@ const RiskSection = lazy(() => import("./features/risk"));
 const RegimeSection = lazy(() => import("./features/regimes"));
 const PurchasingPowerSection = lazy(() => import("./features/purchasing-power"));
 const SipSection = lazy(() => import("./features/sip"));
+const CandlestickSection = lazy(() => import("./features/candlestick"));
 
 const navItems = [
   { id: "overview", label: "Overview" },
   { id: "chart", label: "Chart" },
+  { id: "candlestick", label: "Candlestick" },
   { id: "structure", label: "Structure" },
   { id: "retail", label: "Retail" },
   { id: "world", label: "World" },
@@ -343,6 +345,7 @@ function AppContent() {
         <SectionErrorBoundary name="overview"><OverviewSection /></SectionErrorBoundary>
         <Suspense fallback={<div className="h-96 animate-pulse rounded-3xl bg-white/5" />}>
           <SectionErrorBoundary name="chart"><MarketChartSection /></SectionErrorBoundary>
+          <SectionErrorBoundary name="candlestick"><CandlestickSection /></SectionErrorBoundary>
           <SectionErrorBoundary name="structure"><StructureSection /></SectionErrorBoundary>
           <SectionErrorBoundary name="retail"><RetailSection /></SectionErrorBoundary>
           <SectionErrorBoundary name="global"><GlobalComparisonSection /></SectionErrorBoundary>
