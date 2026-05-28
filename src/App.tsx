@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { useTheme } from "./app/ThemeContext";
 import { Providers } from "./app/providers";
 import MotionReveal from "./components/MotionReveal";
@@ -8,17 +8,19 @@ import TickerBanner from "./components/TickerBanner";
 import SectionErrorBoundary from "./components/SectionErrorBoundary";
 import { GradientPanel } from "./components/ui/GradientPanel";
 import { continuousIndex, masterTable, tickerStats } from "./data/indiaMarketData";
-import CrashesSection from "./features/crashes";
-import DataTableSection from "./features/data-table";
-import GlobalComparisonSection from "./features/global-comparison";
-import InsightsSection from "./features/insights";
-import MarketChartSection from "./features/market-chart";
 import OverviewSection from "./features/overview";
-import ProjectorSection from "./features/projector";
-import RetailSection from "./features/retail";
-import StructureSection from "./features/structure";
 import { downloadCsv } from "./lib/csv";
 import { cn } from "./utils/cn";
+
+// Lazy-load below-fold sections for faster initial paint
+const MarketChartSection = lazy(() => import("./features/market-chart"));
+const StructureSection = lazy(() => import("./features/structure"));
+const RetailSection = lazy(() => import("./features/retail"));
+const GlobalComparisonSection = lazy(() => import("./features/global-comparison"));
+const CrashesSection = lazy(() => import("./features/crashes"));
+const ProjectorSection = lazy(() => import("./features/projector"));
+const InsightsSection = lazy(() => import("./features/insights"));
+const DataTableSection = lazy(() => import("./features/data-table"));
 
 const navItems = [
   { id: "overview", label: "Overview" },
@@ -323,14 +325,16 @@ function AppContent() {
         </section>
 
         <SectionErrorBoundary name="overview"><OverviewSection /></SectionErrorBoundary>
-        <SectionErrorBoundary name="chart"><MarketChartSection /></SectionErrorBoundary>
-        <SectionErrorBoundary name="structure"><StructureSection /></SectionErrorBoundary>
-        <SectionErrorBoundary name="retail"><RetailSection /></SectionErrorBoundary>
-        <SectionErrorBoundary name="global"><GlobalComparisonSection /></SectionErrorBoundary>
-        <SectionErrorBoundary name="crashes"><CrashesSection /></SectionErrorBoundary>
-        <SectionErrorBoundary name="projector"><ProjectorSection /></SectionErrorBoundary>
-        <SectionErrorBoundary name="insights"><InsightsSection /></SectionErrorBoundary>
-        <SectionErrorBoundary name="data"><DataTableSection /></SectionErrorBoundary>
+        <Suspense fallback={<div className="h-96 animate-pulse rounded-3xl bg-white/5" />}>
+          <SectionErrorBoundary name="chart"><MarketChartSection /></SectionErrorBoundary>
+          <SectionErrorBoundary name="structure"><StructureSection /></SectionErrorBoundary>
+          <SectionErrorBoundary name="retail"><RetailSection /></SectionErrorBoundary>
+          <SectionErrorBoundary name="global"><GlobalComparisonSection /></SectionErrorBoundary>
+          <SectionErrorBoundary name="crashes"><CrashesSection /></SectionErrorBoundary>
+          <SectionErrorBoundary name="projector"><ProjectorSection /></SectionErrorBoundary>
+          <SectionErrorBoundary name="insights"><InsightsSection /></SectionErrorBoundary>
+          <SectionErrorBoundary name="data"><DataTableSection /></SectionErrorBoundary>
+        </Suspense>
 
         {/* Final synthesis + footer */}
         <section className="mx-auto max-w-7xl px-6 pb-20 pt-10 sm:px-8">

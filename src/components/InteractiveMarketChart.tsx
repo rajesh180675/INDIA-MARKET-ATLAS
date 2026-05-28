@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import ReactECharts from "echarts-for-react";
+import ReactECharts from "echarts-for-react/lib/core";
 import type { EChartsOption } from "echarts";
+import echarts from "@/lib/echarts";
 import type {
   CrashEvent,
   MarketPoint,
@@ -1394,6 +1395,7 @@ export default function InteractiveMarketChart({
           <div className="rounded-[28px] border border-white/8 bg-black/10 p-2">
             <ReactECharts
               ref={chartRef}
+              echarts={echarts}
               option={baseChartOption}
               notMerge
               lazyUpdate

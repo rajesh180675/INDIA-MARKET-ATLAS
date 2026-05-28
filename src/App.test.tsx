@@ -9,14 +9,15 @@ describe("App", () => {
 
     render(<App />);
 
+    // Lazy-loaded sections need async queries
     expect(
-      screen.getByText(
+      await screen.findByText(
         /A professional candlestick chart first, with expand-to-window viewing and a structural context mode/i,
       ),
     ).toBeInTheDocument();
 
-    const mainChart = screen.getByTestId("main-market-chart");
-    const comparisonChart = screen.getByTestId("comparison-chart");
+    const mainChart = await screen.findByTestId("main-market-chart");
+    const comparisonChart = await screen.findByTestId("comparison-chart");
 
     expect(
       within(mainChart).getByRole("button", { name: /Candlestick Desk/i }),

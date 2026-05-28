@@ -75,7 +75,7 @@ vi.mock("framer-motion", () => {
   };
 });
 
-vi.mock("echarts-for-react", () => {
+vi.mock("echarts-for-react/lib/core", () => {
   const MockChart = React.forwardRef(function MockChart(
     props: { option?: { series?: Array<{ name?: string }> } },
     ref: React.ForwardedRef<{ getEchartsInstance: () => { getDataURL: () => string } }>,
@@ -99,3 +99,8 @@ vi.mock("echarts-for-react", () => {
     default: MockChart,
   };
 });
+
+vi.mock("@/lib/echarts", () => ({
+  __esModule: true,
+  default: {},
+}));

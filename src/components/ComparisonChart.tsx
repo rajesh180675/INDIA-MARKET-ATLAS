@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState } from "react";
-import ReactECharts from "echarts-for-react";
+import ReactECharts from "echarts-for-react/lib/core";
 import type { EChartsOption } from "echarts";
+import echarts from "@/lib/echarts";
 import type { GlobalComparisonPoint } from "../data/indiaMarketData";
 import useDocumentTheme from "../hooks/useDocumentTheme";
 import {
@@ -342,6 +343,7 @@ export default function ComparisonChart({
       <div className="rounded-[28px] border border-white/8 bg-black/10 p-2">
         <ReactECharts
           ref={chartRef}
+          echarts={echarts}
           option={option}
           notMerge
           lazyUpdate
