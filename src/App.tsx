@@ -6,6 +6,7 @@ import MotionReveal from "./components/MotionReveal";
 import StickyProgress from "./components/StickyProgress";
 import ThemeToggle from "./components/ThemeToggle";
 import TickerBanner from "./components/TickerBanner";
+import SectionErrorBoundary from "./components/SectionErrorBoundary";
 import { GradientPanel } from "./components/ui/GradientPanel";
 import { continuousIndex, masterTable, tickerStats } from "./data/indiaMarketData";
 import CrashesSection from "./features/crashes";
@@ -337,15 +338,15 @@ function AppContent() {
           </div>
         </section>
 
-        <OverviewSection />
-        <MarketChartSection />
-        <StructureSection />
-        <RetailSection />
-        <GlobalComparisonSection />
-        <CrashesSection />
-        <ProjectorSection />
-        <InsightsSection />
-        <DataTableSection />
+        <SectionErrorBoundary name="overview"><OverviewSection /></SectionErrorBoundary>
+        <SectionErrorBoundary name="chart"><MarketChartSection /></SectionErrorBoundary>
+        <SectionErrorBoundary name="structure"><StructureSection /></SectionErrorBoundary>
+        <SectionErrorBoundary name="retail"><RetailSection /></SectionErrorBoundary>
+        <SectionErrorBoundary name="global"><GlobalComparisonSection /></SectionErrorBoundary>
+        <SectionErrorBoundary name="crashes"><CrashesSection /></SectionErrorBoundary>
+        <SectionErrorBoundary name="projector"><ProjectorSection /></SectionErrorBoundary>
+        <SectionErrorBoundary name="insights"><InsightsSection /></SectionErrorBoundary>
+        <SectionErrorBoundary name="data"><DataTableSection /></SectionErrorBoundary>
 
         {/* Final synthesis + footer */}
         <section className="mx-auto max-w-7xl px-6 pb-20 pt-10 sm:px-8">
