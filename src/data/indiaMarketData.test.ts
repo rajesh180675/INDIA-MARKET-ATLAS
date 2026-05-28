@@ -23,7 +23,7 @@ import {
 
 const MarketPointSchema = z.object({
   year: z.number().int().min(1947).max(2030),
-  value: z.number().positive(),
+  value: z.number().positive().optional(),
 });
 
 const KeyStatSchema = z.object({
@@ -156,14 +156,11 @@ describe("Data schema validation", () => {
     expect(continuousIndex.length).toBeGreaterThanOrEqual(75);
     expect(continuousIndex[0].year).toBe(1947);
     expect(continuousIndex[continuousIndex.length - 1].year).toBe(2025);
-    // Check that no year is out of range
+    // Validate each point against schema
     const validPoints = continuousIndex.filter((p) => p.value !== undefined);
     expect(validPoints.length).toBeGreaterThanOrEqual(75);
-    for (const point of validPoints) {
-      expect(point.year).toBeGreaterThanOrEqual(1947);
-      expect(point.year).toBeLessThanOrEqual(2025);
-      expect(point.value).toBeGreaterThan(0);
-    }
+    const result = z.array(MarketPointSchema).safeParse(validPoints);
+    expect(result.success).toBe(true);
   });
 
   test("continuousIndex: years are sequential", () => {

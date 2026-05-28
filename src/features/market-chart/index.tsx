@@ -12,10 +12,16 @@ import {
 } from "@/data/indiaMarketData";
 import { downloadCsv } from "@/lib/csv";
 
+// Filter out OHLC-only points (value undefined) that would crash ECharts
+const chartData = continuousIndex.filter(
+  (point): point is typeof point & { value: number } =>
+    point.value !== undefined && point.value !== null,
+);
+
 function handleDownloadIndexCsv() {
   downloadCsv(
     "india-stock-market-index-1947-2025.csv",
-    continuousIndex.map((point) => ({
+    chartData.map((point) => ({
       year: point.year,
       normalized_index_1947_base_100: point.value,
     })),
@@ -40,7 +46,7 @@ export default function MarketChartSection() {
         <MotionReveal>
           <GradientPanel>
             <InteractiveMarketChart
-              data={continuousIndex}
+              data={chartData}
               milestones={milestones}
               crashEvents={crashEvents}
               regimes={marketRegimes}
