@@ -1,4 +1,3 @@
-import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTheme } from "./app/ThemeContext";
 import { Providers } from "./app/providers";
@@ -136,14 +135,8 @@ function AppContent() {
                   )}
                 >
                   {active ? (
-                    <motion.span
-                      layoutId="active-nav-pill"
+                    <span
                       className="absolute inset-0 rounded-full border border-white/10 bg-white/10 shadow-lg shadow-black/10"
-                      transition={{
-                        type: "spring",
-                        stiffness: 380,
-                        damping: 34,
-                      }}
                     />
                   ) : null}
                   <span className="relative z-10">{item.label}</span>
@@ -175,13 +168,8 @@ function AppContent() {
           </button>
         </div>
 
-        <AnimatePresence initial={false}>
-          {menuOpen ? (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }}
+        {menuOpen ? (
+            <div
               className="overflow-hidden border-t border-white/10 bg-slate-950/95 px-6 py-4 backdrop-blur-xl lg:hidden"
             >
               <div className="flex flex-col gap-3">
@@ -214,9 +202,8 @@ function AppContent() {
                   );
                 })}
               </div>
-            </motion.div>
+            </div>
           ) : null}
-        </AnimatePresence>
       </header>
 
       <TickerBanner items={tickerStats} />
@@ -225,10 +212,7 @@ function AppContent() {
         {/* Hero */}
         <section className="mx-auto max-w-7xl px-6 pb-14 pt-14 sm:px-8 sm:pt-20 lg:pb-20">
           <div className="grid items-start gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12">
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            <div
               className="space-y-8"
             >
               <div className="inline-flex items-center gap-3 rounded-full border border-amber-400/20 bg-amber-400/10 px-4 py-2 text-sm text-amber-100">
@@ -282,7 +266,7 @@ function AppContent() {
                   Download master CSV
                 </button>
               </div>
-            </motion.div>
+            </div>
 
             <MotionReveal delay={0.12}>
               <GradientPanel>
