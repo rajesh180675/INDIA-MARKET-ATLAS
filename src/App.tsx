@@ -28,6 +28,7 @@ const AnalyticsSection = lazy(() => import("./features/analytics"));
 const RiskSection = lazy(() => import("./features/risk"));
 const RegimeSection = lazy(() => import("./features/regimes"));
 const PurchasingPowerSection = lazy(() => import("./features/purchasing-power"));
+const SipSection = lazy(() => import("./features/sip"));
 
 const navItems = [
   { id: "overview", label: "Overview" },
@@ -45,6 +46,7 @@ const navItems = [
   { id: "risk", label: "Risk" },
   { id: "regimes", label: "Regimes" },
   { id: "purchasing-power", label: "Purchasing Power" },
+  { id: "sip", label: "SIP" },
   { id: "data", label: "Data" },
 ];
 
@@ -354,6 +356,7 @@ function AppContent() {
           <SectionErrorBoundary name="risk"><RiskSection /></SectionErrorBoundary>
           <SectionErrorBoundary name="regimes"><RegimeSection /></SectionErrorBoundary>
           <SectionErrorBoundary name="purchasing-power"><PurchasingPowerSection /></SectionErrorBoundary>
+          <SectionErrorBoundary name="sip"><SipSection /></SectionErrorBoundary>
           <SectionErrorBoundary name="data"><DataTableSection /></SectionErrorBoundary>
         </Suspense>
 
