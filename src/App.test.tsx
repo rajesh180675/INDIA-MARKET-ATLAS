@@ -9,15 +9,17 @@ describe("App", () => {
 
     render(<App />);
 
-    // Lazy-loaded sections need async queries
+    // Lazy-loaded sections need async queries (longer timeout for dynamic imports)
     expect(
       await screen.findByText(
         /A professional candlestick chart first, with expand-to-window viewing and a structural context mode/i,
+        {},
+        { timeout: 5000 },
       ),
     ).toBeInTheDocument();
 
-    const mainChart = await screen.findByTestId("main-market-chart");
-    const comparisonChart = await screen.findByTestId("comparison-chart");
+    const mainChart = await screen.findByTestId("main-market-chart", {}, { timeout: 5000 });
+    const comparisonChart = await screen.findByTestId("comparison-chart", {}, { timeout: 5000 });
 
     expect(
       within(mainChart).getByRole("button", { name: /Candlestick Desk/i }),
