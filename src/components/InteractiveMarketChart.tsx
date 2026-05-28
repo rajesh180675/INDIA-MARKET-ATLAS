@@ -29,6 +29,10 @@ import {
   type TimeframeKey,
   zoomWindowFromPercent,
 } from "../charts/marketChartUtils";
+import { useChartPalette } from "./charts/chartPalette";
+import ChartToolbar from "./charts/ChartToolbar";
+import ChartSummaryCards from "./charts/ChartSummaryCards";
+import CompareOverlay from "./charts/CompareOverlay";
 
 type Annotation = {
   year: number;
@@ -48,66 +52,6 @@ type ZoomState = {
   start: number;
   end: number;
 };
-
-function usePalette(theme: "dark" | "light") {
-  return useMemo(
-    () =>
-      theme === "light"
-        ? {
-            text: "#0f172a",
-            muted: "#475569",
-            subtle: "#64748b",
-            grid: "rgba(15, 23, 42, 0.08)",
-            gridStrong: "rgba(15, 23, 42, 0.14)",
-            axis: "#475569",
-            panel: "#ffffff",
-            panelBorder: "rgba(15, 23, 42, 0.08)",
-            line: "#0f172a",
-            areaTop: "rgba(14, 165, 233, 0.34)",
-            areaBottom: "rgba(14, 165, 233, 0.04)",
-            drawdown: "rgba(249, 115, 22, 0.16)",
-            drawdownLine: "#f97316",
-            bull: "#0f766e",
-            bear: "#dc2626",
-            ma20: "#ea580c",
-            ma50: "#0284c7",
-            ma200: "#059669",
-            crash: "#e11d48",
-            milestone: "#7c3aed",
-            overlayFill: "rgba(124, 58, 237, 0.08)",
-            sliderBg: "rgba(15, 23, 42, 0.04)",
-            sliderFill: "rgba(14, 165, 233, 0.12)",
-            shadow: "#f8fafc",
-          }
-        : {
-            text: "#f8fafc",
-            muted: "#cbd5e1",
-            subtle: "#94a3b8",
-            grid: "rgba(255, 255, 255, 0.08)",
-            gridStrong: "rgba(255, 255, 255, 0.15)",
-            axis: "#cbd5e1",
-            panel: "#020617",
-            panelBorder: "rgba(255, 255, 255, 0.08)",
-            line: "#e2e8f0",
-            areaTop: "rgba(56, 189, 248, 0.34)",
-            areaBottom: "rgba(56, 189, 248, 0.04)",
-            drawdown: "rgba(251, 146, 60, 0.16)",
-            drawdownLine: "#fb923c",
-            bull: "#34d399",
-            bear: "#fb7185",
-            ma20: "#f59e0b",
-            ma50: "#38bdf8",
-            ma200: "#34d399",
-            crash: "#fb7185",
-            milestone: "#c084fc",
-            overlayFill: "rgba(192, 132, 252, 0.08)",
-            sliderBg: "rgba(255, 255, 255, 0.03)",
-            sliderFill: "rgba(56, 189, 248, 0.14)",
-            shadow: "#020617",
-          },
-    [theme],
-  );
-}
 
 function extractZoomState(event: unknown): ZoomState | null {
   if (!event || typeof event !== "object") {
@@ -153,7 +97,7 @@ export default function InteractiveMarketChart({
   annotations,
 }: Props) {
   const theme = useDocumentTheme();
-  const palette = usePalette(theme);
+  const palette = useChartPalette(theme);
   const chartRef = useRef<ReactECharts | null>(null);
 
   const [mode, setMode] = useState<ChartMode>("technical");
@@ -1379,228 +1323,38 @@ export default function InteractiveMarketChart({
             : undefined
         }
       >
+        <ChartToolbar
+          mode={mode}
+          setMode={setMode}
+          compareMode={compareMode}
+          setCompareMode={setCompareMode}
+          selectedRangeKey={selectedRangeKey}
+          setSelectedRangeKey={setSelectedRangeKey}
+          timeframe={timeframe}
+          setTimeframe={setTimeframe}
+          technicalPane={technicalPane}
+          setTechnicalPane={setTechnicalPane}
+          showMA20={showMA20}
+          setShowMA20={setShowMA20}
+          showMA50={showMA50}
+          setShowMA50={setShowMA50}
+          showMA200={showMA200}
+          setShowMA200={setShowMA200}
+          showVolume={showVolume}
+          setShowVolume={setShowVolume}
+          showMilestones={showMilestones}
+          setShowMilestones={setShowMilestones}
+          showCrashes={showCrashes}
+          setShowCrashes={setShowCrashes}
+          isFullscreen={isFullscreen}
+          setIsFullscreen={setIsFullscreen}
+          onExportPng={exportChartPng}
+          onFitAll={() => setZoomState({ start: 0, end: 100 })}
+          onLast20Y={() => applyTrailingYears(20)}
+          onLast10Y={() => applyTrailingYears(10)}
+        />
+
         <div className="space-y-4">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.26em] text-slate-400">
-                Market explorer
-              </p>
-              <h3 className="mt-2 text-2xl font-semibold text-white">
-                Professional candlestick desk with expand-to-window review and
-                full-history context
-              </h3>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              <button
-                type="button"
-                onClick={() => setIsFullscreen((current) => !current)}
-                className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200 transition hover:bg-white/10"
-              >
-                {isFullscreen ? "Collapse window" : "Expand to window"}
-              </button>
-              <button
-                type="button"
-                onClick={exportChartPng}
-                className="rounded-full border border-sky-400/25 bg-sky-400/10 px-4 py-2 text-sm font-medium text-sky-200 transition hover:bg-sky-400/15"
-              >
-                Export PNG
-              </button>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap gap-2">
-            <button
-              type="button"
-              onClick={() => setMode("technical")}
-              className={
-                mode === "technical"
-                  ? "rounded-full border border-fuchsia-400/35 bg-fuchsia-400/12 px-3 py-1.5 text-sm font-medium text-fuchsia-200"
-                  : "rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-sm text-slate-300 transition hover:bg-white/10"
-              }
-            >
-              Candlestick Desk
-            </button>
-            <button
-              type="button"
-              onClick={() => setMode("long")}
-              className={
-                mode === "long"
-                  ? "rounded-full border border-emerald-400/35 bg-emerald-400/12 px-3 py-1.5 text-sm font-medium text-emerald-200"
-                  : "rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-sm text-slate-300 transition hover:bg-white/10"
-              }
-            >
-              Long Horizon Context
-            </button>
-            <button
-              type="button"
-              onClick={() => setCompareMode((current) => !current)}
-              className={
-                compareMode
-                  ? "rounded-full border border-amber-400/35 bg-amber-400/12 px-3 py-1.5 text-sm font-medium text-amber-200"
-                  : "rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-sm text-slate-300 transition hover:bg-white/10"
-              }
-            >
-              {compareMode ? "Compare on" : "Compare off"}
-            </button>
-          </div>
-
-          <div className="flex flex-wrap gap-2">
-            {rangeFilters.map((filter) => {
-              const active = filter.key === selectedRangeKey;
-              return (
-                <button
-                  key={filter.key}
-                  type="button"
-                  onClick={() => setSelectedRangeKey(filter.key)}
-                  className={
-                    active
-                      ? "rounded-full border border-sky-400/30 bg-sky-400/12 px-3 py-1.5 text-xs font-medium text-sky-200"
-                      : "rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300 transition hover:bg-white/10"
-                  }
-                >
-                  {filter.label}
-                </button>
-              );
-            })}
-          </div>
-
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300">
-              Quick view
-            </span>
-            <button
-              type="button"
-              onClick={() => setZoomState({ start: 0, end: 100 })}
-              className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300 transition hover:bg-white/10"
-            >
-              Fit all
-            </button>
-            <button
-              type="button"
-              onClick={() => applyTrailingYears(20)}
-              className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300 transition hover:bg-white/10"
-            >
-              Last 20Y
-            </button>
-            <button
-              type="button"
-              onClick={() => applyTrailingYears(10)}
-              className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300 transition hover:bg-white/10"
-            >
-              Last 10Y
-            </button>
-            <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-400">
-              Wheel to zoom, drag to pan, pinch on touch
-            </span>
-          </div>
-
-          {mode === "technical" ? (
-            <div className="space-y-3 rounded-[24px] border border-white/10 bg-white/5 p-4">
-              <div className="flex flex-wrap gap-2">
-              {(["month", "quarter", "year"] as TimeframeKey[]).map(
-                  (option) => (
-                    <button
-                      key={option}
-                      type="button"
-                      onClick={() => setTimeframe(option)}
-                      className={
-                        timeframe === option
-                          ? "rounded-full border border-fuchsia-400/35 bg-fuchsia-400/12 px-3 py-1.5 text-xs font-medium text-fuchsia-200"
-                          : "rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300 transition hover:bg-white/10"
-                      }
-                    >
-                      {option === "month"
-                        ? "Monthly"
-                        : option === "quarter"
-                          ? "Quarterly"
-                          : "Yearly"}
-                    </button>
-                  ),
-                )}
-                <button
-                  type="button"
-                  onClick={() => setTechnicalPane("none")}
-                  className={
-                    technicalPane === "none"
-                      ? "rounded-full border border-amber-400/35 bg-amber-400/12 px-3 py-1.5 text-xs font-medium text-amber-200"
-                      : "rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300 transition hover:bg-white/10"
-                  }
-                >
-                  Price action only
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setTechnicalPane("rsi")}
-                  className={
-                    technicalPane === "rsi"
-                      ? "rounded-full border border-amber-400/35 bg-amber-400/12 px-3 py-1.5 text-xs font-medium text-amber-200"
-                      : "rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300 transition hover:bg-white/10"
-                  }
-                >
-                  RSI pane
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setTechnicalPane("macd")}
-                  className={
-                    technicalPane === "macd"
-                      ? "rounded-full border border-amber-400/35 bg-amber-400/12 px-3 py-1.5 text-xs font-medium text-amber-200"
-                      : "rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300 transition hover:bg-white/10"
-                  }
-                >
-                  MACD pane
-                </button>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {[
-                  {
-                    label: "MA 20",
-                    active: showMA20,
-                    toggle: () => setShowMA20((current) => !current),
-                  },
-                  {
-                    label: "MA 50",
-                    active: showMA50,
-                    toggle: () => setShowMA50((current) => !current),
-                  },
-                  {
-                    label: "MA 200",
-                    active: showMA200,
-                    toggle: () => setShowMA200((current) => !current),
-                  },
-                  {
-                    label: "Volume",
-                    active: showVolume,
-                    toggle: () => setShowVolume((current) => !current),
-                  },
-                  {
-                    label: "Milestones",
-                    active: showMilestones,
-                    toggle: () => setShowMilestones((current) => !current),
-                  },
-                  {
-                    label: "Crashes",
-                    active: showCrashes,
-                    toggle: () => setShowCrashes((current) => !current),
-                  },
-                ].map((overlay) => (
-                  <button
-                    key={overlay.label}
-                    type="button"
-                    onClick={overlay.toggle}
-                    className={
-                      overlay.active
-                        ? "rounded-full border border-emerald-400/25 bg-emerald-400/10 px-3 py-1.5 text-xs font-medium text-emerald-200"
-                        : "rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300 transition hover:bg-white/10"
-                    }
-                  >
-                    {overlay.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          ) : null}
-
           <div className="grid gap-3 xl:grid-cols-[1.2fr_0.8fr]">
             <div className="flex flex-wrap items-center gap-3 text-xs text-slate-400">
               <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1">
@@ -1677,20 +1431,7 @@ export default function InteractiveMarketChart({
         ) : null}
       </div>
 
-      <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-        {summaryCards.map((card) => (
-          <div
-            key={card.label}
-            className="rounded-2xl border border-white/10 bg-white/5 p-4"
-          >
-            <p className="text-sm text-slate-400">{card.label}</p>
-            <p className="mt-2 text-2xl font-semibold text-white">
-              {card.value}
-            </p>
-            <p className="mt-2 text-sm text-slate-300">{card.note}</p>
-          </div>
-        ))}
-      </div>
+      <ChartSummaryCards cards={summaryCards} />
 
       <div className="mt-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
         <p className="text-xs uppercase tracking-[0.18em] text-slate-400">
@@ -1700,107 +1441,14 @@ export default function InteractiveMarketChart({
       </div>
 
       {compareMode ? (
-        <div className="mt-4 rounded-[24px] border border-white/10 bg-white/5 p-4">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <p className="text-[11px] uppercase tracking-[0.2em] text-slate-400">
-                Compare ranges
-              </p>
-              <h4 className="mt-1 text-lg font-semibold text-white">
-                Use the same lens across different eras
-              </h4>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {rangeFilters.map((filter) => (
-                <button
-                  key={`compare-${filter.key}`}
-                  type="button"
-                  disabled={filter.key === selectedRangeKey}
-                  onClick={() => setCompareRangeKey(filter.key)}
-                  className={
-                    filter.key === compareRangeKey
-                      ? "rounded-full border border-amber-400/35 bg-amber-400/12 px-3 py-1.5 text-xs font-medium text-amber-200"
-                      : "rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-slate-300 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
-                  }
-                >
-                  {filter.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-4 grid gap-4 xl:grid-cols-2">
-            <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4">
-              <p className="text-[11px] uppercase tracking-[0.18em] text-slate-400">
-                Primary
-              </p>
-              <h5 className="mt-2 text-xl font-semibold text-white">
-                {selectedRange.label}
-              </h5>
-              <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
-                <div className="rounded-xl border border-white/8 bg-white/5 p-3">
-                  <p className="text-slate-400">CAGR</p>
-                  <p className="mt-1 font-semibold text-white">
-                    {formatPercent(summary.cagr, 1)}
-                  </p>
-                </div>
-                <div className="rounded-xl border border-white/8 bg-white/5 p-3">
-                  <p className="text-slate-400">Total move</p>
-                  <p className="mt-1 font-semibold text-white">
-                    {formatPercent(summary.totalMove, 0)}
-                  </p>
-                </div>
-                <div className="rounded-xl border border-white/8 bg-white/5 p-3">
-                  <p className="text-slate-400">Max drawdown</p>
-                  <p className="mt-1 font-semibold text-white">
-                    {formatPercent(summary.maxDrawdown, 1)}
-                  </p>
-                </div>
-                <div className="rounded-xl border border-white/8 bg-white/5 p-3">
-                  <p className="text-slate-400">Span</p>
-                  <p className="mt-1 font-semibold text-white">
-                    {summary.years}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4">
-              <p className="text-[11px] uppercase tracking-[0.18em] text-slate-400">
-                Comparison
-              </p>
-              <h5 className="mt-2 text-xl font-semibold text-white">
-                {compareRange.label}
-              </h5>
-              <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
-                <div className="rounded-xl border border-white/8 bg-white/5 p-3">
-                  <p className="text-slate-400">CAGR</p>
-                  <p className="mt-1 font-semibold text-white">
-                    {formatPercent(compareSummary.cagr, 1)}
-                  </p>
-                </div>
-                <div className="rounded-xl border border-white/8 bg-white/5 p-3">
-                  <p className="text-slate-400">Total move</p>
-                  <p className="mt-1 font-semibold text-white">
-                    {formatPercent(compareSummary.totalMove, 0)}
-                  </p>
-                </div>
-                <div className="rounded-xl border border-white/8 bg-white/5 p-3">
-                  <p className="text-slate-400">Max drawdown</p>
-                  <p className="mt-1 font-semibold text-white">
-                    {formatPercent(compareSummary.maxDrawdown, 1)}
-                  </p>
-                </div>
-                <div className="rounded-xl border border-white/8 bg-white/5 p-3">
-                  <p className="text-slate-400">Span</p>
-                  <p className="mt-1 font-semibold text-white">
-                    {compareSummary.years}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <CompareOverlay
+          compareRangeKey={compareRangeKey}
+          setCompareRangeKey={setCompareRangeKey}
+          selectedRangeKey={selectedRangeKey}
+          selectedRange={selectedRange}
+          summary={summary}
+          compareSummary={compareSummary}
+        />
       ) : null}
 
     </div>
