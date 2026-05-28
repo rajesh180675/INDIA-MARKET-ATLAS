@@ -21,6 +21,7 @@ const CrashesSection = lazy(() => import("./features/crashes"));
 const ProjectorSection = lazy(() => import("./features/projector"));
 const InsightsSection = lazy(() => import("./features/insights"));
 const DataTableSection = lazy(() => import("./features/data-table"));
+const MacroSection = lazy(() => import("./features/macro"));
 
 const navItems = [
   { id: "overview", label: "Overview" },
@@ -31,6 +32,7 @@ const navItems = [
   { id: "crashes", label: "Crashes" },
   { id: "projector", label: "2050" },
   { id: "insights", label: "Insights" },
+  { id: "macro", label: "Macro" },
   { id: "data", label: "Data" },
 ];
 
@@ -333,6 +335,7 @@ function AppContent() {
           <SectionErrorBoundary name="crashes"><CrashesSection /></SectionErrorBoundary>
           <SectionErrorBoundary name="projector"><ProjectorSection /></SectionErrorBoundary>
           <SectionErrorBoundary name="insights"><InsightsSection /></SectionErrorBoundary>
+          <SectionErrorBoundary name="macro"><MacroSection /></SectionErrorBoundary>
           <SectionErrorBoundary name="data"><DataTableSection /></SectionErrorBoundary>
         </Suspense>
 

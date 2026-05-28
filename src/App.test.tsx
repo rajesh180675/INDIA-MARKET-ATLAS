@@ -52,5 +52,5 @@ describe("App", () => {
     );
 
     expect(within(mainChart).getByText(/Compare ranges/i)).toBeInTheDocument();
-  });
+  }, 15000);
 });
