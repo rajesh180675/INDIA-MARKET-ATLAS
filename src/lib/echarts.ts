@@ -1,39 +1,9 @@
 /**
- * Tree-shaken ECharts bundle — only import what we actually use.
- * This replaces `import * as echarts from "echarts"` which pulls ~1MB.
+ * ECharts instance for use with echarts-for-react/lib/core.
+ * We import the full echarts package for reliability — tree-shaking echarts/core
+ * causes runtime errors ("getProgressive" undefined) due to incomplete internal
+ * dependency resolution in echarts 6.
  */
-import * as echarts from "echarts/core";
-import { LineChart, ScatterChart } from "echarts/charts";
-import {
-  DataZoomComponent,
-  DatasetComponent,
-  GridComponent,
-  LegendComponent,
-  MarkAreaComponent,
-  MarkLineComponent,
-  TitleComponent,
-  ToolboxComponent,
-  TooltipComponent,
-  TransformComponent,
-} from "echarts/components";
-import { CanvasRenderer } from "echarts/renderers";
-import { UniversalTransition } from "echarts/features";
-
-echarts.use([
-  LineChart,
-  ScatterChart,
-  TitleComponent,
-  TooltipComponent,
-  GridComponent,
-  DataZoomComponent,
-  DatasetComponent,
-  LegendComponent,
-  MarkLineComponent,
-  MarkAreaComponent,
-  ToolboxComponent,
-  TransformComponent,
-  CanvasRenderer,
-  UniversalTransition,
-]);
+import * as echarts from "echarts";
 
 export default echarts;
