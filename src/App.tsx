@@ -25,6 +25,7 @@ const MacroSection = lazy(() => import("./features/macro"));
 const RealReturnsSection = lazy(() => import("./features/real-returns"));
 const AssetRaceSection = lazy(() => import("./features/asset-race"));
 const AnalyticsSection = lazy(() => import("./features/analytics"));
+const RiskSection = lazy(() => import("./features/risk"));
 
 const navItems = [
   { id: "overview", label: "Overview" },
@@ -39,6 +40,7 @@ const navItems = [
   { id: "real-returns", label: "Real Returns" },
   { id: "asset-race", label: "Asset Race" },
   { id: "analytics", label: "Analytics" },
+  { id: "risk", label: "Risk" },
   { id: "data", label: "Data" },
 ];
 
@@ -345,6 +347,7 @@ function AppContent() {
           <SectionErrorBoundary name="real-returns"><RealReturnsSection /></SectionErrorBoundary>
           <SectionErrorBoundary name="asset-race"><AssetRaceSection /></SectionErrorBoundary>
           <SectionErrorBoundary name="analytics"><AnalyticsSection /></SectionErrorBoundary>
+          <SectionErrorBoundary name="risk"><RiskSection /></SectionErrorBoundary>
           <SectionErrorBoundary name="data"><DataTableSection /></SectionErrorBoundary>
         </Suspense>
 
