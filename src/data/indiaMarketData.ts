@@ -165,17 +165,17 @@ export const keyStats: KeyStat[] = [
   },
   {
     label: "Nominal CAGR",
-    value: 10.3,
+    value: 9.8,
     suffix: "%",
     decimals: 1,
     note: "Approximate annualized return across the full 78-year record.",
   },
   {
     label: "Real CAGR",
-    value: 3.3,
+    value: 2.6,
     suffix: "%",
     decimals: 1,
-    note: "Inflation-adjusted compounding after accounting for India’s long-run price rise.",
+    note: "Inflation-adjusted compounding after accounting for India's long-run price rise.",
   },
   {
     label: "Post-1979 CAGR",
@@ -201,8 +201,8 @@ export const keyStats: KeyStat[] = [
 
 export const tickerStats: TickerStat[] = [
   { label: "Sensex", value: "~80,000", change: "2025 estimate", tone: "sky" },
-  { label: "Full-period CAGR", value: "10.3%", change: "1947–2025", tone: "emerald" },
-  { label: "Real CAGR", value: "3.3%", change: "inflation-adjusted", tone: "amber" },
+  { label: "Full-period CAGR", value: "9.8%", change: "1947–2025", tone: "emerald" },
+  { label: "Real CAGR", value: "2.6%", change: "inflation-adjusted", tone: "amber" },
   { label: "Market Cap/GDP", value: "124%", change: "2025 snapshot", tone: "violet" },
   { label: "Demat Accounts", value: "18 Cr", change: "structural retail bid", tone: "emerald" },
   { label: "SIP Flow", value: "₹25,000 Cr/mo", change: "new domestic floor", tone: "sky" },

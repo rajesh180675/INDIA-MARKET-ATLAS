@@ -235,7 +235,7 @@ function AppContent() {
 
               <div className="flex flex-wrap gap-3 text-sm">
                 <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-4 py-2 text-emerald-200">
-                  ₹100 → ₹1,53,600 nominal
+                  ₹100 → ₹1,49,298 nominal
                 </span>
                 <span className="rounded-full border border-sky-400/20 bg-sky-400/10 px-4 py-2 text-sky-200">
                   Era filters + scrollspy navigation
