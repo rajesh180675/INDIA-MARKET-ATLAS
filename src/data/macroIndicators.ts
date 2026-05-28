@@ -180,7 +180,7 @@ const goldPrice: MacroDataPoint[] = [
   { year: 2022, value: 52670 },
   { year: 2023, value: 65330 },
   { year: 2024, value: 78500 },
-  { year: 2025, value: 95000 },
+  { year: 2025, value: 97000 },
 ];
 // 3. CPI Inflation (% annual, CPI-IW pre-2012, CPI-Combined post)
 const cpiInflation: MacroDataPoint[] = [
@@ -511,7 +511,7 @@ const forexReserves: MacroDataPoint[] = [
   { year: 2022, value: 524.5 },
   { year: 2023, value: 617.3 },
   { year: 2024, value: 640.3 },
-  { year: 2025, value: 660.0 },
+  { year: 2025, value: 650.0 },
 ];
 
 // 7. Fiscal Deficit (% of GDP, Central Government)
@@ -669,7 +669,7 @@ const crudeOil: MacroDataPoint[] = [
   { year: 2014, value: 99.0 },{ year: 2015, value: 52.4 },{ year: 2016, value: 43.7 },
   { year: 2017, value: 54.4 },{ year: 2018, value: 71.1 },{ year: 2019, value: 64.0 },
   { year: 2020, value: 41.8 },{ year: 2021, value: 70.7 },{ year: 2022, value: 99.0 },
-  { year: 2023, value: 82.6 },{ year: 2024, value: 80.0 },{ year: 2025, value: 72.0 },
+  { year: 2023, value: 82.6 },{ year: 2024, value: 80.0 },{ year: 2025, value: 65.0 },
 ];
 
 // 11. 10-Year G-Sec Yield (%)
@@ -688,7 +688,7 @@ const gsecYield: MacroDataPoint[] = [
   { year: 2015, value: 7.8 },{ year: 2016, value: 6.5 },{ year: 2017, value: 7.3 },
   { year: 2018, value: 7.4 },{ year: 2019, value: 6.6 },{ year: 2020, value: 5.9 },
   { year: 2021, value: 6.5 },{ year: 2022, value: 7.3 },{ year: 2023, value: 7.2 },
-  { year: 2024, value: 7.0 },{ year: 2025, value: 6.8 },
+  { year: 2024, value: 7.0 },{ year: 2025, value: 6.4 },
 ];
 
 // 12. Sensex P/E Ratio (year-end)
@@ -719,7 +719,7 @@ const fiiFlows: MacroDataPoint[] = [
   { year: 2014, value: 16.2 },{ year: 2015, value: 3.2 },{ year: 2016, value: -1.5 },
   { year: 2017, value: 7.6 },{ year: 2018, value: -4.6 },{ year: 2019, value: 14.2 },
   { year: 2020, value: 23.4 },{ year: 2021, value: -3.8 },{ year: 2022, value: -16.5 },
-  { year: 2023, value: 21.4 },{ year: 2024, value: -0.5 },{ year: 2025, value: 5.0 },
+  { year: 2023, value: 21.4 },{ year: 2024, value: -0.5 },{ year: 2025, value: -8.0 },
 ];
 
 // 14. Population (crore)
