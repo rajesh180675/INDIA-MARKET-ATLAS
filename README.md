@@ -1,78 +1,99 @@
 # India Market Atlas
 
-A professional-grade interactive visualization of India's stock market history — from Independence (1947) to the present day.
+A professional-grade interactive visualization of India's stock market history — from Independence (1947) to the present day. 17 analytical sections covering macro, real returns, risk, and regime analysis.
 
 **Live:** [india-market-atlas.vercel.app](https://india-market-atlas.vercel.app)
 
-## What it shows
+## Sections (17)
 
-- **78-year continuous index** (BSE Sensex, normalized to 1947 = 100)
-- **Candlestick desk** with expand-to-window viewing and structural context mode
-- **Market regimes** — five distinct eras with CAGR, risk, and lessons
-- **Crash anatomy** — every major drawdown with depth, duration, and recovery
-- **India vs World** — Sensex vs S&P 500 vs Shanghai Composite (base 1990)
-- **Retail revolution** — SIP flows, demat growth, financialization metrics
-- **2050 projector** — scenario analysis from stress to euphoria
-- **Full data table** with CSV export
+| # | Section | What it shows |
+|---|---------|---------------|
+| 1 | Overview | Key stats, market cap, CAGR summary |
+| 2 | Chart | Interactive Sensex 1947–2025 with structural context |
+| 3 | Structure | Market evolution, sector composition |
+| 4 | Retail | SIP/Demat growth, retail participation |
+| 5 | World | India vs USA vs China (base 1990=100) |
+| 6 | Crashes | Major drawdowns with recovery timelines |
+| 7 | 2050 | Scenario projections (stress/base/bull) |
+| 8 | Insights | Key observations and market wisdom |
+| 9 | Macro | 16 indicators (USD, Gold, CPI, GDP, Repo, Forex, etc.) |
+| 10 | Real Returns | Sensex in USD, Gold, CPI-adjusted terms |
+| 11 | Asset Race | ₹100 in 1979 across equities/gold/USD/FD/inflation |
+| 12 | Analytics | Correlation matrix + decade-wise multi-denomination returns |
+| 13 | Risk | Rolling returns, drawdowns, Sharpe/Sortino ratios |
+| 14 | Regimes | GDP×Inflation regime classification + returns |
+| 15 | Purchasing Power | Real value table, equity risk premium, market vs GDP |
+| 16 | SIP | SIP vs Lumpsum for every start year |
+| 17 | Data | Downloadable CSV export |
+
+## Data (1708 lines across 2 modules)
+
+**`src/data/indiaMarketData.ts`** — 905 lines
+- Normalized index values (1947–2025, base 100)
+- Crash events, market regimes, decade returns
+- Rolling windows, SIP/Demat growth, sector evolution
+- India vs World comparison, scenario projections
+
+**`src/data/macroIndicators.ts`** — 803 lines, 16 indicators:
+- Currency: USD/INR (3.30→85.50)
+- Commodities: Gold (₹89→₹97,000/10g), Crude Oil
+- Inflation: CPI (annual %)
+- Growth: Real GDP, Nominal GDP (₹0.1T→₹350T), Savings Rate
+- Monetary: RBI Policy Rate, 10Y G-Sec Yield
+- External: Forex Reserves ($0→$650B), Current Account, FII/FPI Flows
+- Fiscal: Fiscal Deficit (% of GDP)
+- Market: Market Cap/GDP, Sensex P/E
+- Demographics: Population (34cr→145cr)
+
+## Key Findings
+
+| Metric | Value | Meaning |
+|--------|-------|---------|
+| Nominal CAGR | 9.8% | ₹100 → ₹1,49,298 over 78 years |
+| USD CAGR | 5.3% | Rupee depreciated 26x (₹3.30→₹85.50) |
+| Gold CAGR | 0.4% | Gold nearly matched equities (1090x vs 1493x) |
+| Real CAGR | 3.2% | After 7% avg inflation, real growth was modest |
+| Equities (1979) | ₹81.6K | ₹100 → ₹81,600 in 46 years (816x) |
+| Gold (1979) | ₹10.1K | ₹100 → ₹10,100 (103x) |
+| Sharpe Ratio | ~0.15 | Low risk-adjusted returns (high volatility) |
 
 ## Architecture
 
 ```
 src/
-├── app/              # Providers, ThemeContext
-├── components/       # InteractiveMarketChart, ComparisonChart, UI primitives
-│   ├── charts/       # ChartToolbar, ChartSummaryCards, CompareOverlay
-│   └── ui/           # GradientPanel, SectionHeading, ProgressMetric
-├── data/             # indiaMarketData.ts (all data as typed TS modules)
-├── features/         # Feature-sliced sections (lazy-loaded)
-│   ├── overview/
-│   ├── market-chart/
-│   ├── structure/
-│   ├── retail/
-│   ├── global-comparison/
-│   ├── crashes/
-│   ├── projector/
-│   ├── insights/
-│   └── data-table/
-├── hooks/            # useDocumentTheme
-├── lib/              # echarts, format, csv utilities
-└── utils/            # cn (classname merge)
+├── app/           ThemeContext, Providers
+├── components/    UI primitives, charts, error boundaries
+├── data/          Static typed data modules (no runtime fetch)
+├── features/      17 lazy-loaded feature sections
+├── lib/           Utilities (format, csv, echarts)
+└── test/          Setup, mocks
 ```
 
-**Stack:** React 19 + TypeScript + Vite + Tailwind CSS 4 + ECharts 6 + Framer Motion 12
-
-**Design decisions:**
-- No React Router — hash nav + scrollspy (single-page app)
-- No state management library — Context for theme, local state for features
-- Data as importable TS modules — no runtime fetch, validated by Zod at test time
-- Code-split by default, single-file build available via `npm run build:single`
+- **Stack:** React 19 + TypeScript + Vite + Tailwind + ECharts
+- **Testing:** 53 tests (Vitest + Playwright E2E)
+- **Build:** Code-split (lazy sections) + single-file option (`npm run build:single`)
+- **CI:** GitHub Actions (typecheck + unit + E2E on every push)
 
 ## Development
 
 ```bash
 npm install
-npm run dev          # Vite dev server on :5173
-npm run build        # Production build (code-split)
-npm run build:single # Single HTML file distribution
-npm run ci           # Typecheck + unit tests + E2E
+npm run dev          # localhost:5173
+npm run build        # code-split production build
+npm run build:single # single HTML file (cross-env SINGLE_FILE=true)
+npm run test         # vitest
+npm run lint         # eslint
 ```
 
-## Testing
+## Data Sources
 
-```bash
-npm run test:unit    # 41 tests (Vitest + jsdom)
-npm run test:e2e     # Playwright E2E (chromium)
-npm run typecheck    # tsc --noEmit
-```
+- RBI Handbook of Statistics (exchange rates, policy rates, forex, money supply)
+- MOSPI National Accounts (GDP, savings, CPI)
+- BSE India (Sensex, P/E ratios, market cap)
+- World Bank / IMF WEO (cross-country comparisons)
+- SEBI / NSDL (FII/FPI flows, demat accounts)
+- PPAC (crude oil — Indian basket)
+- Census of India / UN Population Division
+- World Gold Council / IBJA (gold prices)
 
-## Data sources
-
-- **1979–2025:** BSE Sensex year-end closing values (BSE India, verified against Wikipedia/financial databases)
-- **1947–1978:** Estimated from RBI Share Price Index and L.C. Gupta academic research
-- **Normalization:** Base 1947 = 100, Sensex values × 1.827 scaling factor
-- **SIP/Demat:** AMFI monthly reports, CDSL/NSDL disclosures
-- **Global comparison:** S&P 500 (total return), Shanghai Composite (price)
-
-## License
-
-MIT
+Pre-1979 market data estimated from RBI Share Price Index (no official Sensex before 1986).
