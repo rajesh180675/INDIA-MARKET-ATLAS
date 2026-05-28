@@ -15,7 +15,7 @@
     "test": "npm run ci",
     "verify": "npm run ci && vercel build --yes",
     "lint": "eslint src/",
-    "build:single": "SINGLE_FILE=true vite build"
+    "build:single": "cross-env SINGLE_FILE=true vite build"
   },
   "dependencies": {
     "clsx": "2.1.1",
@@ -38,6 +38,7 @@
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "5.1.1",
+    "cross-env": "^10.1.0",
     "eslint": "^10.4.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^17.6.0",
