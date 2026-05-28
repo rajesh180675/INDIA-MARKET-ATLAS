@@ -15,7 +15,7 @@
     "test": "npm run ci",
     "verify": "npm run ci && vercel build --yes",
     "lint": "eslint src/",
-    "build:single": "vite build"
+    "build:single": "SINGLE_FILE=true vite build"
   },
   "dependencies": {
     "clsx": "2.1.1",
