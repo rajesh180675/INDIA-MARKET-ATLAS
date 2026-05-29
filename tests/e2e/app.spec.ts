@@ -192,6 +192,26 @@ test.describe("Research Console", () => {
     await expect(cagrSlider).toBeDisabled();
   });
 
+  test("Dataset chip is visible and version mismatch banner appears for stale pins", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    // Chip is always visible (in the rail at lg+, in mobile drawer otherwise — text matches both)
+    await expect(page.getByText(/data · \d{4}-\d{2}/)).toBeVisible();
+    // No banner when no pin
+    await expect(page.getByText(/Dataset version mismatch/i)).not.toBeVisible();
+
+    // Pin to a deliberately old version → banner appears
+    await page.goto("/#/index?dataset=2020-01");
+    const banner = page.getByRole("status").filter({ hasText: /Dataset version mismatch/i });
+    await expect(banner).toBeVisible();
+    await expect(banner.getByText("2020-01", { exact: true })).toBeVisible();
+
+    // Dismiss persists in localStorage
+    await banner.getByRole("button", { name: /Dismiss dataset/i }).click();
+    await expect(banner).not.toBeVisible();
+  });
+
   test("Sector Lab renders rebased view, RS view, and period returns table", async ({
     page,
   }) => {

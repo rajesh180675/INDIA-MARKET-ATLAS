@@ -4,7 +4,9 @@ import { readInt, useAtlasState } from "./console/url-state";
 import { resolveWorkspace, WORKSPACES } from "./console/workspaces";
 import { YearWindow } from "./console/controls";
 import CommandPalette from "./console/CommandPalette";
+import { DatasetChip, DatasetMismatchBanner } from "./console/DatasetIndicator";
 import { MAX_YEAR, MIN_YEAR } from "./domain/atlas";
+import { DATASET_VERSION } from "./domain/dataset-version";
 
 const IndexExplorer = lazy(() => import("./console/workspaces/IndexExplorer"));
 const MacroLab = lazy(() => import("./console/workspaces/MacroLab"));
@@ -69,8 +71,14 @@ export default function App() {
       <div className="rule-b pb-4">
         <div className="eyebrow">India Market Atlas</div>
         <div className="display mt-1 text-[19px] leading-tight">Research Console</div>
-        <div className="num mt-1 text-[12px]" style={{ color: "var(--ink-faint)" }}>
-          {MIN_YEAR}–{MAX_YEAR}
+        <div className="mt-1 flex items-baseline justify-between gap-2">
+          <span
+            className="num text-[12px]"
+            style={{ color: "var(--ink-faint)" }}
+          >
+            {MIN_YEAR}–{MAX_YEAR}
+          </span>
+          <DatasetChip />
         </div>
       </div>
 
@@ -230,9 +238,11 @@ export default function App() {
           </div>
           <div style={{ fontSize: "16pt", fontWeight: 600, marginTop: 4 }}>{ws.title}</div>
           <div style={{ fontSize: "9pt", marginTop: 4 }}>
-            {ws.scope} · Generated {new Date().toISOString().slice(0, 10)} · Hash: {window.location.hash || "#/"}
+            {ws.scope} · Generated {new Date().toISOString().slice(0, 10)} · Dataset {DATASET_VERSION} · Hash: {window.location.hash || "#/"}
           </div>
         </div>
+
+        <DatasetMismatchBanner />
 
         <header className="rule-b mb-6 hidden items-baseline justify-between pb-4 lg:flex">
           <div>

@@ -16,7 +16,7 @@ export interface AtlasState {
 }
 
 /** Params that persist across workspace switches. */
-const GLOBAL_PARAMS = new Set(["from", "to"]);
+const GLOBAL_PARAMS = new Set(["from", "to", "dataset"]);
 
 function parse(): AtlasState {
   const hash = window.location.hash.replace(/^#\/?/, "");
