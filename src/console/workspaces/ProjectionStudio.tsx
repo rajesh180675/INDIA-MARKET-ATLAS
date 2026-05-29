@@ -5,6 +5,7 @@ import { sensexClose } from "@/domain/atlas";
 import { downloadCsv } from "@/lib/csv";
 import { formatNumber } from "@/lib/format";
 import PlotFigure from "../PlotFigure";
+import Provenance from "../Provenance";
 import { atlasColors } from "../theme-colors";
 import { FieldLabel, Readout } from "../controls";
 import { readInt, useAtlasState } from "../url-state";
@@ -174,6 +175,7 @@ export default function ProjectionStudio({ theme }: { theme: string }) {
           </span>{" "}
           in today's rupees ({realMultiple.toFixed(2)}× real). Adjust the assumptions; the URL captures the scenario for sharing.
         </p>
+        <div className="rule-t mt-4 pt-3"><Provenance id="projections" /></div>
       </figure>
     </div>
   );

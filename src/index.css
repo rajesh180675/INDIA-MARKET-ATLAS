@@ -23,7 +23,7 @@
   --surface-sunken: #efece3; /* wells, table stripes */
   --ink: #1b1a17;            /* primary text */
   --ink-soft: #4a4843;       /* secondary text */
-  --ink-faint: #807d75;      /* tertiary / captions */
+  --ink-faint: #6c6960;      /* tertiary / captions — WCAG AA on paper */
   --rule: #d9d4c7;           /* hairline rules */
   --rule-strong: #b9b3a3;
 
@@ -56,7 +56,7 @@ html[data-theme="dark"] {
   --surface-sunken: #0d0e0c;
   --ink: #ece9e1;
   --ink-soft: #b6b3aa;
-  --ink-faint: #837f76;
+  --ink-faint: #95918a;       /* tertiary / captions — WCAG AA on dark paper */
   --rule: #2c2e2a;
   --rule-strong: #41443e;
 
@@ -242,4 +242,89 @@ input[type="range"] {
   * {
     transition: none !important;
   }
+}
+
+/* ---- Print: strip the console chrome, render a clean research handout ---- */
+@media print {
+  /* Force light, ink-on-paper regardless of active theme */
+  :root {
+    color-scheme: light;
+    --paper: #ffffff;
+    --surface: #ffffff;
+    --surface-sunken: #f4f2ec;
+    --ink: #000000;
+    --ink-soft: #2a2924;
+    --ink-faint: #5a574e;
+    --rule: #c8c3b6;
+    --rule-strong: #9e9888;
+    --signal: #1d4e6f;
+    --signal-wash: #ebf0f3;
+  }
+
+  body {
+    background: #ffffff !important;
+    font-size: 11pt;
+    line-height: 1.45;
+  }
+
+  /* Hide all interactive console chrome */
+  aside[aria-label="Workspaces"],
+  header.lg\:hidden,
+  [role="dialog"],
+  .segmented,
+  button {
+    display: none !important;
+  }
+
+  /* But keep buttons that are inside details/summary (provenance) */
+  details summary,
+  details summary * {
+    display: list-item !important;
+  }
+  details[open] {
+    display: block !important;
+  }
+
+  /* Hide any leftover sticky/fixed UI */
+  .sticky,
+  .fixed {
+    position: static !important;
+  }
+
+  main {
+    max-width: 100%;
+    padding: 0 !important;
+  }
+
+  /* Page break hints: don't split figures */
+  figure,
+  .surface {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    box-shadow: none !important;
+    border: 1px solid var(--rule) !important;
+  }
+
+  /* Add a footer citation per page via a print-only header element. The app
+     renders <div class="print-citation"> just for printing. */
+  .print-citation {
+    display: block !important;
+    margin-bottom: 16pt;
+    padding-bottom: 8pt;
+    border-bottom: 2px solid var(--ink);
+    font-family: var(--font-serif);
+  }
+
+  /* Auto-expand all <details> so methodology shows in print */
+  details:not([open]) > *:not(summary) {
+    display: block !important;
+  }
+  details > summary {
+    pointer-events: none;
+  }
+}
+
+/* Print citation is hidden on screen, shown in print */
+.print-citation {
+  display: none;
 }

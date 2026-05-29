@@ -11,6 +11,7 @@ import { sipReturns } from "@/domain/series";
 import { downloadCsv } from "@/lib/csv";
 import { formatNumber } from "@/lib/format";
 import PlotFigure from "../PlotFigure";
+import Provenance from "../Provenance";
 import { atlasColors } from "../theme-colors";
 import { FieldLabel, Readout, Segmented } from "../controls";
 import { readInt, readString, useAtlasState } from "../url-state";
@@ -328,6 +329,7 @@ export default function SipSimulator({ theme }: { theme: string }) {
           for equal total capital. Hover any cell to see exact multiples and IRR. The circled cell tracks the scenario above —
           drag the sliders to move it.
         </p>
+        <div className="rule-t mt-4 pt-3"><Provenance id={`index-${denom}`} label="Underlying index — sources & methodology" /></div>
       </figure>
     </div>
   );

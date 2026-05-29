@@ -139,14 +139,6 @@ export default function CommandPalette() {
 
   if (!open) return null;
 
-  // Group filtered commands for display
-  const groups = new Map<string, Array<{ cmd: Command; idx: number }>>();
-  filtered.forEach((cmd, idx) => {
-    const arr = groups.get(cmd.group) ?? [];
-    arr.push({ cmd, idx });
-    groups.set(cmd.group, arr);
-  });
-
   return (
     <div
       role="dialog"
@@ -203,6 +195,8 @@ export default function CommandPalette() {
           ref={listRef}
           id="atlas-cmd-list"
           role="listbox"
+          aria-label="Commands"
+          tabIndex={0}
           style={{
             margin: 0,
             padding: 0,
@@ -213,82 +207,92 @@ export default function CommandPalette() {
         >
           {filtered.length === 0 ? (
             <li
+              role="presentation"
               className="num"
               style={{ padding: 16, color: "var(--ink-faint)", fontSize: 13 }}
             >
               No commands match “{query}”.
             </li>
           ) : (
-            Array.from(groups.entries()).map(([group, items]) => (
-              <li key={group}>
-                <div
-                  className="eyebrow"
-                  style={{
-                    padding: "8px 14px 4px",
-                    background: "var(--surface-sunken)",
-                    borderTop: "1px solid var(--rule)",
-                  }}
-                >
-                  {group}
-                </div>
-                <ul style={{ margin: 0, padding: 0, listStyle: "none" }}>
-                  {items.map(({ cmd, idx }) => {
-                    const active = idx === activeIdx;
-                    return (
-                      <li
-                        key={cmd.id}
-                        id={`atlas-cmd-${idx}`}
-                        data-idx={idx}
-                        role="option"
-                        aria-selected={active}
-                        onMouseEnter={() => setActiveIdx(idx)}
-                        onClick={() => {
-                          cmd.run();
-                          setOpen(false);
-                        }}
+            // Flatten: a single listbox is the only ARIA-clean structure.
+            // Group separators are role="presentation" headers between options,
+            // not nested lists. Keeps screen readers happy.
+            (() => {
+              const out: React.ReactElement[] = [];
+              let lastGroup: string | null = null;
+              filtered.forEach((cmd, idx) => {
+                if (cmd.group !== lastGroup) {
+                  out.push(
+                    <li
+                      key={`hdr-${cmd.group}`}
+                      role="presentation"
+                      className="eyebrow"
+                      style={{
+                        padding: "8px 14px 4px",
+                        background: "var(--surface-sunken)",
+                        borderTop: idx > 0 ? "1px solid var(--rule)" : undefined,
+                      }}
+                    >
+                      {cmd.group}
+                    </li>,
+                  );
+                  lastGroup = cmd.group;
+                }
+                const active = idx === activeIdx;
+                out.push(
+                  <li
+                    key={cmd.id}
+                    id={`atlas-cmd-${idx}`}
+                    data-idx={idx}
+                    role="option"
+                    aria-selected={active}
+                    onMouseEnter={() => setActiveIdx(idx)}
+                    onClick={() => {
+                      cmd.run();
+                      setOpen(false);
+                    }}
+                    style={{
+                      padding: "8px 14px",
+                      cursor: "pointer",
+                      background: active ? "var(--signal-wash)" : "transparent",
+                      borderLeft: active
+                        ? "2px solid var(--signal)"
+                        : "2px solid transparent",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "baseline",
+                      gap: 12,
+                    }}
+                  >
+                    <span
+                      style={{
+                        color: active ? "var(--signal)" : "var(--ink)",
+                        fontSize: 14,
+                        fontWeight: 500,
+                      }}
+                    >
+                      {cmd.label}
+                    </span>
+                    {cmd.hint ? (
+                      <span
+                        className="num"
                         style={{
-                          padding: "8px 14px",
-                          cursor: "pointer",
-                          background: active ? "var(--signal-wash)" : "transparent",
-                          borderLeft: active
-                            ? "2px solid var(--signal)"
-                            : "2px solid transparent",
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "baseline",
-                          gap: 12,
+                          color: "var(--ink-soft)",
+                          fontSize: 11,
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          maxWidth: "55%",
                         }}
                       >
-                        <span
-                          style={{
-                            color: active ? "var(--signal)" : "var(--ink)",
-                            fontSize: 14,
-                            fontWeight: 500,
-                          }}
-                        >
-                          {cmd.label}
-                        </span>
-                        {cmd.hint ? (
-                          <span
-                            className="num"
-                            style={{
-                              color: "var(--ink-faint)",
-                              fontSize: 11,
-                              whiteSpace: "nowrap",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              maxWidth: "55%",
-                            }}
-                          >
-                            {cmd.hint}
-                          </span>
-                        ) : null}
-                      </li>
-                    );
-                  })}
-                </ul>
-              </li>
-            ))
+                        {cmd.hint}
+                      </span>
+                    ) : null}
+                  </li>,
+                );
+              });
+              return out;
+            })()
           )}
         </ul>
 

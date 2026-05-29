@@ -1,99 +1,100 @@
 # India Market Atlas
 
-A professional-grade interactive visualization of India's stock market history — from Independence (1947) to the present day. 17 analytical sections covering macro, real returns, risk, and regime analysis.
+A research console for India's equity market history, 1947–2025. Six analytical workspaces, all driven by a single typed dataset and a small set of pure derivation primitives.
 
 **Live:** [india-market-atlas.vercel.app](https://india-market-atlas.vercel.app)
 
-## Sections (17)
+## Workspaces
 
-| # | Section | What it shows |
-|---|---------|---------------|
-| 1 | Overview | Key stats, market cap, CAGR summary |
-| 2 | Chart | Interactive Sensex 1947–2025 with structural context |
-| 3 | Structure | Market evolution, sector composition |
-| 4 | Retail | SIP/Demat growth, retail participation |
-| 5 | World | India vs USA vs China (base 1990=100) |
-| 6 | Crashes | Major drawdowns with recovery timelines |
-| 7 | 2050 | Scenario projections (stress/base/bull) |
-| 8 | Insights | Key observations and market wisdom |
-| 9 | Macro | 16 indicators (USD, Gold, CPI, GDP, Repo, Forex, etc.) |
-| 10 | Real Returns | Sensex in USD, Gold, CPI-adjusted terms |
-| 11 | Asset Race | ₹100 in 1979 across equities/gold/USD/FD/inflation |
-| 12 | Analytics | Correlation matrix + decade-wise multi-denomination returns |
-| 13 | Risk | Rolling returns, drawdowns, Sharpe/Sortino ratios |
-| 14 | Regimes | GDP×Inflation regime classification + returns |
-| 15 | Purchasing Power | Real value table, equity risk premium, market vs GDP |
-| 16 | SIP | SIP vs Lumpsum for every start year |
-| 17 | Data | Downloadable CSV export |
+| Slug | Workspace | What it answers |
+|------|-----------|-----------------|
+| `index` | Index Explorer | What did the equity index do — in nominal ₹, real ₹, USD, or gold terms? Line or candle. |
+| `macro` | Macro Lab | How do 16 indicators behave over time, against each other, or correlated as a matrix? |
+| `race` | Asset Race | ₹100 in 1979 across equities, gold, USD, FD@policy-rate, inflation. |
+| `sip` | SIP Simulator | Every start × end SIP scenario vs lumpsum. CAGR/IRR heatmap. |
+| `regimes` | Regimes & Crashes | Policy eras + every drawdown ≥10%, with deep-link into Index Explorer. |
+| `projections` | Projection Studio | Live CAGR/inflation sliders extending to 2050. |
 
-## Data (1708 lines across 2 modules)
+URL state is workspace-scoped and shareable — every selection (denomination, year window, indicators, scenario sliders) round-trips through the hash.
 
-**`src/data/indiaMarketData.ts`** — 905 lines
-- Normalized index values (1947–2025, base 100)
-- Crash events, market regimes, decade returns
-- Rolling windows, SIP/Demat growth, sector evolution
-- India vs World comparison, scenario projections
-
-**`src/data/macroIndicators.ts`** — 803 lines, 16 indicators:
-- Currency: USD/INR (3.30→85.50)
-- Commodities: Gold (₹89→₹97,000/10g), Crude Oil
-- Inflation: CPI (annual %)
-- Growth: Real GDP, Nominal GDP (₹0.1T→₹350T), Savings Rate
-- Monetary: RBI Policy Rate, 10Y G-Sec Yield
-- External: Forex Reserves ($0→$650B), Current Account, FII/FPI Flows
-- Fiscal: Fiscal Deficit (% of GDP)
-- Market: Market Cap/GDP, Sensex P/E
-- Demographics: Population (34cr→145cr)
-
-## Key Findings
-
-| Metric | Value | Meaning |
-|--------|-------|---------|
-| Nominal CAGR | 9.8% | ₹100 → ₹1,49,298 over 78 years |
-| USD CAGR | 5.3% | Rupee depreciated 26x (₹3.30→₹85.50) |
-| Gold CAGR | 0.4% | Gold nearly matched equities (1090x vs 1493x) |
-| Real CAGR | 3.2% | After 7% avg inflation, real growth was modest |
-| Equities (1979) | ₹81.6K | ₹100 → ₹81,600 in 46 years (816x) |
-| Gold (1979) | ₹10.1K | ₹100 → ₹10,100 (103x) |
-| Sharpe Ratio | ~0.15 | Low risk-adjusted returns (high volatility) |
+Press `⌘K` / `Ctrl+K` for the command palette.
 
 ## Architecture
 
 ```
 src/
-├── app/           ThemeContext, Providers
-├── components/    UI primitives, charts, error boundaries
-├── data/          Static typed data modules (no runtime fetch)
-├── features/      17 lazy-loaded feature sections
-├── lib/           Utilities (format, csv, echarts)
-└── test/          Setup, mocks
+├── data/           Inherited static dataset (1947–2025, no runtime fetch)
+│   ├── indiaMarketData.ts    Equity index + scenarios
+│   ├── macroIndicators.ts    16 indicators
+│   └── sensexOHLC.ts          Annual OHLC, 1979+
+├── domain/         Pure derivation layer (Series + atlas + provenance)
+│   ├── series.ts             cagr, deflate, denominate, drawdown, pearson,
+│   │                          correlationMatrix, sipReturns, compoundAtRate
+│   ├── atlas.ts              Workspace-facing series composition
+│   └── provenance.ts         Source / methodology / caveats registry
+├── console/        Research Console UI shell
+│   ├── workspaces/           One file per workspace
+│   ├── url-state.ts          Workspace-scoped hash routing
+│   ├── controls.tsx          Segmented (ARIA toolbar), YearWindow, Slider
+│   ├── PlotFigure.tsx        ResizeObserver-driven Observable Plot wrapper
+│   ├── CommandPalette.tsx    ⌘K launcher
+│   └── Provenance.tsx        Inline source disclosure
+├── lib/            csv, format helpers
+└── App.tsx         Shell: rail + shared YearWindow + lazy workspace routing
 ```
 
-- **Stack:** React 19 + TypeScript + Vite + Tailwind + ECharts
-- **Testing:** 53 tests (Vitest + Playwright E2E)
-- **Build:** Code-split (lazy sections) + single-file option (`npm run build:single`)
-- **CI:** GitHub Actions (typecheck + unit + E2E on every push)
+**Stack:** React 19 + TypeScript + Vite + Tailwind 4 + Observable Plot.
+
+## Verification
+
+| Layer | Tooling | Count |
+|-------|---------|-------|
+| Type safety | `tsc --noEmit` | 0 errors |
+| Domain unit tests | Vitest | 90 |
+| Functional E2E | Playwright | 13 |
+| Accessibility E2E | axe-core (WCAG 2.1 AA) | 7 |
+| Visual regression | Playwright snapshots | 12 (opt-in via `RUN_VISUAL=1`) |
+| CI | GitHub Actions | typecheck + unit + build + E2E on every PR |
+| Data freshness | Quarterly cron | auto-issue when sources >2y stale |
 
 ## Development
 
 ```bash
 npm install
-npm run dev          # localhost:5173
-npm run build        # code-split production build
-npm run build:single # single HTML file (cross-env SINGLE_FILE=true)
-npm run test         # vitest
-npm run lint         # eslint
+npm run dev                   # localhost:5173
+npm run build                 # production build
+npm test                      # vitest (domain + components)
+npx playwright test           # E2E + a11y (visual suite skipped by default)
+RUN_VISUAL=1 npx playwright test tests/e2e/visual.spec.ts  # visual regression
+node scripts/check-data-freshness.cjs                       # audit dataset
 ```
 
-## Data Sources
+## Design principles
 
-- RBI Handbook of Statistics (exchange rates, policy rates, forex, money supply)
-- MOSPI National Accounts (GDP, savings, CPI)
-- BSE India (Sensex, P/E ratios, market cap)
-- World Bank / IMF WEO (cross-country comparisons)
-- SEBI / NSDL (FII/FPI flows, demat accounts)
-- PPAC (crude oil — Indian basket)
-- Census of India / UN Population Division
-- World Gold Council / IBJA (gold prices)
+1. **Domain layer is pure.** No React, no fetch — just `Series`, `cagr()`, `deflate()`, `pearson()`, etc. 90 unit tests cover the math. Workspaces are thin views over these primitives.
+2. **URL-as-truth.** Every analytical state is a hash param. Reload, share, paste — same result.
+3. **Provenance over presentation.** Every figure exposes a `<Provenance>` disclosure with sources, methodology, calendar convention, coverage, and caveats. Numbers without their lineage are not trustworthy.
+4. **Quant-editorial visual language.** Light-first ink-on-paper, serif display, monospace numerics, ruled surfaces, one signal accent. No glass, no gradients, no motion.
+5. **One signal accent.** Color encodes data, not chrome.
 
-Pre-1979 market data estimated from RBI Share Price Index (no official Sensex before 1986).
+## Data sources
+
+| Series | Source | Notes |
+|--------|--------|-------|
+| Sensex points (1979+) | BSE India | Official annual OHLC |
+| Equity index (1947–1978) | RBI Share Price Index | Pre-Sensex proxy, normalized to 100 in 1947 |
+| CPI inflation | MOSPI, RBI, Labour Bureau | All-India headline series |
+| USD/INR | RBI, IMF IFS | Annual reference rate |
+| Gold (₹/10g) | RBI, World Gold Council, IBJA | Mumbai standard |
+| Repo / 10Y G-Sec / Forex | RBI Handbook | Quarterly rates resampled to annual |
+| GDP / savings | MOSPI National Accounts | At current prices |
+| Demat / FII | NSDL, SEBI | Scaled to crores |
+| Population | Census of India, UN PD | Mid-year estimates |
+| Crude oil | PPAC | Indian basket |
+| Sensex P/E | BSE India | Year-end |
+
+Refreshes are manual — none of these sources expose programmatic feeds. The quarterly freshness workflow alerts when the dataset drifts past two years; refreshes are PR'd by hand.
+
+## License
+
+MIT.

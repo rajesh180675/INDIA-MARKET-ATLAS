@@ -16,6 +16,7 @@ import {
 } from "@/domain/series";
 import { downloadCsv } from "@/lib/csv";
 import PlotFigure from "../PlotFigure";
+import Provenance from "../Provenance";
 import { atlasColors } from "../theme-colors";
 import { Readout, Segmented } from "../controls";
 import { readInt, readString, useAtlasState } from "../url-state";
@@ -324,6 +325,9 @@ export default function IndexExplorer({ theme }: { theme: string }) {
             ariaLabel={`Equity index in ${denom} terms, ${from} to ${to}, log scale`}
           />
         )}
+        <div className="rule-t mt-4 pt-3">
+          <Provenance id={`index-${denom}`} />
+        </div>
       </figure>
 
       {/* Drawdown + rolling CAGR side by side */}
