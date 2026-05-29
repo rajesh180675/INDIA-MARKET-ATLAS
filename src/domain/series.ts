@@ -18,6 +18,7 @@ export class Series {
   readonly label: string;
   readonly unit: string;
   private readonly map: Map<Year, number>;
+  private _years: Year[] | null = null;
 
   constructor(
     id: string,
@@ -37,7 +38,8 @@ export class Series {
   }
 
   get years(): Year[] {
-    return Array.from(this.map.keys()).sort((a, b) => a - b);
+    if (!this._years) this._years = Array.from(this.map.keys()).sort((a, b) => a - b);
+    return this._years;
   }
 
   get points(): Point[] {
@@ -135,6 +137,48 @@ export function priceLevelFromInflation(
     "CPI Price Level",
     `index (${baseYear}=100)`,
     Array.from(level.entries()).map(([year, value]) => ({ year, value })),
+  );
+}
+
+/**
+ * Compound an initial value through an annual-rate series. Each year y has
+ * value[y] = value[y-1] * (1 + rate[y]/100). Anchored at baseYear with
+ * baseValue (default 100). Used to model FD growth from a policy-rate series,
+ * notional savings, etc.
+ */
+export function compoundAtRate(
+  ratePct: Series,
+  baseYear: Year,
+  opts: { id?: string; label?: string; baseValue?: number } = {},
+): Series {
+  const baseValue = opts.baseValue ?? 100;
+  const years = ratePct.years.slice().sort((a, b) => a - b);
+  const out = new Map<Year, number>();
+  out.set(baseYear, baseValue);
+
+  // Forward from baseYear: each year applies that year's rate
+  let prev = baseValue;
+  for (const y of years) {
+    if (y <= baseYear) continue;
+    const r = ratePct.at(y) ?? 0;
+    prev = prev * (1 + r / 100);
+    out.set(y, prev);
+  }
+  // Backward from baseYear: undo the rate applied for that year
+  prev = baseValue;
+  for (const y of years.slice().reverse()) {
+    if (y >= baseYear) continue;
+    const rNext = ratePct.at(y + 1) ?? ratePct.at(y) ?? 0;
+    const next = out.get(y + 1) ?? prev;
+    prev = next / (1 + rNext / 100);
+    out.set(y, prev);
+  }
+
+  return new Series(
+    opts.id ?? `${ratePct.id}-compounded`,
+    opts.label ?? `${ratePct.label} compounded`,
+    `value (${baseYear}=${baseValue})`,
+    Array.from(out.entries()).map(([year, value]) => ({ year, value })),
   );
 }
 
@@ -276,4 +320,152 @@ export function alignSeries(
     });
     return row;
   });
+}
+
+/**
+ * Pearson correlation coefficient between two series, computed on the
+ * intersection of their year domains. Returns null if fewer than 2 paired
+ * observations exist or either series has zero variance.
+ */
+export function pearson(a: Series, b: Series, from?: Year, to?: Year): number | null {
+  const aw = from != null && to != null ? a.window(from, to) : a;
+  const bw = from != null && to != null ? b.window(from, to) : b;
+  const ays = new Set(aw.years);
+  const pairs: Array<[number, number]> = [];
+  for (const y of bw.years) {
+    if (!ays.has(y)) continue;
+    const av = aw.at(y);
+    const bv = bw.at(y);
+    if (av != null && bv != null) pairs.push([av, bv]);
+  }
+  if (pairs.length < 2) return null;
+  const n = pairs.length;
+  const meanA = pairs.reduce((s, [x]) => s + x, 0) / n;
+  const meanB = pairs.reduce((s, [, y]) => s + y, 0) / n;
+  let num = 0;
+  let varA = 0;
+  let varB = 0;
+  for (const [x, y] of pairs) {
+    const dx = x - meanA;
+    const dy = y - meanB;
+    num += dx * dy;
+    varA += dx * dx;
+    varB += dy * dy;
+  }
+  if (varA === 0 || varB === 0) return null;
+  return num / Math.sqrt(varA * varB);
+}
+
+/**
+ * Build an N×N correlation matrix between a list of series, computed on the
+ * shared intersection window (or a passed-in [from, to]). Returns long-form
+ * rows {a, b, r} suitable for a Plot cell heatmap.
+ */
+export function correlationMatrix(
+  serieses: Series[],
+  from?: Year,
+  to?: Year,
+): Array<{ a: string; aLabel: string; b: string; bLabel: string; r: number | null }> {
+  const out: Array<{ a: string; aLabel: string; b: string; bLabel: string; r: number | null }> = [];
+  for (const a of serieses) {
+    for (const b of serieses) {
+      out.push({
+        a: a.id,
+        aLabel: a.label,
+        b: b.id,
+        bLabel: b.label,
+        r: a.id === b.id ? 1 : pearson(a, b, from, to),
+      });
+    }
+  }
+  return out;
+}
+
+export interface SipResult {
+  startYear: Year;
+  endYear: Year;
+  yearsInvested: number;
+  totalContributed: number;
+  /** Total terminal wealth from SIP (₹1 invested at the start of each year). */
+  sipFinalValue: number;
+  /** Multiple over total contributed: sipFinalValue / totalContributed. */
+  sipMultiple: number;
+  /** Internal rate of return for the SIP cash-flow stream (annualized %). */
+  sipIrrPct: number | null;
+  /** Lumpsum: same total contributed, all in at startYear. */
+  lumpsumFinalValue: number;
+  lumpsumMultiple: number;
+  lumpsumCagrPct: number | null;
+  /** SIP advantage vs lumpsum (positive = SIP won, negative = lumpsum won). */
+  sipAdvantagePct: number;
+}
+
+/**
+ * SIP simulation on a price-level series. ₹1 invested at the start of each
+ * year from startYear to endYear (inclusive); compared to a lumpsum of equal
+ * total amount placed entirely at startYear.
+ *
+ * Returns null if the series doesn't cover the window.
+ */
+export function sipReturns(price: Series, startYear: Year, endYear: Year): SipResult | null {
+  if (endYear <= startYear) return null;
+  const startPrice = price.at(startYear);
+  const endPrice = price.at(endYear);
+  if (startPrice == null || endPrice == null || startPrice <= 0) return null;
+
+  const yearsInvested = endYear - startYear + 1;
+  const totalContributed = yearsInvested;
+
+  // SIP: ₹1 each year y grows to (endPrice / priceAt(y))
+  let sipFinalValue = 0;
+  for (let y = startYear; y <= endYear; y++) {
+    const py = price.at(y);
+    if (py == null || py <= 0) return null;
+    sipFinalValue += endPrice / py;
+  }
+  const sipMultiple = sipFinalValue / totalContributed;
+
+  // SIP IRR: solve f(r) = Σ_y (1+r)^(endYear - y) − sipFinalValue = 0
+  // Bisection on r ∈ [-99%, +500%]
+  function npv(r: number): number {
+    let s = 0;
+    for (let y = startYear; y <= endYear; y++) {
+      s += Math.pow(1 + r, endYear - y);
+    }
+    return s - sipFinalValue;
+  }
+  let lo = -0.99;
+  let hi = 5;
+  let sipIrrPct: number | null = null;
+  // Make sure there's a sign change
+  if (npv(lo) * npv(hi) < 0) {
+    for (let i = 0; i < 80; i++) {
+      const mid = (lo + hi) / 2;
+      if (npv(mid) < 0) lo = mid;
+      else hi = mid;
+    }
+    sipIrrPct = ((lo + hi) / 2) * 100;
+  }
+
+  // Lumpsum: same totalContributed, all at startYear, hold to endYear
+  const lumpsumFinalValue = totalContributed * (endPrice / startPrice);
+  const lumpsumMultiple = endPrice / startPrice;
+  const lumpsumCagrPct = cagr(price, startYear, endYear);
+
+  const sipAdvantagePct =
+    ((sipFinalValue - lumpsumFinalValue) / lumpsumFinalValue) * 100;
+
+  return {
+    startYear,
+    endYear,
+    yearsInvested,
+    totalContributed,
+    sipFinalValue,
+    sipMultiple,
+    sipIrrPct,
+    lumpsumFinalValue,
+    lumpsumMultiple,
+    lumpsumCagrPct,
+    sipAdvantagePct,
+  };
 }

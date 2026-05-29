@@ -5,6 +5,7 @@ import { downloadCsv } from "@/lib/csv";
 import { formatNumber } from "@/lib/format";
 import PlotFigure from "../PlotFigure";
 import { atlasColors } from "../theme-colors";
+import { useAtlasState } from "../url-state";
 
 /** Parse a "1947–1979" / "1991–present" era string into numeric bounds. */
 function parseEra(years: string): { start: number; end: number } {
@@ -19,6 +20,7 @@ function parseEra(years: string): { start: number; end: number } {
 
 export default function RegimesCrashes({ theme }: { theme: string }) {
   const c = useMemo(() => atlasColors(), [theme]);
+  const { navigate } = useAtlasState();
 
   const eras = useMemo(
     () => regimes.map((r, i) => ({ ...r, ...parseEra(r.years), band: c.cat[i % c.cat.length] })),
@@ -118,6 +120,19 @@ export default function RegimesCrashes({ theme }: { theme: string }) {
     );
   }
 
+  /** Jump to Index Explorer with the era's bounds preset. */
+  function openEra(start: number, end: number) {
+    navigate("index", { from: String(start), to: String(end) });
+  }
+
+  /** Jump to Index Explorer centered on the crash, ±5 years. */
+  function openCrash(year: number, recoveryMonths: number | null) {
+    const span = Math.max(5, Math.ceil((recoveryMonths ?? 24) / 12) + 2);
+    const from = Math.max(1947, year - 3);
+    const to = Math.min(2025, year + span);
+    navigate("index", { from: String(from), to: String(to) });
+  }
+
   return (
     <div className="space-y-6">
       <figure className="surface p-5">
@@ -138,17 +153,35 @@ export default function RegimesCrashes({ theme }: { theme: string }) {
               <th>Returns</th>
               <th>Risk</th>
               <th>Driver / lesson</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
-            {regimes.map((r) => (
+            {eras.map((r) => (
               <tr key={r.id}>
                 <td style={{ color: "var(--ink)", fontWeight: 600 }}>{r.name}</td>
                 <td>{r.years}</td>
                 <td>{r.returns}</td>
                 <td>{r.risk}</td>
-                <td style={{ whiteSpace: "normal", maxWidth: 420, color: "var(--ink-soft)" }}>
+                <td style={{ whiteSpace: "normal", maxWidth: 380, color: "var(--ink-soft)" }}>
                   <span style={{ color: "var(--ink)" }}>{r.driver}</span> {r.lesson}
+                </td>
+                <td>
+                  <button
+                    type="button"
+                    onClick={() => openEra(r.start, r.end)}
+                    className="px-2 py-1 text-[11px]"
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      border: "1px solid var(--rule-strong)",
+                      background: "transparent",
+                      color: "var(--signal)",
+                      cursor: "pointer",
+                    }}
+                    title={`Open Index Explorer focused on ${r.start}–${r.end}`}
+                  >
+                    Open →
+                  </button>
                 </td>
               </tr>
             ))}
@@ -184,6 +217,7 @@ export default function RegimesCrashes({ theme }: { theme: string }) {
                 <th>Decline</th>
                 <th>Bottom</th>
                 <th>Recover</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -195,6 +229,23 @@ export default function RegimesCrashes({ theme }: { theme: string }) {
                   <td style={{ color: "var(--neg)" }}>{formatNumber(e.decline, 0)}%</td>
                   <td>{e.monthsToBottom}mo</td>
                   <td>{e.monthsToRecover == null ? "—" : `${e.monthsToRecover}mo`}</td>
+                  <td>
+                    <button
+                      type="button"
+                      onClick={() => openCrash(e.year, e.monthsToRecover)}
+                      className="px-2 py-0.5 text-[11px]"
+                      style={{
+                        fontFamily: "var(--font-mono)",
+                        border: "1px solid var(--rule-strong)",
+                        background: "transparent",
+                        color: "var(--signal)",
+                        cursor: "pointer",
+                      }}
+                      title={`Open Index Explorer focused on the ${e.name}`}
+                    >
+                      Open →
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>

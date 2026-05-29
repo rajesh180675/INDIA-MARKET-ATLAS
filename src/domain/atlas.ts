@@ -16,6 +16,7 @@ import { macroIndicators } from "@/data/macroIndicators";
 import { sensexOHLC } from "@/data/sensexOHLC";
 import {
   Series,
+  compoundAtRate,
   deflate,
   denominate,
   priceLevelFromInflation,
@@ -113,6 +114,64 @@ export const macroCategories: string[] = Array.from(
 // ---- Pass-through typed records used by qualitative surfaces ----
 export const regimes: Regime[] = marketRegimes;
 export const crashes: CrashEvent[] = crashEvents;
+
+// ---- Asset Race: ₹100 in 1979 across equities/gold/USD-cash/FD/inflation ----
+// All composed from existing primitives — no hardcoded growth multiples.
+
+export const ASSET_RACE_BASE_YEAR: Year = 1979;
+
+const policyRate = macro("policy-rate");
+
+export interface AssetTrack {
+  id: string;
+  label: string;
+  blurb: string;
+  series: Series;
+}
+
+/**
+ * The five tracks of the Asset Race, all rebased so 1979 = 100.
+ * - Equity: nominal index rebased
+ * - Gold: gold INR/10g rebased
+ * - USD-cash: 1 USD held since 1979, value in INR (= USD/INR rebased)
+ * - FD: ₹100 compounded yearly at the RBI policy rate
+ * - Inflation: CPI price level rebased (the bar to beat for "real" gains)
+ */
+export const assetRace: AssetTrack[] = [
+  {
+    id: "equity",
+    label: "Equity",
+    blurb: "Sensex-tracking equity index (nominal)",
+    series: nominalIndex.rebase(ASSET_RACE_BASE_YEAR),
+  },
+  {
+    id: "gold",
+    label: "Gold",
+    blurb: "Domestic gold price (INR/10g)",
+    series: goldPrice.rebase(ASSET_RACE_BASE_YEAR),
+  },
+  {
+    id: "usd-cash",
+    label: "USD cash",
+    blurb: "1 USD held since 1979, valued in INR",
+    series: usdInr.rebase(ASSET_RACE_BASE_YEAR),
+  },
+  {
+    id: "fd",
+    label: "Fixed deposit",
+    blurb: "Compounded at the RBI policy rate each year",
+    series: compoundAtRate(policyRate, ASSET_RACE_BASE_YEAR, {
+      id: "fd",
+      label: "Fixed deposit",
+    }),
+  },
+  {
+    id: "inflation",
+    label: "Inflation (CPI)",
+    blurb: "What ₹100 of 1979 needs to be to keep pace with prices",
+    series: cpiLevel.rebase(ASSET_RACE_BASE_YEAR),
+  },
+];
 
 // ---- Global year bounds across the spine series ----
 export const MIN_YEAR = nominalIndex.firstYear ?? BASE_YEAR;

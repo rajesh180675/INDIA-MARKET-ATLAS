@@ -3,7 +3,10 @@
 // lives in the URL hash so any view is shareable and back/forward navigable.
 //
 // Format: #/<workspace>?denom=real&from=1979&to=2025&cmp=usd-inr,gold-price
-// No routing library — the History API + a subscription is all this needs.
+//
+// SCOPING: `from` and `to` are GLOBAL (shared across workspaces). All other
+// params are workspace-specific and cleared on workspace switch so stale state
+// from one workspace doesn't pollute another.
 
 import { useCallback, useSyncExternalStore } from "react";
 
@@ -11,6 +14,9 @@ export interface AtlasState {
   workspace: string;
   params: URLSearchParams;
 }
+
+/** Params that persist across workspace switches. */
+const GLOBAL_PARAMS = new Set(["from", "to"]);
 
 function parse(): AtlasState {
   const hash = window.location.hash.replace(/^#\/?/, "");
@@ -55,7 +61,13 @@ export function useAtlasState() {
 
   const setWorkspace = useCallback((workspace: string) => {
     const cur = parse();
-    window.location.hash = serialize(workspace, cur.params);
+    // Preserve only global params when switching workspaces
+    const next = new URLSearchParams();
+    Array.from(GLOBAL_PARAMS).forEach((key) => {
+      const val = cur.params.get(key);
+      if (val != null) next.set(key, val);
+    });
+    window.location.hash = serialize(workspace, next);
   }, []);
 
   const setParam = useCallback((key: string, value: string | null) => {
@@ -74,7 +86,31 @@ export function useAtlasState() {
     window.location.hash = serialize(cur.workspace, cur.params);
   }, []);
 
-  return { state, setWorkspace, setParam, setParams };
+  /**
+   * Atomic navigate: switch workspace and set workspace-specific params in one
+   * hash write. Global params (from/to) carry over from the current URL unless
+   * explicitly overridden in `entries`. Used for cross-workspace deep links.
+   */
+  const navigate = useCallback(
+    (workspace: string, entries: Record<string, string | null> = {}) => {
+      const cur = parse();
+      const next = new URLSearchParams();
+      // Preserve global params first
+      Array.from(GLOBAL_PARAMS).forEach((key) => {
+        const val = cur.params.get(key);
+        if (val != null) next.set(key, val);
+      });
+      // Apply caller-provided entries (can include globals to override)
+      for (const [key, value] of Object.entries(entries)) {
+        if (value == null || value === "") next.delete(key);
+        else next.set(key, value);
+      }
+      window.location.hash = serialize(workspace, next);
+    },
+    [],
+  );
+
+  return { state, setWorkspace, setParam, setParams, navigate };
 }
 
 // Typed readers with defaults — derived state, never duplicated in component

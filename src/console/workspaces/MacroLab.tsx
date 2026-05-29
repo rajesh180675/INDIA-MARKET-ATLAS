@@ -6,9 +6,11 @@ import {
   macroById,
   macroCatalog,
   macroCategories,
+  nominalIndex,
 } from "@/domain/atlas";
-import { alignSeries, cagr } from "@/domain/series";
+import { Series, alignSeries, cagr, correlationMatrix, yoy } from "@/domain/series";
 import { downloadCsv } from "@/lib/csv";
+import { formatNumber } from "@/lib/format";
 import PlotFigure from "../PlotFigure";
 import { atlasColors } from "../theme-colors";
 import { FieldLabel, Readout, Segmented } from "../controls";
@@ -17,6 +19,7 @@ import { readInt, readString, useAtlasState } from "../url-state";
 const modeOptions = [
   { id: "time", label: "Time series", title: "Two indicators over time" },
   { id: "scatter", label: "Cross-plot", title: "One indicator against the other" },
+  { id: "matrix", label: "Matrix", title: "Pearson correlation across all indicators + equity" },
 ] as const;
 
 function Select({
@@ -58,7 +61,7 @@ function Select({
 
 export default function MacroLab({ theme }: { theme: string }) {
   const { state, setParam } = useAtlasState();
-  const mode = readString(state.params, "mmode", "time") as "time" | "scatter";
+  const mode = readString(state.params, "mmode", "time") as "time" | "scatter" | "matrix";
   const aId = readString(state.params, "a", "usd-inr");
   const bId = readString(state.params, "b", "forex-reserves");
   const from = readInt(state.params, "from", MIN_YEAR);
@@ -81,7 +84,6 @@ export default function MacroLab({ theme }: { theme: string }) {
     return ys.length > 1 ? cagr(bWin, ys[0], ys[ys.length - 1]) : null;
   }, [bWin]);
 
-  // Scatter: align both onto shared years (intersection) and pair the values.
   const paired = useMemo(() => {
     const rows = alignSeries([aWin, bWin], "intersection");
     return rows
@@ -93,9 +95,29 @@ export default function MacroLab({ theme }: { theme: string }) {
       }));
   }, [aWin, bWin, a.series.id, b.series.id]);
 
+  // Correlation matrix: 16 indicators + the equity index, computed on YoY %
+  // changes (level series correlate spuriously due to common time trend).
+  const matrixData = useMemo(() => {
+    const yoyAll: Series[] = [
+      ...macroCatalog.map((m) => {
+        const y = yoy(m.series);
+        // Re-id so the matrix labels match the catalog
+        return new Series(m.id, m.label, "% YoY", y.points);
+      }),
+      (() => {
+        const y = yoy(nominalIndex);
+        return new Series("equity", "Equity Index", "% YoY", y.points);
+      })(),
+    ];
+    return correlationMatrix(yoyAll, from, to);
+  }, [from, to]);
+
+  const labels = useMemo(
+    () => [...macroCatalog.map((m) => m.label), "Equity Index"],
+    [],
+  );
+
   const timeOptions = useMemo<Plot.PlotOptions>(() => {
-    // Normalize both to 0..100 of their own windowed range so a dual scale reads
-    // on one axis without misleading shared units.
     const norm = (vals: { year: number; value: number }[]) => {
       const xs = vals.map((v) => v.value);
       const lo = Math.min(...xs);
@@ -147,6 +169,56 @@ export default function MacroLab({ theme }: { theme: string }) {
     [paired, a.label, a.unit, b.label, b.unit, c],
   );
 
+  const matrixOptions = useMemo<Plot.PlotOptions>(
+    () => ({
+      height: Math.max(480, labels.length * 22),
+      marginLeft: 150,
+      marginTop: 110,
+      marginRight: 16,
+      marginBottom: 16,
+      style: { background: "transparent", color: c.inkSoft, fontSize: "11px" },
+      x: { label: null, domain: labels, tickRotate: -50 },
+      y: { label: null, domain: labels },
+      color: {
+        type: "diverging",
+        scheme: "RdBu",
+        domain: [-1, 1],
+        legend: true,
+        label: "correlation r",
+      },
+      marks: [
+        Plot.cell(matrixData, {
+          x: "aLabel",
+          y: "bLabel",
+          fill: "r",
+          stroke: c.rule,
+          strokeWidth: 0.5,
+        }),
+        Plot.text(matrixData, {
+          x: "aLabel",
+          y: "bLabel",
+          text: (d: { r: number | null }) =>
+            d.r == null ? "" : Math.abs(d.r) < 0.3 ? "" : d.r.toFixed(2),
+          fontSize: 9,
+          fill: (d: { r: number | null }) =>
+            d.r != null && Math.abs(d.r) > 0.6 ? "white" : c.ink,
+        }),
+        Plot.tip(
+          matrixData,
+          Plot.pointer({
+            x: "aLabel",
+            y: "bLabel",
+            title: (d: { aLabel: string; bLabel: string; r: number | null }) =>
+              `${d.aLabel} × ${d.bLabel}\nr = ${d.r != null ? d.r.toFixed(3) : "n/a"}`,
+            fill: "var(--surface)",
+            stroke: c.ruleStrong,
+          }),
+        ),
+      ],
+    }),
+    [matrixData, labels, c],
+  );
+
   function exportPair() {
     const rows = alignSeries([aWin, bWin], "union").map((r) => ({
       year: r.year,
@@ -156,11 +228,35 @@ export default function MacroLab({ theme }: { theme: string }) {
     downloadCsv(`india-macro-${a.id}-vs-${b.id}-${from}-${to}.csv`, rows);
   }
 
+  function exportMatrix() {
+    downloadCsv(
+      `india-macro-correlation-${from}-${to}.csv`,
+      matrixData.map((d) => ({
+        a: d.aLabel,
+        b: d.bLabel,
+        r: d.r != null ? Number(d.r.toFixed(4)) : "",
+      })),
+    );
+  }
+
   return (
     <div className="space-y-6">
       <div className="surface grid gap-5 p-4 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_auto]">
-        <Select label="Series A" ariaLabel="Indicator A" value={a.id} onChange={(v) => setParam("a", v)} />
-        <Select label="Series B" ariaLabel="Indicator B" value={b.id} onChange={(v) => setParam("b", v)} />
+        {mode !== "matrix" ? (
+          <>
+            <Select label="Series A" ariaLabel="Indicator A" value={a.id} onChange={(v) => setParam("a", v)} />
+            <Select label="Series B" ariaLabel="Indicator B" value={b.id} onChange={(v) => setParam("b", v)} />
+          </>
+        ) : (
+          <div className="sm:col-span-2">
+            <FieldLabel>Matrix</FieldLabel>
+            <p className="text-[13px]" style={{ color: "var(--ink-soft)" }}>
+              Pearson correlation of YoY % changes across all 16 indicators plus the equity
+              index. Click a cell tooltip to see the exact r value. Window:{" "}
+              <span className="num">{from}–{to}</span>.
+            </p>
+          </div>
+        )}
         <div className="flex items-end gap-3">
           <div>
             <FieldLabel>View</FieldLabel>
@@ -168,7 +264,7 @@ export default function MacroLab({ theme }: { theme: string }) {
           </div>
           <button
             type="button"
-            onClick={exportPair}
+            onClick={mode === "matrix" ? exportMatrix : exportPair}
             className="segmented px-3 py-2 text-[12px]"
             style={{ fontFamily: "var(--font-mono)", color: "var(--ink-soft)" }}
           >
@@ -177,28 +273,84 @@ export default function MacroLab({ theme }: { theme: string }) {
         </div>
       </div>
 
-      <div className="surface grid grid-cols-2 gap-6 p-5 sm:grid-cols-4">
-        <Readout label={`${a.label} — start`} value={aWin.at(aWin.firstYear ?? from) ?? null} decimals={1} caption={`${a.unit} · ${from}`} tone="signal" />
-        <Readout label={`${a.label} — CAGR`} value={aCagr} decimals={1} unit="%" tone={aCagr != null && aCagr >= 0 ? "pos" : "neg"} />
-        <Readout label={`${b.label} — start`} value={bWin.at(bWin.firstYear ?? from) ?? null} decimals={1} caption={`${b.unit} · ${from}`} tone="signal" />
-        <Readout label={`${b.label} — CAGR`} value={bCagr} decimals={1} unit="%" tone={bCagr != null && bCagr >= 0 ? "pos" : "neg"} />
-      </div>
+      {mode !== "matrix" ? (
+        <div className="surface grid grid-cols-2 gap-6 p-5 sm:grid-cols-4">
+          <Readout label={`${a.label} — start`} value={aWin.at(aWin.firstYear ?? from) ?? null} decimals={1} caption={`${a.unit} · ${from}`} tone="signal" />
+          <Readout label={`${a.label} — CAGR`} value={aCagr} decimals={1} unit="%" tone={aCagr != null && aCagr >= 0 ? "pos" : "neg"} />
+          <Readout label={`${b.label} — start`} value={bWin.at(bWin.firstYear ?? from) ?? null} decimals={1} caption={`${b.unit} · ${from}`} tone="signal" />
+          <Readout label={`${b.label} — CAGR`} value={bCagr} decimals={1} unit="%" tone={bCagr != null && bCagr >= 0 ? "pos" : "neg"} />
+        </div>
+      ) : (
+        <div className="surface grid grid-cols-2 gap-6 p-5 sm:grid-cols-4">
+          <Readout
+            label="Indicators"
+            value={macroCatalog.length + 1}
+            caption="incl. equity index"
+            tone="signal"
+          />
+          <Readout
+            label="Window"
+            value={to - from}
+            unit="yr"
+            caption={`${from}–${to}`}
+          />
+          <Readout
+            label="Strongest +r"
+            value={Math.max(...matrixData.filter((d) => d.a !== d.b && d.r != null).map((d) => d.r!))}
+            decimals={2}
+            tone="pos"
+            caption={(() => {
+              const off = matrixData.filter((d) => d.a !== d.b && d.r != null);
+              const top = off.reduce((m, d) => (d.r! > (m.r ?? -Infinity) ? d : m), off[0]);
+              return top ? `${top.aLabel.split(" ")[0]} × ${top.bLabel.split(" ")[0]}` : undefined;
+            })()}
+          />
+          <Readout
+            label="Strongest −r"
+            value={Math.min(...matrixData.filter((d) => d.a !== d.b && d.r != null).map((d) => d.r!))}
+            decimals={2}
+            tone="neg"
+            caption={(() => {
+              const off = matrixData.filter((d) => d.a !== d.b && d.r != null);
+              const bot = off.reduce((m, d) => (d.r! < (m.r ?? Infinity) ? d : m), off[0]);
+              return bot ? `${bot.aLabel.split(" ")[0]} × ${bot.bLabel.split(" ")[0]}` : undefined;
+            })()}
+          />
+        </div>
+      )}
 
       <figure className="surface p-5">
         <figcaption className="mb-3 flex items-baseline justify-between">
-          <h3 className="display text-lg">{mode === "time" ? "Overlay" : "Cross-plot"}</h3>
+          <h3 className="display text-lg">
+            {mode === "time" ? "Overlay" : mode === "scatter" ? "Cross-plot" : "Correlation matrix (YoY changes)"}
+          </h3>
           <span className="eyebrow">
-            {mode === "scatter" ? "regression line · point = year" : "each line normalized to its own range"}
+            {mode === "scatter"
+              ? "regression line · point = year"
+              : mode === "matrix"
+                ? "blue = positive · red = negative · |r|<0.3 unlabeled"
+                : "each line normalized to its own range"}
           </span>
         </figcaption>
         {mode === "time" ? (
           <PlotFigure options={timeOptions} ariaLabel={`${a.label} and ${b.label} over time`} />
-        ) : (
+        ) : mode === "scatter" ? (
           <PlotFigure options={scatterOptions} ariaLabel={`${b.label} against ${a.label}`} />
+        ) : (
+          <PlotFigure options={matrixOptions} ariaLabel="Correlation matrix of macro indicators and equity index YoY returns" />
         )}
-        <p className="mt-3 text-[12px]" style={{ color: "var(--ink-faint)" }}>
-          Source: {a.source}; {b.source}.
-        </p>
+        {mode !== "matrix" ? (
+          <p className="mt-3 text-[12px]" style={{ color: "var(--ink-faint)" }}>
+            Source: {a.source}; {b.source}.
+          </p>
+        ) : (
+          <p className="mt-3 text-[12px]" style={{ color: "var(--ink-faint)" }}>
+            Note: correlations on YoY % changes (not levels) to avoid spurious
+            time-trend correlation. Hover any cell for the exact r value, including pairs where
+            |r|&lt;0.3 was hidden for legibility. Top correlations summarized as readouts above:{" "}
+            {formatNumber(matrixData.length, 0)} cells computed.
+          </p>
+        )}
       </figure>
     </div>
   );
