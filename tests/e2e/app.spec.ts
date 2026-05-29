@@ -167,6 +167,31 @@ test.describe("Research Console", () => {
     await expect(page).toHaveURL(/#\/race/);
   });
 
+  test("Projection Studio Monte Carlo mode renders fan chart and bands", async ({
+    page,
+  }) => {
+    await page.goto("/#/projections?m=mc");
+    await expect(
+      page.getByRole("heading", { level: 1, name: /Projection Studio/i }),
+    ).toBeVisible();
+
+    // The headline readouts switch to MC-specific labels
+    await expect(page.getByText("Median 2050", { exact: true })).toBeVisible();
+    await expect(page.getByText("P5–P95 2050", { exact: true })).toBeVisible();
+
+    // The fan chart figure mounts
+    await page.locator(".figure svg").first().waitFor({ state: "visible" });
+    await expect(
+      page.getByRole("figure", {
+        name: /Monte Carlo|Distribution of paths/i,
+      }),
+    ).toBeVisible();
+
+    // CAGR slider should be disabled in MC mode
+    const cagrSlider = page.getByLabel("Equity CAGR assumption");
+    await expect(cagrSlider).toBeDisabled();
+  });
+
   test("Volatility & Risk workspace renders monthly metrics", async ({ page }) => {
     await page.goto("/#/vol");
     await expect(

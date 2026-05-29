@@ -170,6 +170,26 @@ const PROVENANCE: ProvenanceEntry[] = [
     ],
   },
   {
+    id: "projections-mc",
+    label: "Monte Carlo projection methodology",
+    description:
+      "Bootstrap-sampled paths to 2050 using 1000 simulations drawn from historical monthly Sensex log returns. Produces a fan chart of 5/25/50/75/95 percentile bands rather than a single deterministic value.",
+    sources: [
+      "Sensex monthly close (Yahoo Finance, 1997-06 onward)",
+      "Empirical distribution of monthly log returns",
+    ],
+    methodology:
+      "For each of 1000 paths, draw 300 monthly log returns with replacement from the empirical distribution; cumulate; evaluate startValue × exp(cumsum). Compute quantiles per month across paths. Seed = 42 (fixed for shareable URLs). Real (inflation-deflated) bands divide by (1+π)^t at each year. Resample is i.i.d. — no autocorrelation modelled.",
+    convention: "Annual snapshots are month-12 values from the underlying monthly simulation.",
+    coverage: "2025 → 2050 (forward, distributional)",
+    caveats: [
+      "Bootstrap is i.i.d. — does not model return autocorrelation, regime shifts, or volatility clustering. Historical clustering of crashes is partially captured (since they appear in the empirical distribution) but their bunching is randomised away.",
+      "Bands reflect ONLY return-distribution uncertainty. They do not include parameter uncertainty (we don't know the true distribution), structural uncertainty (the future may not look like 1997-today), or terminal-value tax/cost drag.",
+      "Distribution is sampled from a 28-year window dominated by the post-1991 reform era. Pre-reform return characteristics differ.",
+      "P5–P95 width grows with horizon. At 25 years the band is intentionally wide — that's the point. Compare to the dashed deterministic overlay to see how much certainty a single CAGR pretends to have.",
+    ],
+  },
+  {
     id: "sensex-monthly",
     label: "Sensex monthly close",
     description:

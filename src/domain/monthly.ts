@@ -321,3 +321,154 @@ export function toAnnualPoints(
     });
   return out;
 }
+
+// ─────────────────────────────────────────────────────────────────────────
+// Monte Carlo projection (Phase 7)
+// ─────────────────────────────────────────────────────────────────────────
+
+/**
+ * Monthly log returns from a series, dropping any pair where either endpoint
+ * is missing or non-positive. Used as the empirical distribution to bootstrap
+ * from in `monteCarloProjection`.
+ */
+export function monthlyLogReturnArray(series: MonthlySeries): number[] {
+  const pts = series.points;
+  const out: number[] = [];
+  for (let i = 1; i < pts.length; i++) {
+    const a = pts[i - 1].value;
+    const b = pts[i].value;
+    if (a > 0 && b > 0) out.push(Math.log(b / a));
+  }
+  return out;
+}
+
+/**
+ * Tiny seedable PRNG (mulberry32). 32-bit state, uniform in [0, 1).
+ * Used for deterministic testing — production calls fall back to Math.random.
+ */
+export function mulberry32(seed: number): () => number {
+  let t = seed >>> 0;
+  return function () {
+    t = (t + 0x6d2b79f5) >>> 0;
+    let r = t;
+    r = Math.imul(r ^ (r >>> 15), r | 1);
+    r ^= r + Math.imul(r ^ (r >>> 7), r | 61);
+    return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+export interface MonteCarloBand {
+  month: number;
+  p5: number;
+  p25: number;
+  p50: number;
+  p75: number;
+  p95: number;
+}
+
+export interface MonteCarloResult {
+  /** Month index 0..horizonMonths inclusive. 0 is the launch value. */
+  months: number[];
+  /** Quantile bands per month, in NATURAL units (not log). */
+  bands: MonteCarloBand[];
+  /** Final-month value for every path, sorted ascending. */
+  finalValues: number[];
+  /** Number of paths simulated. */
+  paths: number;
+  /** Number of historical observations used in the bootstrap. */
+  historicalN: number;
+}
+
+/**
+ * Linear-interpolation quantile of a sorted ascending array.
+ */
+function quantileSorted(sorted: number[], q: number): number {
+  if (sorted.length === 0) return NaN;
+  if (sorted.length === 1) return sorted[0];
+  const pos = q * (sorted.length - 1);
+  const lo = Math.floor(pos);
+  const hi = Math.ceil(pos);
+  if (lo === hi) return sorted[lo];
+  return sorted[lo] + (sorted[hi] - sorted[lo]) * (pos - lo);
+}
+
+/**
+ * Monte Carlo projection by bootstrapping monthly log returns.
+ *
+ * For each of `paths` simulated paths, we draw `horizonMonths` log returns
+ * with replacement from the empirical distribution `historicalReturns`,
+ * cumulate them, and evaluate `startValue × exp(cumsum)`. We then compute
+ * quantile bands across paths at each month.
+ *
+ * Why bootstrap instead of fitting a parametric distribution: monthly equity
+ * returns are demonstrably non-Gaussian (fat tails, mild negative skew). The
+ * empirical distribution captures this without assuming a form. Cost: we
+ * cannot extrapolate beyond the observed return range — for projection
+ * purposes that's a feature, not a bug.
+ *
+ * Returns natural-unit (not log) values throughout. Pass an explicit `rng`
+ * for deterministic tests; defaults to Math.random in production.
+ */
+export function monteCarloProjection(
+  historicalReturns: number[],
+  startValue: number,
+  horizonMonths: number,
+  paths: number,
+  rng: () => number = Math.random,
+): MonteCarloResult {
+  const result: MonteCarloResult = {
+    months: [],
+    bands: [],
+    finalValues: [],
+    paths,
+    historicalN: historicalReturns.length,
+  };
+  if (
+    historicalReturns.length === 0 ||
+    paths <= 0 ||
+    horizonMonths < 0 ||
+    !(startValue > 0)
+  ) {
+    return result;
+  }
+
+  // Generate all paths up front so quantile computation per month is a slice.
+  // Memory: paths × (horizonMonths+1) doubles. Defaults (1000 × 300) ≈ 2.4 MB.
+  const allPaths: number[][] = [];
+  for (let p = 0; p < paths; p++) {
+    const path = new Array<number>(horizonMonths + 1);
+    path[0] = startValue;
+    let cumLog = 0;
+    for (let m = 1; m <= horizonMonths; m++) {
+      const idx = Math.floor(rng() * historicalReturns.length);
+      cumLog += historicalReturns[idx];
+      path[m] = startValue * Math.exp(cumLog);
+    }
+    allPaths.push(path);
+  }
+
+  const months: number[] = [];
+  const bands: MonteCarloBand[] = [];
+  for (let m = 0; m <= horizonMonths; m++) {
+    const slice = allPaths.map((p) => p[m]);
+    slice.sort((a, b) => a - b);
+    months.push(m);
+    bands.push({
+      month: m,
+      p5: quantileSorted(slice, 0.05),
+      p25: quantileSorted(slice, 0.25),
+      p50: quantileSorted(slice, 0.5),
+      p75: quantileSorted(slice, 0.75),
+      p95: quantileSorted(slice, 0.95),
+    });
+  }
+
+  const finalValues = allPaths
+    .map((p) => p[horizonMonths])
+    .sort((a, b) => a - b);
+
+  result.months = months;
+  result.bands = bands;
+  result.finalValues = finalValues;
+  return result;
+}
