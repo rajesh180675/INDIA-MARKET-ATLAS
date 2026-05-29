@@ -192,6 +192,36 @@ test.describe("Research Console", () => {
     await expect(cagrSlider).toBeDisabled();
   });
 
+  test("Sector Lab renders rebased view, RS view, and period returns table", async ({
+    page,
+  }) => {
+    await page.goto("/#/sectors");
+    await expect(
+      page.getByRole("heading", { level: 1, name: /Sector Lab/i }),
+    ).toBeVisible();
+
+    // Headline readouts present
+    await expect(page.getByText("Best sector", { exact: true })).toBeVisible();
+    await expect(page.getByText("Worst sector", { exact: true })).toBeVisible();
+
+    // Rebased chart mounts by default
+    await page.locator(".figure svg").first().waitFor({ state: "visible" });
+
+    // Switch to RS view via URL
+    await page.goto("/#/sectors?sv=rs");
+    await expect(
+      page.getByRole("figure", {
+        name: /Relative strength/i,
+      }),
+    ).toBeVisible();
+
+    // Switch to table view — no figure SVG, but a real <table>
+    await page.goto("/#/sectors?sv=table");
+    await expect(page.getByRole("table")).toBeVisible();
+    // Composite row should be bold (rendered via <strong>)
+    await expect(page.getByRole("table").getByText("Nifty 50")).toBeVisible();
+  });
+
   test("Volatility & Risk workspace renders monthly metrics", async ({ page }) => {
     await page.goto("/#/vol");
     await expect(

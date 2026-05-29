@@ -11,6 +11,7 @@ const MacroLab = lazy(() => import("./console/workspaces/MacroLab"));
 const AssetRace = lazy(() => import("./console/workspaces/AssetRace"));
 const SipSimulator = lazy(() => import("./console/workspaces/SipSimulator"));
 const VolatilityRisk = lazy(() => import("./console/workspaces/VolatilityRisk"));
+const SectorLab = lazy(() => import("./console/workspaces/SectorLab"));
 const RegimesCrashes = lazy(() => import("./console/workspaces/RegimesCrashes"));
 const ProjectionStudio = lazy(() => import("./console/workspaces/ProjectionStudio"));
 
@@ -24,6 +25,8 @@ function renderWorkspace(slug: string, theme: string) {
       return <SipSimulator theme={theme} />;
     case "vol":
       return <VolatilityRisk theme={theme} />;
+    case "sectors":
+      return <SectorLab theme={theme} />;
     case "regimes":
       return <RegimesCrashes theme={theme} />;
     case "projections":

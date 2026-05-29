@@ -205,6 +205,28 @@ const PROVENANCE: ProvenanceEntry[] = [
       "Risk-free rate of 6% is a long-run approximation; recent years may diverge",
     ],
   },
+  {
+    id: "sectors",
+    label: "Nifty composite + sector indices",
+    description:
+      "Monthly Nifty 50 (composite) plus Bank, IT, and Pharma sector indices. Powers the Sector Lab workspace — rebased levels, relative strength vs composite, and period returns.",
+    sources: [
+      "Yahoo Finance ^NSEI (Nifty 50)",
+      "Yahoo Finance ^NSEBANK (Nifty Bank)",
+      "Yahoo Finance ^CNXIT (Nifty IT)",
+      "Yahoo Finance ^CNXPHARMA (Nifty Pharma)",
+    ],
+    methodology:
+      "Monthly close pulled via Yahoo Finance v8 chart endpoint. Rebased view divides each series by its anchor-month value × 100 so all series start at 100. Relative strength is the ratio of two rebased series × 100 — values >100 mean outperformance vs composite since the anchor. Period returns are simple end/start − 1; CAGR annualizes by elapsed months.",
+    convention: "Last trading day of each month (UTC).",
+    coverage: "Nifty 50 / Bank / IT: 2007-08 onward · Nifty Pharma: 2010-12 onward",
+    caveats: [
+      "Only 3 sectors (Bank, IT, Pharma) ship in this release. 8 other Nifty sectoral indices (Auto, FMCG, Metal, Energy, Realty, Media, Infra, PSU Bank) were probed but found stale on Yahoo (last update 2023-04). Better to ship 3 credible sectors than 9 with stale ones.",
+      "Common-window views (when all 4 series shown together) start 2010-12 because Pharma's coverage begins there.",
+      "Refreshes are manual via scripts/fetch-sector-data.cjs",
+      "Yahoo's symbol contract isn't stable; if a symbol disappears the script will refuse to overwrite (corrupt-response guard) so existing data isn't silently lost.",
+    ],
+  },
 ];
 
 const PROVENANCE_BY_ID = new Map<string, ProvenanceEntry>();

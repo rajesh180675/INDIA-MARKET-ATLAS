@@ -44,6 +44,12 @@ export const WORKSPACES: WorkspaceDef[] = [
     usesYearWindow: false,
   },
   {
+    slug: "sectors",
+    title: "Sector Lab",
+    scope: "Nifty composite + Bank/IT/Pharma — rotation, relative strength",
+    usesYearWindow: false,
+  },
+  {
     slug: "regimes",
     title: "Regimes & Crashes",
     scope: "Policy eras and every major drawdown",
