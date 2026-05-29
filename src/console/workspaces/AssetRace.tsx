@@ -9,6 +9,7 @@ import { alignSeries, cagr } from "@/domain/series";
 import { downloadCsv } from "@/lib/csv";
 import { formatNumber } from "@/lib/format";
 import PlotFigure from "../PlotFigure";
+import Provenance from "../Provenance";
 import { atlasColors } from "../theme-colors";
 import { FieldLabel, Segmented } from "../controls";
 import { readList, readString, useAtlasState } from "../url-state";
@@ -191,6 +192,7 @@ export default function AssetRace({ theme }: { theme: string }) {
             .map((t) => t.label)
             .join(", ")} from 1979 to ${MAX_YEAR}`}
         />
+        <div className="rule-t mt-4 pt-3"><Provenance id="asset-race" /></div>
       </figure>
 
       {/* Race results ledger */}

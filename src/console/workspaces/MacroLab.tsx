@@ -12,6 +12,7 @@ import { Series, alignSeries, cagr, correlationMatrix, yoy } from "@/domain/seri
 import { downloadCsv } from "@/lib/csv";
 import { formatNumber } from "@/lib/format";
 import PlotFigure from "../PlotFigure";
+import Provenance from "../Provenance";
 import { atlasColors } from "../theme-colors";
 import { FieldLabel, Readout, Segmented } from "../controls";
 import { readInt, readString, useAtlasState } from "../url-state";
@@ -340,9 +341,10 @@ export default function MacroLab({ theme }: { theme: string }) {
           <PlotFigure options={matrixOptions} ariaLabel="Correlation matrix of macro indicators and equity index YoY returns" />
         )}
         {mode !== "matrix" ? (
-          <p className="mt-3 text-[12px]" style={{ color: "var(--ink-faint)" }}>
-            Source: {a.source}; {b.source}.
-          </p>
+          <div className="rule-t mt-4 grid gap-3 pt-3 sm:grid-cols-2">
+            <Provenance id={a.id} label={`${a.label} — sources`} />
+            <Provenance id={b.id} label={`${b.label} — sources`} />
+          </div>
         ) : (
           <p className="mt-3 text-[12px]" style={{ color: "var(--ink-faint)" }}>
             Note: correlations on YoY % changes (not levels) to avoid spurious

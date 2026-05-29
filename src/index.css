@@ -23,7 +23,7 @@
   --surface-sunken: #efece3; /* wells, table stripes */
   --ink: #1b1a17;            /* primary text */
   --ink-soft: #4a4843;       /* secondary text */
-  --ink-faint: #807d75;      /* tertiary / captions */
+  --ink-faint: #6c6960;      /* tertiary / captions — WCAG AA on paper */
   --rule: #d9d4c7;           /* hairline rules */
   --rule-strong: #b9b3a3;
 
@@ -56,7 +56,7 @@ html[data-theme="dark"] {
   --surface-sunken: #0d0e0c;
   --ink: #ece9e1;
   --ink-soft: #b6b3aa;
-  --ink-faint: #837f76;
+  --ink-faint: #95918a;       /* tertiary / captions — WCAG AA on dark paper */
   --rule: #2c2e2a;
   --rule-strong: #41443e;
 

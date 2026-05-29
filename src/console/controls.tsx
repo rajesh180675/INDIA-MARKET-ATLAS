@@ -1,6 +1,7 @@
 // Shared console controls. Flat, ruled, monospace — the instrument panel of the
 // research console. No pills, no gradients, no motion.
 
+import { useRef } from "react";
 import { formatNumber } from "@/lib/format";
 
 export interface Option<T extends string> {
@@ -20,19 +21,57 @@ export function Segmented<T extends string>({
   onChange: (id: T) => void;
   ariaLabel: string;
 }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const activeIdx = Math.max(0, options.findIndex((o) => o.id === value));
+
+  // Roving tabindex + arrow-key navigation (WAI-ARIA toolbar pattern). Only
+  // the active option is in the tab order; arrows move focus AND select.
+  function onKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
+    if (e.key !== "ArrowLeft" && e.key !== "ArrowRight" && e.key !== "Home" && e.key !== "End") {
+      return;
+    }
+    e.preventDefault();
+    const last = options.length - 1;
+    let next = activeIdx;
+    if (e.key === "ArrowLeft") next = activeIdx === 0 ? last : activeIdx - 1;
+    else if (e.key === "ArrowRight") next = activeIdx === last ? 0 : activeIdx + 1;
+    else if (e.key === "Home") next = 0;
+    else if (e.key === "End") next = last;
+    const nextOption = options[next];
+    if (!nextOption) return;
+    onChange(nextOption.id);
+    // Focus the newly active button so screen readers announce it
+    requestAnimationFrame(() => {
+      const btn = containerRef.current?.querySelectorAll("button")[next] as
+        | HTMLButtonElement
+        | undefined;
+      btn?.focus();
+    });
+  }
+
   return (
-    <div className="segmented" role="group" aria-label={ariaLabel}>
-      {options.map((o) => (
-        <button
-          key={o.id}
-          type="button"
-          title={o.title}
-          aria-pressed={value === o.id}
-          onClick={() => onChange(o.id)}
-        >
-          {o.label}
-        </button>
-      ))}
+    <div
+      ref={containerRef}
+      className="segmented"
+      role="group"
+      aria-label={ariaLabel}
+      onKeyDown={onKeyDown}
+    >
+      {options.map((o, i) => {
+        const selected = value === o.id;
+        return (
+          <button
+            key={o.id}
+            type="button"
+            title={o.title}
+            aria-pressed={selected}
+            tabIndex={i === activeIdx ? 0 : -1}
+            onClick={() => onChange(o.id)}
+          >
+            {o.label}
+          </button>
+        );
+      })}
     </div>
   );
 }
@@ -116,7 +155,7 @@ export function Readout({
           ? "var(--signal)"
           : "var(--ink)";
   return (
-    <div>
+    <div role="status" aria-live="polite">
       <div className="eyebrow">{label}</div>
       <div className="num mt-1.5" style={{ fontSize: "1.7rem", lineHeight: 1.05, color }}>
         {value == null ? "—" : `${prefix ?? ""}${formatNumber(value, decimals)}`}

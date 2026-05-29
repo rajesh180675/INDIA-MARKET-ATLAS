@@ -4,6 +4,7 @@ import { crashes, nominalIndex, regimes } from "@/domain/atlas";
 import { downloadCsv } from "@/lib/csv";
 import { formatNumber } from "@/lib/format";
 import PlotFigure from "../PlotFigure";
+import Provenance from "../Provenance";
 import { atlasColors } from "../theme-colors";
 import { useAtlasState } from "../url-state";
 
@@ -141,6 +142,7 @@ export default function RegimesCrashes({ theme }: { theme: string }) {
           <span className="eyebrow">shaded bands = eras</span>
         </figcaption>
         <PlotFigure options={pathOptions} ariaLabel="Equity index with regime era bands" />
+        <div className="rule-t mt-4 pt-3"><Provenance id="regimes" /></div>
       </figure>
 
       {/* Regime ledger */}
@@ -196,6 +198,7 @@ export default function RegimesCrashes({ theme }: { theme: string }) {
             <span className="eyebrow">size = months to bottom</span>
           </figcaption>
           <PlotFigure options={crashOptions} ariaLabel="Crash decline versus recovery time" />
+          <div className="rule-t mt-4 pt-3"><Provenance id="crashes" /></div>
         </figure>
 
         <div className="surface overflow-x-auto p-0">
