@@ -6,6 +6,7 @@ import {
   MIN_YEAR,
   type Denomination,
   indexInDenomination,
+  sensexOHLCData,
 } from "@/domain/atlas";
 import {
   cagr,
@@ -16,7 +17,7 @@ import {
 import { downloadCsv } from "@/lib/csv";
 import PlotFigure from "../PlotFigure";
 import { atlasColors } from "../theme-colors";
-import { Readout, Segmented, YearWindow } from "../controls";
+import { Readout, Segmented } from "../controls";
 import { readInt, readString, useAtlasState } from "../url-state";
 
 const denomOptions = DENOMINATIONS.map((d) => ({
@@ -25,11 +26,22 @@ const denomOptions = DENOMINATIONS.map((d) => ({
   title: d.blurb,
 }));
 
+const styleOptions = [
+  { id: "line", label: "Line", title: "Year-end index path on a log scale" },
+  { id: "candle", label: "Candle", title: "Sensex annual OHLC bars (nominal only, 1979+)" },
+] as const;
+
 export default function IndexExplorer({ theme }: { theme: string }) {
-  const { state, setParam, setParams } = useAtlasState();
+  const { state, setParam } = useAtlasState();
   const denom = readString(state.params, "denom", "nominal") as Denomination;
   const from = readInt(state.params, "from", MIN_YEAR);
   const to = readInt(state.params, "to", MAX_YEAR);
+  const style = readString(state.params, "style", "line") as "line" | "candle";
+
+  // Candle is only meaningful in nominal terms (OHLC is raw Sensex points)
+  // and only available from 1979. Force back to line otherwise.
+  const candleAvailable = denom === "nominal" && to >= 1979;
+  const effectiveStyle = candleAvailable && style === "candle" ? "candle" : "line";
 
   const view = useMemo(() => {
     const full = indexInDenomination(denom);
@@ -91,6 +103,69 @@ export default function IndexExplorer({ theme }: { theme: string }) {
       ],
     }),
     [view.windowed, from, to, c],
+  );
+
+  // Annual OHLC candle chart (Sensex points, log scale).
+  // Wick: ruleX from low to high. Body: rectY from open to close, colored by direction.
+  const candleData = useMemo(
+    () =>
+      sensexOHLCData
+        .filter((d) => d.year >= Math.max(from, 1979) && d.year <= to)
+        .map((d) => ({
+          ...d,
+          up: d.close >= d.open,
+          bodyLo: Math.min(d.open, d.close),
+          bodyHi: Math.max(d.open, d.close),
+        })),
+    [from, to],
+  );
+
+  const candleOptions = useMemo<Plot.PlotOptions>(
+    () => ({
+      height: 300,
+      marginLeft: 56,
+      marginRight: 16,
+      style: { background: "transparent", color: c.inkSoft },
+      x: { label: null, tickFormat: "d", grid: false },
+      y: {
+        label: "Sensex (points, log)",
+        type: "log",
+        grid: true,
+        tickFormat: "~s",
+      },
+      color: { domain: [true, false], range: [c.pos, c.neg] },
+      marks: [
+        // Wick: high-low rule
+        Plot.ruleX(candleData, {
+          x: "year",
+          y1: "low",
+          y2: "high",
+          stroke: (d: { up: boolean }) => (d.up ? c.pos : c.neg),
+          strokeWidth: 1,
+        }),
+        // Body: open-close rectangle
+        Plot.rectY(candleData, {
+          x1: (d: { year: number }) => d.year - 0.35,
+          x2: (d: { year: number }) => d.year + 0.35,
+          y1: "bodyLo",
+          y2: "bodyHi",
+          fill: (d: { up: boolean }) => (d.up ? c.pos : c.neg),
+          stroke: (d: { up: boolean }) => (d.up ? c.pos : c.neg),
+        }),
+        Plot.tip(
+          candleData,
+          Plot.pointerX({
+            x: "year",
+            y: "close",
+            title: (d: { year: number; open: number; high: number; low: number; close: number }) =>
+              `${d.year}\nOpen ${d.open.toFixed(0)}  Close ${d.close.toFixed(0)}\nHigh ${d.high.toFixed(0)}  Low ${d.low.toFixed(0)}`,
+            fill: "var(--surface)",
+            stroke: c.ruleStrong,
+          }),
+        ),
+      ],
+    }),
+    [candleData, c],
   );
 
   const ddOptions = useMemo<Plot.PlotOptions>(
@@ -165,14 +240,22 @@ export default function IndexExplorer({ theme }: { theme: string }) {
             onChange={(id) => setParam("denom", id)}
           />
         </div>
-        <div className="min-w-[240px] flex-1 max-w-sm">
-          <YearWindow
-            min={MIN_YEAR}
-            max={MAX_YEAR}
-            from={from}
-            to={to}
-            onChange={(f, t) => setParams({ from: String(f), to: String(t) })}
+        <div>
+          <div className="eyebrow mb-1.5">Style</div>
+          <Segmented
+            ariaLabel="Chart style"
+            value={effectiveStyle}
+            options={styleOptions}
+            onChange={(id) => {
+              if (id === "candle" && !candleAvailable) return;
+              setParam("style", id);
+            }}
           />
+          {!candleAvailable ? (
+            <div className="num mt-1 text-[11px]" style={{ color: "var(--ink-faint)" }}>
+              candle: nominal, 1979+ only
+            </div>
+          ) : null}
         </div>
         <button
           type="button"
@@ -218,13 +301,29 @@ export default function IndexExplorer({ theme }: { theme: string }) {
         />
       </div>
 
-      {/* Index path */}
+      {/* Index path or Candle */}
       <figure className="surface p-5">
         <figcaption className="mb-3 flex items-baseline justify-between">
-          <h3 className="display text-lg">Index path</h3>
-          <span className="eyebrow">log scale · {from}=100</span>
+          <h3 className="display text-lg">
+            {effectiveStyle === "candle" ? "Sensex annual OHLC" : "Index path"}
+          </h3>
+          <span className="eyebrow">
+            {effectiveStyle === "candle"
+              ? "wick = high/low · body = open→close · log"
+              : `log scale · ${from}=100`}
+          </span>
         </figcaption>
-        <PlotFigure options={pathOptions} ariaLabel={`Equity index in ${denom} terms, ${from} to ${to}, log scale`} />
+        {effectiveStyle === "candle" ? (
+          <PlotFigure
+            options={candleOptions}
+            ariaLabel={`Sensex annual OHLC candles from ${Math.max(from, 1979)} to ${to}`}
+          />
+        ) : (
+          <PlotFigure
+            options={pathOptions}
+            ariaLabel={`Equity index in ${denom} terms, ${from} to ${to}, log scale`}
+          />
+        )}
       </figure>
 
       {/* Drawdown + rolling CAGR side by side */}

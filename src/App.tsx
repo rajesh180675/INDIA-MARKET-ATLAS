@@ -1,11 +1,14 @@
 import { lazy, Suspense } from "react";
 import { useTheme } from "./console/useTheme";
-import { useAtlasState } from "./console/url-state";
+import { readInt, useAtlasState } from "./console/url-state";
 import { resolveWorkspace, WORKSPACES } from "./console/workspaces";
+import { YearWindow } from "./console/controls";
 import { MAX_YEAR, MIN_YEAR } from "./domain/atlas";
 
 const IndexExplorer = lazy(() => import("./console/workspaces/IndexExplorer"));
 const MacroLab = lazy(() => import("./console/workspaces/MacroLab"));
+const AssetRace = lazy(() => import("./console/workspaces/AssetRace"));
+const SipSimulator = lazy(() => import("./console/workspaces/SipSimulator"));
 const RegimesCrashes = lazy(() => import("./console/workspaces/RegimesCrashes"));
 const ProjectionStudio = lazy(() => import("./console/workspaces/ProjectionStudio"));
 
@@ -13,6 +16,10 @@ function renderWorkspace(slug: string, theme: string) {
   switch (slug) {
     case "macro":
       return <MacroLab theme={theme} />;
+    case "race":
+      return <AssetRace theme={theme} />;
+    case "sip":
+      return <SipSimulator theme={theme} />;
     case "regimes":
       return <RegimesCrashes theme={theme} />;
     case "projections":
@@ -24,8 +31,10 @@ function renderWorkspace(slug: string, theme: string) {
 
 export default function App() {
   const { theme, toggle } = useTheme();
-  const { state, setWorkspace } = useAtlasState();
+  const { state, setWorkspace, setParams } = useAtlasState();
   const ws = resolveWorkspace(state.workspace);
+  const from = readInt(state.params, "from", MIN_YEAR);
+  const to = readInt(state.params, "to", MAX_YEAR);
 
   return (
     <div className="mx-auto flex min-h-screen max-w-[1500px] flex-col lg:flex-row">
@@ -44,7 +53,7 @@ export default function App() {
             </div>
           </div>
 
-          <nav className="mt-4 flex flex-1 flex-col gap-1" aria-label="Workspace selection">
+          <nav className="mt-4 flex flex-col gap-1" aria-label="Workspace selection">
             {WORKSPACES.map((w) => {
               const active = w.slug === ws.slug;
               return (
@@ -73,7 +82,20 @@ export default function App() {
             })}
           </nav>
 
-          <div className="rule-t flex items-center justify-between pt-4">
+          {/* Global year-window control — shown only for workspaces that use it */}
+          {ws.usesYearWindow ? (
+            <div className="rule-t mt-4 pt-4">
+              <YearWindow
+                min={MIN_YEAR}
+                max={MAX_YEAR}
+                from={from}
+                to={to}
+                onChange={(f, t) => setParams({ from: String(f), to: String(t) })}
+              />
+            </div>
+          ) : null}
+
+          <div className="rule-t mt-auto flex items-center justify-between pt-4">
             <span className="eyebrow">Theme</span>
             <button
               type="button"

@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest";
 import {
+  ASSET_RACE_BASE_YEAR,
   BASE_YEAR,
   MAX_YEAR,
   MIN_YEAR,
+  assetRace,
   cpiLevel,
   indexInDenomination,
   macroCatalog,
@@ -51,5 +53,21 @@ describe("atlas adapter wiring (real inherited data)", () => {
     for (const m of macroCatalog) {
       expect(m.series.years.length).toBeGreaterThan(0);
     }
+  });
+
+  it("asset race exposes 5 tracks all rebased to 100 in 1979", () => {
+    expect(assetRace.length).toBe(5);
+    expect(ASSET_RACE_BASE_YEAR).toBe(1979);
+    for (const t of assetRace) {
+      expect(t.series.at(ASSET_RACE_BASE_YEAR)).toBeCloseTo(100);
+    }
+  });
+
+  it("equity outpaces gold and inflation across the asset race window", () => {
+    const equity = assetRace.find((t) => t.id === "equity")!.series.at(MAX_YEAR)!;
+    const gold = assetRace.find((t) => t.id === "gold")!.series.at(MAX_YEAR)!;
+    const infl = assetRace.find((t) => t.id === "inflation")!.series.at(MAX_YEAR)!;
+    expect(equity).toBeGreaterThan(gold);
+    expect(equity).toBeGreaterThan(infl);
   });
 });
