@@ -27,6 +27,7 @@ import {
 import { macroIndicators } from "@/data/macroIndicators";
 import { sensexOHLC } from "@/data/sensexOHLC";
 import { sensexMonthlyPoints } from "@/data/sensexMonthly";
+import { SECTOR_SERIES, type SectorSeriesMeta } from "@/data/sectorIndices";
 
 // ---- Base year for all rebased/real comparisons ----
 export const BASE_YEAR: Year = 1947;
@@ -200,3 +201,41 @@ export const assetRace: AssetTrack[] = [
 // ---- Global year bounds across the spine series ----
 export const MIN_YEAR = nominalIndex.firstYear ?? BASE_YEAR;
 export const MAX_YEAR = nominalIndex.lastYear ?? BASE_YEAR;
+
+
+// ─────────────────────────────────────────────────────────────────────────
+// Sector indices (Phase 6) — Nifty composite + Bank/IT/Pharma sectors
+// ─────────────────────────────────────────────────────────────────────────
+
+/**
+ * Build a MonthlySeries from a SectorSeriesMeta entry. Preserves the
+ * inherited identity (id, label, description) so workspaces can iterate
+ * the registry without per-series wiring.
+ */
+function buildSectorSeries(meta: SectorSeriesMeta): MonthlySeries {
+  return new MonthlySeries(
+    meta.id,
+    meta.label,
+    "index points",
+    meta.points.map((p) => ({ key: p.key as MonthKey, value: p.value })),
+  );
+}
+
+/** All sector series (composite + sectors), keyed by id. */
+export const SECTOR_INDICES: Map<string, MonthlySeries> = new Map(
+  SECTOR_SERIES.map((s) => [s.id, buildSectorSeries(s)]),
+);
+
+/** Sector series ids in registry order. */
+export const SECTOR_IDS: string[] = SECTOR_SERIES.map((s) => s.id);
+
+/** Sector metadata, keyed by id (label + description for UI). */
+export const SECTOR_META: Map<string, SectorSeriesMeta> = new Map(
+  SECTOR_SERIES.map((s) => [s.id, s]),
+);
+
+/**
+ * Common anchor — first month all four series have data. Pharma starts
+ * 2010-12 so that's the constraint.
+ */
+export const SECTOR_COMMON_FIRST: MonthKey = 201012 as MonthKey;

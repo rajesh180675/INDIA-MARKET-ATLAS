@@ -472,3 +472,81 @@ export function monteCarloProjection(
   result.finalValues = finalValues;
   return result;
 }
+
+// ─────────────────────────────────────────────────────────────────────────
+// Cross-series primitives (Phase 6 — sectors)
+// ─────────────────────────────────────────────────────────────────────────
+
+/**
+ * Rebase a series so the value at `anchor` equals 100. Drops points before
+ * the anchor (no extrapolation). Returns null if the anchor is missing or
+ * non-positive — caller decides how to surface that.
+ *
+ * Use case: showing two sector indices on the same chart at the same
+ * starting level, so the visual difference is purely relative performance
+ * rather than initial-level noise.
+ */
+export function rebaseTo100(
+  series: MonthlySeries,
+  anchor: MonthKey,
+): MonthlySeries | null {
+  const a = series.at(anchor);
+  if (a == null || a <= 0) return null;
+  const rebased = series.points
+    .filter((p) => p.key >= anchor)
+    .map((p) => ({ key: p.key, value: (p.value / a) * 100 }));
+  return new MonthlySeries(
+    `${series.id}:rebased@${anchor}`,
+    `${series.label} (rebased to 100 at ${anchor})`,
+    "index (100 at anchor)",
+    rebased,
+  );
+}
+
+/**
+ * Relative strength of A vs B: ratio of rebased values, multiplied by 100.
+ * Rising = A is outperforming B since the anchor; falling = underperforming.
+ *
+ * Both series are first restricted to dates present in BOTH (inner join on
+ * MonthKey) — relative strength is undefined where one series is missing.
+ */
+export function relativeStrength(
+  a: MonthlySeries,
+  b: MonthlySeries,
+  anchor: MonthKey,
+): MonthlySeries | null {
+  const ar = rebaseTo100(a, anchor);
+  const br = rebaseTo100(b, anchor);
+  if (!ar || !br) return null;
+  const bByKey = new Map(br.points.map((p) => [p.key, p.value]));
+  const out: MonthPoint[] = [];
+  for (const p of ar.points) {
+    const bv = bByKey.get(p.key);
+    if (bv != null && bv > 0) {
+      out.push({ key: p.key, value: (p.value / bv) * 100 });
+    }
+  }
+  return new MonthlySeries(
+    `${a.id}/${b.id}:rs@${anchor}`,
+    `${a.label} relative to ${b.label}`,
+    "ratio × 100",
+    out,
+  );
+}
+
+/**
+ * Total return (in percent) over a closed window [from, to]. Returns null
+ * if either endpoint is missing or non-positive. Differs from monthlyTotalReturn
+ * only in argument shape — kept as a separate convenience for callers
+ * computing "how did sector X do during regime Y".
+ */
+export function periodReturnPct(
+  series: MonthlySeries,
+  from: MonthKey,
+  to: MonthKey,
+): number | null {
+  const start = series.at(from);
+  const end = series.at(to);
+  if (start == null || end == null || start <= 0) return null;
+  return (end / start - 1) * 100;
+}
