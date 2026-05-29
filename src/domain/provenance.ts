@@ -169,6 +169,22 @@ const PROVENANCE: ProvenanceEntry[] = [
       "Pre-built scenarios are author judgments based on inherited research, not consensus forecasts.",
     ],
   },
+  {
+    id: "sensex-monthly",
+    label: "Sensex monthly close",
+    description:
+      "Monthly Sensex closing values powering the Volatility & Risk workspace. Enables credible Sharpe, annualized volatility, and drawdown analysis that annual data cannot support.",
+    sources: ["Yahoo Finance ^BSESN (interval=1mo)"],
+    methodology:
+      "Monthly close pulled from Yahoo Finance v8 chart endpoint. Drawdowns computed from running peak. Sharpe and volatility use log returns; volatility annualizes monthly stdev by √12; Sharpe uses an annual risk-free rate of 6% (Indian 10Y G-Sec long-run average) converted to monthly log-equivalent.",
+    convention: "Last trading day of each month (UTC).",
+    coverage: "1997-06 onward",
+    caveats: [
+      "Yahoo's earliest monthly Sensex data is 1997-06; pre-1997 history must use the annual continuousIndex which is not directly comparable",
+      "Refreshes are manual via scripts/fetch-monthly-data.cjs",
+      "Risk-free rate of 6% is a long-run approximation; recent years may diverge",
+    ],
+  },
 ];
 
 const PROVENANCE_BY_ID = new Map<string, ProvenanceEntry>();

@@ -165,6 +165,26 @@ test.describe("Research Console", () => {
     await expect(page).toHaveURL(/#\/race/);
   });
 
+  test("Volatility & Risk workspace renders monthly metrics", async ({ page }) => {
+    await page.goto("/#/vol");
+    await expect(
+      page.getByRole("heading", { level: 1, name: /Volatility & Risk/i }),
+    ).toBeVisible();
+
+    // The four headline readouts should be present (use exact match —
+    // axis labels and provenance text mention these phrases too)
+    await expect(page.getByText("Sharpe (rf=6%)", { exact: true })).toBeVisible();
+    await expect(page.getByText("Annualized vol", { exact: true })).toBeVisible();
+    await expect(page.getByText("Max drawdown", { exact: true })).toBeVisible();
+
+    // The drawdown chart figure
+    await expect(
+      page.getByRole("figure", {
+        name: /drawdown from running peak/i,
+      }),
+    ).toBeVisible();
+  });
+
   test("Switching workspaces clears workspace-specific URL params (scoping)", async ({ page }) => {
     // Start with index workspace + denom param
     await page.goto("/#/index?denom=usd&from=1991&to=2025");

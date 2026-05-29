@@ -38,6 +38,12 @@ export const WORKSPACES: WorkspaceDef[] = [
     usesYearWindow: false,
   },
   {
+    slug: "vol",
+    title: "Volatility & Risk",
+    scope: "Monthly Sensex (1997+) — drawdowns, rolling Sharpe, vol",
+    usesYearWindow: false,
+  },
+  {
     slug: "regimes",
     title: "Regimes & Crashes",
     scope: "Policy eras and every major drawdown",
