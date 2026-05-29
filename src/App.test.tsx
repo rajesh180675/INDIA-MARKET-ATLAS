@@ -1,26 +1,32 @@
-import { render, screen, within } from "@testing-library/react";
-import { describe, expect, test } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { beforeEach, describe, expect, test } from "vitest";
 import App from "./App";
+import { WORKSPACES } from "./console/workspaces";
 
-describe("App", () => {
-  test("renders main sections and candlestick desk", async () => {
+describe("Research Console shell", () => {
+  beforeEach(() => {
+    window.location.hash = "";
+  });
+
+  test("renders the workspace rail with every workspace", () => {
     render(<App />);
+    for (const w of WORKSPACES) {
+      expect(screen.getByRole("button", { name: new RegExp(w.title, "i") })).toBeInTheDocument();
+    }
+  });
 
-    // Main market chart (lazy-loaded)
-    const mainChart = await screen.findByTestId("main-market-chart", {}, { timeout: 10000 });
-    expect(mainChart).toBeInTheDocument();
+  test("defaults to the Index Explorer workspace heading", () => {
+    render(<App />);
+    expect(screen.getByRole("heading", { level: 1, name: /Index Explorer/i })).toBeInTheDocument();
+  });
 
-    // Comparison chart
-    const comparisonChart = await screen.findByTestId("comparison-chart", {}, { timeout: 10000 });
-    expect(comparisonChart).toBeInTheDocument();
-
-    // Candlestick desk section
-    const candlestickChart = await screen.findByTestId("candlestick-chart", {}, { timeout: 10000 });
-    expect(candlestickChart).toBeInTheDocument();
-
-    // Candlestick context buttons (scoped to parent of candlestick chart)
-    const candlestickSection = candlestickChart.closest("section")!;
-    expect(within(candlestickSection).getByRole("button", { name: /Price only/i })).toBeInTheDocument();
-    expect(within(candlestickSection).getByRole("button", { name: /\+ GDP Growth/i })).toBeInTheDocument();
-  }, 20000);
+  test("selecting a workspace updates the heading and the URL hash", async () => {
+    render(<App />);
+    fireEvent.click(screen.getByRole("button", { name: /Macro Lab/i }));
+    // hashchange fires asynchronously in jsdom, so await the re-render.
+    expect(
+      await screen.findByRole("heading", { level: 1, name: /Macro Lab/i }),
+    ).toBeInTheDocument();
+    expect(window.location.hash).toContain("macro");
+  });
 });

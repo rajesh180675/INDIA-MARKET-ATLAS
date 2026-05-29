@@ -1,4 +1,3 @@
-import React from "react";
 import "@testing-library/jest-dom/vitest";
 import { cleanup } from "@testing-library/react";
 import { afterEach, vi } from "vitest";
@@ -36,71 +35,3 @@ Object.defineProperty(HTMLElement.prototype, "scrollIntoView", {
 afterEach(() => {
   cleanup();
 });
-
-vi.mock("framer-motion", () => {
-  const motion = new Proxy(
-    {},
-    {
-      get: (_, tag: string) =>
-        React.forwardRef<
-          HTMLElement,
-          Record<string, unknown> & { children?: React.ReactNode }
-        >(
-          (
-            {
-              animate: _animate,
-              exit: _exit,
-              initial: _initial,
-              layoutId: _layoutId,
-              transition: _transition,
-              viewport: _viewport,
-              whileHover: _whileHover,
-              whileInView: _whileInView,
-              whileTap: _whileTap,
-              children,
-              ...props
-            },
-            ref,
-          ) =>
-            React.createElement(tag, { ...props, ref }, children as React.ReactNode),
-        ),
-    },
-  );
-
-  return {
-    motion,
-    AnimatePresence: ({ children }: { children: React.ReactNode }) =>
-      React.createElement(React.Fragment, null, children),
-    useReducedMotion: () => false,
-  };
-});
-
-vi.mock("echarts-for-react/lib/core", () => {
-  const MockChart = React.forwardRef(function MockChart(
-    props: { option?: { series?: Array<{ name?: string }> } },
-    ref: React.ForwardedRef<{ getEchartsInstance: () => { getDataURL: () => string } }>,
-  ) {
-    React.useImperativeHandle(ref, () => ({
-      getEchartsInstance: () => ({
-        getDataURL: () => "data:image/png;base64,mock",
-      }),
-    }));
-
-    return React.createElement("div", {
-      "data-testid": "echarts-react-mock",
-      "data-series": JSON.stringify(
-        props.option?.series?.map((series) => series.name ?? "unnamed") ?? [],
-      ),
-    });
-  });
-
-  return {
-    __esModule: true,
-    default: MockChart,
-  };
-});
-
-vi.mock("@/lib/echarts", () => ({
-  __esModule: true,
-  default: {},
-}));
