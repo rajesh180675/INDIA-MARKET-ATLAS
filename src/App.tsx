@@ -3,6 +3,7 @@ import { useTheme } from "./console/useTheme";
 import { readInt, useAtlasState } from "./console/url-state";
 import { resolveWorkspace, WORKSPACES } from "./console/workspaces";
 import { YearWindow } from "./console/controls";
+import CommandPalette from "./console/CommandPalette";
 import { MAX_YEAR, MIN_YEAR } from "./domain/atlas";
 
 const IndexExplorer = lazy(() => import("./console/workspaces/IndexExplorer"));
@@ -95,7 +96,7 @@ export default function App() {
             </div>
           ) : null}
 
-          <div className="rule-t mt-auto flex items-center justify-between pt-4">
+          <div className="rule-t mt-auto flex items-center justify-between gap-2 pt-4">
             <span className="eyebrow">Theme</span>
             <button
               type="button"
@@ -106,6 +107,13 @@ export default function App() {
             >
               {theme === "light" ? "◐ Light" : "◑ Dark"}
             </button>
+          </div>
+          <div
+            className="num mt-2 text-[10.5px]"
+            style={{ color: "var(--ink-faint)", letterSpacing: "0.04em" }}
+            aria-hidden="true"
+          >
+            Press ⌘K / Ctrl+K to search
           </div>
         </div>
       </aside>
@@ -131,6 +139,8 @@ export default function App() {
           {renderWorkspace(ws.slug, theme)}
         </Suspense>
       </main>
+
+      <CommandPalette />
     </div>
   );
 }
