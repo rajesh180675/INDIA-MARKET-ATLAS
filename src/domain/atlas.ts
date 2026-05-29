@@ -4,16 +4,6 @@
 // lifts it into typed Series and exposes the DERIVED analytical surfaces the
 // console renders. Every denomination (nominal / real / USD / gold) is computed
 // here from source series — no view hardcodes a converted value.
-
-import {
-  continuousIndex,
-  crashEvents,
-  marketRegimes,
-  type CrashEvent,
-  type Regime,
-} from "@/data/indiaMarketData";
-import { macroIndicators } from "@/data/macroIndicators";
-import { sensexOHLC } from "@/data/sensexOHLC";
 import {
   Series,
   compoundAtRate,
@@ -22,6 +12,21 @@ import {
   priceLevelFromInflation,
   type Year,
 } from "./series";
+import {
+  MonthlySeries,
+  monthKey,
+  type MonthKey,
+} from "./monthly";
+import {
+  continuousIndex,
+  marketRegimes,
+  crashEvents,
+  type Regime,
+  type CrashEvent,
+} from "@/data/indiaMarketData";
+import { macroIndicators } from "@/data/macroIndicators";
+import { sensexOHLC } from "@/data/sensexOHLC";
+import { sensexMonthlyPoints } from "@/data/sensexMonthly";
 
 // ---- Base year for all rebased/real comparisons ----
 export const BASE_YEAR: Year = 1947;
@@ -83,6 +88,25 @@ export const sensexClose = new Series(
 );
 
 export const sensexOHLCData = sensexOHLC;
+
+/**
+ * Sensex monthly close — the canonical monthly equity series.
+ * Coverage starts 1997-06 (Yahoo Finance's earliest available monthly data).
+ * For pre-1997 history use the annual nominalIndex; the two are deliberately
+ * NOT spliced because annual extrapolation suppresses volatility, which
+ * undermines the whole point of monthly-frequency math.
+ */
+export const sensexMonthly = new MonthlySeries(
+  "sensex-monthly",
+  "Sensex (monthly close)",
+  "points",
+  sensexMonthlyPoints.map(([y, m, v]) => ({ key: monthKey(y, m), value: v })),
+);
+
+export const SENSEX_MONTHLY_FIRST: MonthKey =
+  sensexMonthly.firstKey ?? monthKey(1997, 6);
+export const SENSEX_MONTHLY_LAST: MonthKey =
+  sensexMonthly.lastKey ?? monthKey(2025, 12);
 
 // ---- Catalog of all macro series, grouped by category, for the Macro Lab ----
 export interface MacroEntry {

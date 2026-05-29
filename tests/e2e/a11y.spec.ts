@@ -7,7 +7,7 @@ import { expect, test } from "@playwright/test";
 import * as fs from "node:fs";
 import * as path from "node:path";
 
-const WORKSPACES = ["index", "macro", "race", "sip", "regimes", "projections"];
+const WORKSPACES = ["index", "macro", "race", "sip", "vol", "regimes", "projections"];
 const REPORT_DIR = path.resolve("test-results/a11y-reports");
 
 for (const slug of WORKSPACES) {

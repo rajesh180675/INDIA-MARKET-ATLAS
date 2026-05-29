@@ -105,6 +105,8 @@ test.describe("Research Console", () => {
     await expect(
       page.getByRole("heading", { level: 1, name: /SIP Simulator/i }),
     ).toBeVisible();
+    // Wait for at least one Plot figure to mount (ResizeObserver is async on fast runners)
+    await page.locator(".figure svg").first().waitFor({ state: "visible" });
     // Path + heatmap each render at least one figure SVG (Plot may add legend SVGs)
     const figureCount = await page.locator(".figure svg").count();
     expect(figureCount).toBeGreaterThanOrEqual(2);
@@ -163,6 +165,26 @@ test.describe("Research Console", () => {
       page.getByRole("heading", { level: 1, name: /Asset Race/i }),
     ).toBeVisible();
     await expect(page).toHaveURL(/#\/race/);
+  });
+
+  test("Volatility & Risk workspace renders monthly metrics", async ({ page }) => {
+    await page.goto("/#/vol");
+    await expect(
+      page.getByRole("heading", { level: 1, name: /Volatility & Risk/i }),
+    ).toBeVisible();
+
+    // The four headline readouts should be present (use exact match —
+    // axis labels and provenance text mention these phrases too)
+    await expect(page.getByText("Sharpe (rf=6%)", { exact: true })).toBeVisible();
+    await expect(page.getByText("Annualized vol", { exact: true })).toBeVisible();
+    await expect(page.getByText("Max drawdown", { exact: true })).toBeVisible();
+
+    // The drawdown chart figure
+    await expect(
+      page.getByRole("figure", {
+        name: /drawdown from running peak/i,
+      }),
+    ).toBeVisible();
   });
 
   test("Switching workspaces clears workspace-specific URL params (scoping)", async ({ page }) => {
