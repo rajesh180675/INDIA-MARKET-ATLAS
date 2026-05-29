@@ -80,8 +80,9 @@ describe("scenarios", () => {
 });
 
 describe("scenarios export/import", () => {
-  it("exports + imports round-trips", () => {
+  it("exports + imports round-trips", async () => {
     saveScenario({ name: "first", hash: "#/a" });
+    await new Promise((r) => setTimeout(r, 5));
     saveScenario({ name: "second", hash: "#/b", note: "with note" });
     const json = exportJson();
     _clearAll();

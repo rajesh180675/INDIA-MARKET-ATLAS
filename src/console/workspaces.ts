@@ -50,6 +50,12 @@ export const WORKSPACES: WorkspaceDef[] = [
     usesYearWindow: false,
   },
   {
+    slug: "formula",
+    title: "Formula Lab",
+    scope: "Compose your own queries against the domain layer",
+    usesYearWindow: false,
+  },
+  {
     slug: "regimes",
     title: "Regimes & Crashes",
     scope: "Policy eras and every major drawdown",
