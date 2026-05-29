@@ -137,10 +137,12 @@ export class MonthlySeries {
 // ─────────────────────────────────────────────────────────────────────────
 
 /**
- * CAGR computed from monthly observations. Uses actual elapsed months between
- * the endpoints rather than assuming evenly spaced data.
+ * CAGR (in percent) computed from monthly observations. Uses actual elapsed
+ * months between the endpoints rather than assuming evenly spaced data.
  *
- *   CAGR = (end / start)^(12 / months) - 1
+ *   CAGR = ((end / start)^(12 / months) - 1) * 100
+ *
+ * Returns percentage to match the annual `cagr()` API and `rollingMonthlyCagr`.
  */
 export function monthlyCagr(
   series: MonthlySeries,
@@ -152,10 +154,10 @@ export function monthlyCagr(
   if (start == null || end == null || start <= 0 || end <= 0) return null;
   const months = monthsBetween(from, to);
   if (months <= 0) return null;
-  return Math.pow(end / start, 12 / months) - 1;
+  return (Math.pow(end / start, 12 / months) - 1) * 100;
 }
 
-/** Total return from start to end (end/start - 1), no compounding assumption. */
+/** Total return (in percent) from start to end. */
 export function monthlyTotalReturn(
   series: MonthlySeries,
   from: MonthKey,
@@ -164,7 +166,7 @@ export function monthlyTotalReturn(
   const start = series.at(from);
   const end = series.at(to);
   if (start == null || end == null || start <= 0) return null;
-  return end / start - 1;
+  return (end / start - 1) * 100;
 }
 
 /**

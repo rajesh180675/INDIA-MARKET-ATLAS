@@ -114,7 +114,7 @@ describe("monthlyCagr / monthlyTotalReturn", () => {
       { key: monthKey(2025, 1), value: 200 },
     ]);
     const c = monthlyCagr(s, monthKey(2024, 1), monthKey(2025, 1));
-    expect(c).toBeCloseTo(1.0, 5);
+    expect(c).toBeCloseTo(100, 3);
   });
 
   it("a series unchanged over 24 months gives CAGR = 0", () => {
@@ -130,9 +130,9 @@ describe("monthlyCagr / monthlyTotalReturn", () => {
       { key: monthKey(2024, 1), value: 100 },
       { key: monthKey(2024, 7), value: 110 },
     ]);
-    // (1.10)^(12/6) - 1 = 1.21 - 1 = 0.21
+    // (1.10)^(12/6) - 1 = 1.21 - 1 = 0.21 → 21%
     const c = monthlyCagr(s, monthKey(2024, 1), monthKey(2024, 7));
-    expect(c).toBeCloseTo(0.21, 5);
+    expect(c).toBeCloseTo(21, 3);
   });
 
   it("returns null for missing endpoints or non-positive values", () => {
@@ -142,14 +142,14 @@ describe("monthlyCagr / monthlyTotalReturn", () => {
     expect(monthlyCagr(s, monthKey(2024, 1), monthKey(2025, 1))).toBeNull();
   });
 
-  it("totalReturn is end/start - 1, no annualization", () => {
+  it("totalReturn returns percent: 100 → 110 over 6m = 10%", () => {
     const s = new MonthlySeries("x", "x", "u", [
       { key: monthKey(2024, 1), value: 100 },
       { key: monthKey(2024, 7), value: 110 },
     ]);
     expect(
       monthlyTotalReturn(s, monthKey(2024, 1), monthKey(2024, 7)),
-    ).toBeCloseTo(0.1, 10);
+    ).toBeCloseTo(10, 8);
   });
 });
 
