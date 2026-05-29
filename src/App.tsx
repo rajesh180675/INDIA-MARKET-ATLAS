@@ -217,11 +217,34 @@ export default function App() {
 
       {/* Active workspace */}
       <main className="min-w-0 flex-1 px-4 py-5 sm:px-6 lg:px-8 lg:py-6">
-        <header className="rule-b mb-6 hidden pb-4 lg:block">
-          <h1 className="display text-3xl sm:text-4xl">{ws.title}</h1>
-          <p className="mt-1.5 text-[15px]" style={{ color: "var(--ink-soft)" }}>
-            {ws.scope}
-          </p>
+        {/* Print-only citation header */}
+        <div className="print-citation">
+          <div style={{ fontSize: "10pt", letterSpacing: "0.18em", textTransform: "uppercase" }}>
+            India Market Atlas — Research Console
+          </div>
+          <div style={{ fontSize: "16pt", fontWeight: 600, marginTop: 4 }}>{ws.title}</div>
+          <div style={{ fontSize: "9pt", marginTop: 4 }}>
+            {ws.scope} · Generated {new Date().toISOString().slice(0, 10)} · Hash: {window.location.hash || "#/"}
+          </div>
+        </div>
+
+        <header className="rule-b mb-6 hidden items-baseline justify-between pb-4 lg:flex">
+          <div>
+            <h1 className="display text-3xl sm:text-4xl">{ws.title}</h1>
+            <p className="mt-1.5 text-[15px]" style={{ color: "var(--ink-soft)" }}>
+              {ws.scope}
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => window.print()}
+            className="segmented px-3 py-1.5 text-[12px]"
+            style={{ fontFamily: "var(--font-mono)", color: "var(--ink-soft)" }}
+            aria-label="Print or save current view as PDF"
+            title="Print / save as PDF (Ctrl+P)"
+          >
+            ⎙ Print
+          </button>
         </header>
 
         {/* Mobile-only scope subheader (h1 lives in the top bar there) */}

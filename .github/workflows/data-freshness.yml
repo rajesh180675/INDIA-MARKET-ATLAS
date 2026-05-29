@@ -1,0 +1,93 @@
+# Quarterly data freshness check.
+# Runs scripts/check-data-freshness.cjs on a cron. If any series is more than
+# 2 years behind the current calendar year, opens an issue (deduped by title).
+#
+# Honest scope: this does NOT auto-fetch from RBI/BSE/MOSPI. Those sources
+# don't expose programmatic APIs. This action is an early-warning system —
+# it pings you when the dataset has drifted, so you can manually refresh.
+
+name: data-freshness
+
+on:
+  schedule:
+    # First day of every quarter at 06:00 UTC
+    - cron: "0 6 1 1,4,7,10 *"
+  workflow_dispatch: # also runnable manually from the Actions tab
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run freshness audit
+        id: audit
+        run: |
+          set +e
+          node scripts/check-data-freshness.cjs > audit.txt
+          status=$?
+          {
+            echo "report<<__EOF__"
+            cat audit.txt
+            echo "__EOF__"
+          } >> "$GITHUB_OUTPUT"
+          exit $status
+        continue-on-error: true
+
+      - name: Open issue if stale
+        if: steps.audit.outcome == 'failure'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = `[data-freshness] Quarterly audit found stale data sources`;
+            const body = [
+              'The quarterly data freshness audit detected sources that are more',
+              'than 2 years behind the current calendar year.',
+              '',
+              '```',
+              `${{ steps.audit.outputs.report }}`,
+              '```',
+              '',
+              'Refresh procedure:',
+              '1. Pull the latest values from the official source for each stale series',
+              '2. Append the new annual rows to `src/data/<module>.ts`',
+              '3. Run `npm test` and `npm run build` locally',
+              '4. Open a PR — CI runs `node scripts/check-data-freshness.cjs` and gates on it',
+              '',
+              `_Auto-opened by data-freshness workflow on ${new Date().toISOString().slice(0, 10)}._`,
+            ].join('\n');
+
+            // Dedupe: if an open issue with the same title exists, just bump it.
+            const existing = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'data-freshness',
+            });
+            const match = existing.data.find((i) => i.title === title);
+            if (match) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: match.number,
+                body,
+              });
+              core.notice(`Updated existing issue #${match.number}`);
+            } else {
+              const created = await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title,
+                body,
+                labels: ['data-freshness'],
+              });
+              core.notice(`Opened issue #${created.data.number}`);
+            }
