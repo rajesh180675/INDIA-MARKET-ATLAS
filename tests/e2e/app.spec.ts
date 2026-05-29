@@ -105,6 +105,8 @@ test.describe("Research Console", () => {
     await expect(
       page.getByRole("heading", { level: 1, name: /SIP Simulator/i }),
     ).toBeVisible();
+    // Wait for at least one Plot figure to mount (ResizeObserver is async on fast runners)
+    await page.locator(".figure svg").first().waitFor({ state: "visible" });
     // Path + heatmap each render at least one figure SVG (Plot may add legend SVGs)
     const figureCount = await page.locator(".figure svg").count();
     expect(figureCount).toBeGreaterThanOrEqual(2);
