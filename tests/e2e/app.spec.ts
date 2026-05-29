@@ -212,6 +212,41 @@ test.describe("Research Console", () => {
     await expect(banner).not.toBeVisible();
   });
 
+  test("Saved scenarios drawer opens, persists, and reloads view", async ({
+    page,
+  }) => {
+    // Start fresh — clear localStorage so test is hermetic
+    await page.goto("/");
+    await page.evaluate(() => localStorage.removeItem("atlas-saved-scenarios"));
+
+    // Set up a recognizable URL state to save
+    await page.goto("/#/index?denom=usd&from=1991&to=2025");
+
+    // Open the drawer via the rail button
+    await page.getByRole("button", { name: /Open saved scenarios/i }).click();
+    const drawer = page.getByRole("dialog", { name: /Saved scenarios/i });
+    await expect(drawer).toBeVisible();
+
+    // Save current view with a unique name
+    await drawer.getByLabel("Scenario name").fill("USD reform era");
+    await drawer.getByLabel("Scenario note").fill("Index in USD, 1991-2025");
+    await drawer.getByRole("button", { name: "Save view" }).click();
+
+    // It appears in the list
+    await expect(drawer.getByText("USD reform era")).toBeVisible();
+    await expect(drawer.getByText("Index in USD, 1991-2025")).toBeVisible();
+
+    // Close drawer, navigate elsewhere
+    await drawer.getByRole("button", { name: /Close scenarios panel/i }).click();
+    await page.goto("/#/macro");
+
+    // Reopen, click the saved name → should navigate back to index?denom=usd
+    await page.getByRole("button", { name: /Open saved scenarios/i }).click();
+    await drawer.getByText("USD reform era").click();
+    await expect(page).toHaveURL(/#\/index\?.*denom=usd/);
+    await expect(page).toHaveURL(/from=1991/);
+  });
+
   test("Sector Lab renders rebased view, RS view, and period returns table", async ({
     page,
   }) => {

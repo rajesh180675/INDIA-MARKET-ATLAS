@@ -5,6 +5,7 @@ import { resolveWorkspace, WORKSPACES } from "./console/workspaces";
 import { YearWindow } from "./console/controls";
 import CommandPalette from "./console/CommandPalette";
 import { DatasetChip, DatasetMismatchBanner } from "./console/DatasetIndicator";
+import ScenariosDrawer from "./console/ScenariosDrawer";
 import { MAX_YEAR, MIN_YEAR } from "./domain/atlas";
 import { DATASET_VERSION } from "./domain/dataset-version";
 
@@ -48,6 +49,21 @@ export default function App() {
   // Mobile drawer state — desktop layout uses static sidebar via lg: utilities,
   // so this state has no effect at lg+ breakpoint.
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [scenariosOpen, setScenariosOpen] = useState(false);
+
+  // Listen for global "open scenarios" event so command palette + keyboard
+  // shortcut can both trigger the drawer without prop-drilling.
+  useEffect(() => {
+    const handler = () => setScenariosOpen(true);
+    window.addEventListener("atlas:open-scenarios", handler);
+    return () => window.removeEventListener("atlas:open-scenarios", handler);
+  }, []);
+
+  function loadScenarioHash(hash: string) {
+    // Just set the hash — useAtlasState will pick it up via hashchange
+    window.location.hash = hash.replace(/^#/, "");
+    setScenariosOpen(false);
+  }
 
   // Close drawer on Escape and when route resolves to a new workspace
   useEffect(() => {
@@ -126,6 +142,21 @@ export default function App() {
         </div>
       ) : null}
 
+      <div className="rule-t mt-4 pt-4">
+        <button
+          type="button"
+          onClick={() => setScenariosOpen(true)}
+          className="segmented w-full px-3 py-2 text-[12px]"
+          style={{
+            fontFamily: "var(--font-mono)",
+            color: "var(--ink-soft)",
+          }}
+          aria-label="Open saved scenarios"
+        >
+          ★ Saved scenarios
+        </button>
+      </div>
+
       <div className="rule-t mt-auto flex items-center justify-between gap-2 pt-4">
         <span className="eyebrow">Theme</span>
         <button
@@ -183,7 +214,7 @@ export default function App() {
 
       {/* Desktop sidebar — always rendered, visible at lg+ */}
       <aside
-        className="hidden lg:sticky lg:top-0 lg:block lg:h-screen lg:w-60 lg:shrink-0 lg:border-r"
+        className="hidden lg:sticky lg:top-0 lg:block lg:h-screen lg:w-60 lg:shrink-0 lg:overflow-y-auto lg:border-r"
         style={{ borderColor: "var(--rule)" }}
         aria-label="Workspaces"
       >
@@ -287,6 +318,15 @@ export default function App() {
       </main>
 
       <CommandPalette />
+      <ScenariosDrawer
+        open={scenariosOpen}
+        onClose={() => setScenariosOpen(false)}
+        onLoad={loadScenarioHash}
+        currentHash={
+          typeof window !== "undefined" ? window.location.hash || "#/" : "#/"
+        }
+        currentTitle={ws.title}
+      />
     </div>
   );
 }

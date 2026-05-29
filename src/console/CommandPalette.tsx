@@ -5,6 +5,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DENOMINATIONS, macroCatalog } from "@/domain/atlas";
+import { listScenarios } from "./scenarios";
 import { useAtlasState } from "./url-state";
 import { WORKSPACES } from "./workspaces";
 
@@ -61,6 +62,22 @@ export default function CommandPalette() {
 
   const commands = useMemo<Command[]>(
     () => [
+      {
+        id: "scenarios-open",
+        group: "Scenarios",
+        label: "Open saved scenarios",
+        hint: "Save / load named views",
+        run: () => window.dispatchEvent(new CustomEvent("atlas:open-scenarios")),
+      },
+      ...listScenarios().map((s) => ({
+        id: `scenario-${s.id}`,
+        group: "Saved scenarios",
+        label: s.name,
+        hint: s.note ?? s.hash,
+        run: () => {
+          window.location.hash = s.hash.replace(/^#/, "");
+        },
+      })),
       ...WORKSPACES.map((w) => ({
         id: `ws-${w.slug}`,
         group: "Workspace",
