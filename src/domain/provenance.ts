@@ -227,6 +227,25 @@ const PROVENANCE: ProvenanceEntry[] = [
       "Yahoo's symbol contract isn't stable; if a symbol disappears the script will refuse to overwrite (corrupt-response guard) so existing data isn't silently lost.",
     ],
   },
+  {
+    id: "formula",
+    label: "Formula Lab language",
+    description:
+      "Tiny safe expression language exposing the Atlas domain layer. Single function-call tree per formula — no operators, no assignment, no flow control. Numbers, strings, identifiers, and nested calls only. Formulas are URL-shareable via the ?f= parameter.",
+    sources: [
+      "Hand-written recursive-descent parser (no eval, no string injection)",
+      "Atlas domain primitives (series.ts, monthly.ts, atlas.ts)",
+    ],
+    methodology:
+      "Source is tokenized then parsed into an expression AST. Evaluation walks the tree, resolving identifiers against a registry of named series + scalars and calls against a whitelist of domain functions. Each function specifies its arity; mismatches throw a typed EvalError. The evaluator never accesses globalThis, eval, Function, or any host capability beyond the registry — the registry is the only surface area.",
+    coverage: "Same coverage as the underlying primitives (annual 1947–2025, monthly 1997+ Sensex, sectors per Sector Lab caveats).",
+    caveats: [
+      "Single function-call tree per formula. No arithmetic operators (a+b is a parse error). Compose with nested calls or domain helpers like compoundAtRate where available.",
+      "No autocomplete or syntax highlighting yet — copy from examples or the reference panel.",
+      "Errors point to a position in the source; multi-line formulas don't track line numbers.",
+      "Result rendering is type-driven: scalars render large, Series render as line charts, monthly Series get a date axis, arrays of objects get a table, anything else gets JSON.",
+    ],
+  },
 ];
 
 const PROVENANCE_BY_ID = new Map<string, ProvenanceEntry>();

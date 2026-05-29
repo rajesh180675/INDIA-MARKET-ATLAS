@@ -212,6 +212,36 @@ test.describe("Research Console", () => {
     await expect(banner).not.toBeVisible();
   });
 
+  test("Formula Lab evaluates formulas and renders type-driven results", async ({
+    page,
+  }) => {
+    // Direct URL with a formula in ?f= — exercises the URL-shareable contract
+    await page.goto("/#/formula?f=cagr(sensex,1979,2025)");
+    await expect(
+      page.getByRole("heading", { level: 1, name: /Formula Lab/i }),
+    ).toBeVisible();
+
+    // Scalar result panel (label "Result · scalar")
+    await expect(page.getByText(/Result · scalar/i)).toBeVisible();
+
+    // Switch to a formula that returns a Series → expect a chart to mount
+    await page.goto("/#/formula?f=yoy(sensex)");
+    await page.locator(".figure svg[role='img']").first().waitFor({ state: "visible" });
+
+    // Bad formula → red error panel
+    await page.goto("/#/formula?f=nope(x");
+    const alert = page.getByRole("alert");
+    await expect(alert).toBeVisible();
+    await expect(alert.getByText(/Parse error/i).first()).toBeVisible();
+
+    // Click an example seeds the editor and runs
+    await page.goto("/#/formula");
+    await page
+      .getByRole("button", { name: /Sensex monthly Sharpe/i })
+      .click();
+    await expect(page.getByText(/Result · scalar/i)).toBeVisible();
+  });
+
   test("Saved scenarios drawer opens, persists, and reloads view", async ({
     page,
   }) => {
