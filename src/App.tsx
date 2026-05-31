@@ -12,6 +12,7 @@ import { DATASET_VERSION } from "./domain/dataset-version";
 const IndexExplorer = lazy(() => import("./console/workspaces/IndexExplorer"));
 const MacroLab = lazy(() => import("./console/workspaces/MacroLab"));
 const StateEconomyLab = lazy(() => import("./console/workspaces/StateEconomyLab"));
+const MospiExplorer = lazy(() => import("./console/workspaces/MospiExplorer"));
 const AssetRace = lazy(() => import("./console/workspaces/AssetRace"));
 const SipSimulator = lazy(() => import("./console/workspaces/SipSimulator"));
 const VolatilityRisk = lazy(() => import("./console/workspaces/VolatilityRisk"));
@@ -40,6 +41,8 @@ function renderWorkspace(slug: string, theme: string) {
       return <RegimesCrashes theme={theme} />;
     case "projections":
       return <ProjectionStudio theme={theme} />;
+    case "mospi-explorer":
+      return <MospiExplorer theme={theme} />;
     default:
       return <IndexExplorer theme={theme} />;
   }

@@ -143,7 +143,7 @@ export function Readout({
   unit?: string;
   prefix?: string;
   decimals?: number;
-  tone?: "ink" | "pos" | "neg" | "signal";
+  tone?: "ink" | "pos" | "neg" | "signal" | "faint" | "warn";
   caption?: string;
 }) {
   const color =
@@ -153,7 +153,11 @@ export function Readout({
         ? "var(--neg)"
         : tone === "signal"
           ? "var(--signal)"
-          : "var(--ink)";
+          : tone === "faint"
+            ? "var(--ink-faint)"
+            : tone === "warn"
+              ? "var(--warn)"
+              : "var(--ink)";
   return (
     <div role="status" aria-live="polite">
       <div className="eyebrow">{label}</div>
