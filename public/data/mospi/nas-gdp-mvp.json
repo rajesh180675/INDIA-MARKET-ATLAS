@@ -1,21 +1,19 @@
 {
-  "schema_version": "2026-06-mospi-nas-gdp-mvp-v1",
+  "schema_version": "2026-06-mospi-nas-gdp-mvp-v2",
   "dataset": "NAS_GDP",
   "title": "National Accounts Statistics — GDP and GVA aggregates",
-  "generated_at": "2026-05-31T12:00:00Z",
-  "source_status": "declared_not_ingested",
+  "generated_at": "2026-05-31T13:46:17.318Z",
+  "source_status": "ready",
   "source_runs": [
     {
-      "run_id": "mospi-nas-gdp-discovery-2026-05-31",
-      "fetched_at": "2026-05-31T12:00:00Z",
-      "source_url": "https://www.mospi.gov.in/web/publications/national-accounts",
-      "parser_version": "nas-gdp-discovery-v0",
-      "row_count": 0,
-      "warnings": [
-        "National GDP/GVA data is declared as a target dataset but not yet ingested.",
-        "Planned sources: MoSPI National Accounts page and eSankhyiki NAS API.",
-        "This artifact serves as the comparison anchor for State SDP share-of-India normalization."
-      ],
+      "run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "fetched_at": "2026-05-31T13:46:17.318Z",
+      "source_url": "MoSPI SDDS PDF (data/raw/mospi/STATE_SDP/nsdp_2025_09_01.pdf)",
+      "source_file": "data/raw/mospi/STATE_SDP/nsdp_2025_09_01.pdf",
+      "content_hash": "pdf-extracted",
+      "parser_version": "nas-pdf-parse-v2",
+      "row_count": 48,
+      "warnings": [],
       "errors": []
     }
   ],
@@ -25,92 +23,1757 @@
       "name": "India",
       "type": "india",
       "code_system": "ISO-3166-1",
-      "aliases": ["All India", "National"]
+      "aliases": [
+        "All India",
+        "National"
+      ]
     }
   ],
   "indicators": [
     {
-      "id": "NAS.GDP.current.2011-12",
+      "id": "NAS_GDP.GVA.current.2011-12",
       "dataset": "NAS_GDP",
-      "source_dataset_code": "GDP at market prices (current prices), 2011-2012 series",
-      "indicator_code": "GDP",
-      "name": "Gross Domestic Product",
-      "description": "Aggregate GDP at market prices for India.",
-      "unit": "₹ crore",
-      "frequency": "annual",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "current",
+      "name": "Gross Value Added at Current Prices",
+      "unit": "Rs. crore",
+      "frequency": "quarterly",
       "geography_level": "india",
-      "dimensions_schema": ["price_basis", "base_year", "revision"],
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
       "base_year": "2011-12",
       "price_basis": "current",
-      "source_url": "https://www.mospi.gov.in/web/publications/national-accounts",
-      "release_policy": "MoSPI National Accounts; latest revision only.",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
       "default_transform": "level"
     },
     {
-      "id": "NAS.GDP.constant.2011-12",
+      "id": "NAS_GDP.GVA.agriculture.current.2011-12",
       "dataset": "NAS_GDP",
-      "source_dataset_code": "GDP at market prices (constant prices), 2011-2012 series",
-      "indicator_code": "GDP",
-      "name": "Gross Domestic Product",
-      "description": "Aggregate GDP at constant prices for India.",
-      "unit": "₹ crore",
-      "frequency": "annual",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "agriculture",
+      "name": "Agriculture, Livestock, Forestry & Fishing",
+      "unit": "Rs. crore",
+      "frequency": "quarterly",
       "geography_level": "india",
-      "dimensions_schema": ["price_basis", "base_year", "revision"],
-      "base_year": "2011-12",
-      "price_basis": "constant",
-      "source_url": "https://www.mospi.gov.in/web/publications/national-accounts",
-      "release_policy": "MoSPI National Accounts; latest revision only.",
-      "default_transform": "level"
-    },
-    {
-      "id": "NAS.GVA.current.2011-12",
-      "dataset": "NAS_GDP",
-      "source_dataset_code": "GVA at basic prices (current prices), 2011-2012 series",
-      "indicator_code": "GVA",
-      "name": "Gross Value Added",
-      "description": "Aggregate GVA at basic prices for India.",
-      "unit": "₹ crore",
-      "frequency": "annual",
-      "geography_level": "india",
-      "dimensions_schema": ["price_basis", "base_year", "revision", "sector"],
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
       "base_year": "2011-12",
       "price_basis": "current",
-      "source_url": "https://www.mospi.gov.in/web/publications/national-accounts",
-      "release_policy": "MoSPI National Accounts; latest revision only.",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
       "default_transform": "level"
     },
     {
-      "id": "NAS.GVA.constant.2011-12",
+      "id": "NAS_GDP.GVA.mining.current.2011-12",
       "dataset": "NAS_GDP",
-      "source_dataset_code": "GVA at basic prices (constant prices), 2011-2012 series",
-      "indicator_code": "GVA",
-      "name": "Gross Value Added",
-      "description": "Aggregate GVA at constant prices for India.",
-      "unit": "₹ crore",
-      "frequency": "annual",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "mining",
+      "name": "(a) Mining & Quarrying",
+      "unit": "Rs. crore",
+      "frequency": "quarterly",
       "geography_level": "india",
-      "dimensions_schema": ["price_basis", "base_year", "revision", "sector"],
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "current",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.GVA.manufacturing.current.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "manufacturing",
+      "name": "(b) Manufacturing",
+      "unit": "Rs. crore",
+      "frequency": "quarterly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "current",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.GVA.electricity.current.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "electricity",
+      "name": "(c) Electricity, Gas & Water Supply",
+      "unit": "Rs. crore",
+      "frequency": "quarterly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "current",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.GVA.construction.current.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "construction",
+      "name": "(d) Construction",
+      "unit": "Rs. crore",
+      "frequency": "quarterly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "current",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.GVA.industries.current.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "industries",
+      "name": "Industries (a+b+c+d)",
+      "unit": "Rs. crore",
+      "frequency": "quarterly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "current",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.GVA.trade.current.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "trade",
+      "name": "(e)Trade, Hotels, Transport and Communication",
+      "unit": "Rs. crore",
+      "frequency": "quarterly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "current",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.GVA.finance.current.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "finance",
+      "name": "(f) Financial, Real Estate & Professional Services.",
+      "unit": "Rs. crore",
+      "frequency": "quarterly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "current",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.GVA.public_admin.current.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "public_admin",
+      "name": "(g) Public Administration, Defence & other services.",
+      "unit": "Rs. crore",
+      "frequency": "quarterly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "current",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.GVA.services.current.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "services",
+      "name": "Services (e+f+g)",
+      "unit": "Rs. crore",
+      "frequency": "quarterly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "current",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.GVA.constant.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "constant",
+      "name": "Gross Value Added at Constant Prices (2011-12)",
+      "unit": "Rs. crore",
+      "frequency": "quarterly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
       "base_year": "2011-12",
       "price_basis": "constant",
-      "source_url": "https://www.mospi.gov.in/web/publications/national-accounts",
-      "release_policy": "MoSPI National Accounts; latest revision only.",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.GVA.agriculture.constant.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "agriculture",
+      "name": "Agriculture, Livestock, Forestry & Fishing",
+      "unit": "Rs. crore",
+      "frequency": "quarterly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "constant",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.GVA.mining.constant.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "mining",
+      "name": "(a) Mining & Quarrying",
+      "unit": "Rs. crore",
+      "frequency": "quarterly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "constant",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.GVA.manufacturing.constant.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "manufacturing",
+      "name": "(b) Manufacturing",
+      "unit": "Rs. crore",
+      "frequency": "quarterly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "constant",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.GVA.electricity.constant.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "electricity",
+      "name": "(c) Electricity, Gas & Water Supply.",
+      "unit": "Rs. crore",
+      "frequency": "quarterly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "constant",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.GVA.construction.constant.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "construction",
+      "name": "(d) Construction",
+      "unit": "Rs. crore",
+      "frequency": "quarterly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "constant",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.GVA.industries.constant.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "industries",
+      "name": "Industries(a+b+c+d)",
+      "unit": "Rs. crore",
+      "frequency": "quarterly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "constant",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.GVA.trade.constant.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "trade",
+      "name": "(e) Trade, Hotels, Transport and Communication",
+      "unit": "Rs. crore",
+      "frequency": "quarterly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "constant",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.GVA.finance.constant.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "finance",
+      "name": "(f) Financial, Real Estate & Professional Services.",
+      "unit": "Rs. crore",
+      "frequency": "quarterly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "constant",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.GVA.public_admin.constant.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "public_admin",
+      "name": "(g) Public Administration, Defence & other services.",
+      "unit": "Rs. crore",
+      "frequency": "quarterly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "constant",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.GVA.services.constant.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "services",
+      "name": "Services(e+f+g)",
+      "unit": "Rs. crore",
+      "frequency": "quarterly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "constant",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.GVA.deflator.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "deflator",
+      "name": "GVA Implicit Price Deflator",
+      "unit": "Index",
+      "frequency": "quarterly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "index",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.GVA.agriculture.deflator.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "agriculture",
+      "name": "Agriculture, Livestock, Forestry & Fishing",
+      "unit": "Index",
+      "frequency": "quarterly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "index",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.GVA.mining.deflator.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "mining",
+      "name": "(a) Mining & Quarrying",
+      "unit": "Index",
+      "frequency": "quarterly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "index",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.GVA.manufacturing.deflator.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "manufacturing",
+      "name": "(b) Manufacturing",
+      "unit": "Index",
+      "frequency": "quarterly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "index",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.GVA.electricity.deflator.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "electricity",
+      "name": "(c) Electricity, Gas & Water Supply.",
+      "unit": "Index",
+      "frequency": "quarterly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "index",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.GVA.construction.deflator.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "construction",
+      "name": "(d) Construction",
+      "unit": "Index",
+      "frequency": "quarterly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "index",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.GVA.industries.deflator.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "industries",
+      "name": "Industries(a+b+c+d)",
+      "unit": "Index",
+      "frequency": "quarterly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "index",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.GVA.trade.deflator.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "trade",
+      "name": "(e) Trade, Hotels, Transport and Communication",
+      "unit": "Index",
+      "frequency": "quarterly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "index",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.GVA.finance.deflator.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "finance",
+      "name": "(f) Financial, Real Estate & Professional Services.",
+      "unit": "Index",
+      "frequency": "quarterly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "index",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.GVA.public_admin.deflator.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "public_admin",
+      "name": "(g) Public Administration, Defence & other services.",
+      "unit": "Index",
+      "frequency": "quarterly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "index",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.GVA.services.deflator.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "services",
+      "name": "Services (e+f+g)",
+      "unit": "Index",
+      "frequency": "quarterly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "index",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.IIP.overall.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "overall",
+      "name": "Index of Industrial Production",
+      "unit": "Index 2011-12=100",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "index",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.IIP.mining.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "mining",
+      "name": "Mining",
+      "unit": "Index 2011-12=100",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "index",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.IIP.manufacturing.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "manufacturing",
+      "name": "Manufacturing",
+      "unit": "Index 2011-12=100",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "index",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.IIP.electricity.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "electricity",
+      "name": "Electricity",
+      "unit": "Index 2011-12=100",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "index",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.IIP.capital_goods.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "capital_goods",
+      "name": "Capital Goods",
+      "unit": "Index 2011-12=100",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "index",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.IIP.intermediate_goods.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "intermediate_goods",
+      "name": "Intermediate Goods",
+      "unit": "Index 2011-12=100",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "index",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.IIP.consumer_durables.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "consumer_durables",
+      "name": "Consumer durables Goods",
+      "unit": "Index 2011-12=100",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "index",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.IIP.consumer_non_durables.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "consumer_non_durables",
+      "name": "Consumer non- durables Goods",
+      "unit": "Index 2011-12=100",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "index",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.CPI.industrial_workers.2016",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "industrial_workers",
+      "name": "Consumer Price Index - Industrial Workers",
+      "unit": "2016=100",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2016",
+      "price_basis": "index",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.CPI.agricultural_labourers.2019",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "agricultural_labourers",
+      "name": "Consumer Price Index - Agricultural Labourers",
+      "unit": "2019=100",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2019",
+      "price_basis": "index",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.CPI.rural_labourers.2019",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "rural_labourers",
+      "name": "Consumer Price Index - Rural Labourers",
+      "unit": "2019=100",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2019",
+      "price_basis": "index",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.CPI.rural.2012",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "rural",
+      "name": "Consumer Price Index - Rural",
+      "unit": "2012=100",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2012",
+      "price_basis": "index",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.CPI.urban.2012",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "urban",
+      "name": "Consumer Price Index - Urban",
+      "unit": "2012=100",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2012",
+      "price_basis": "index",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.CPI.combined.2012",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "combined",
+      "name": "Consumer Price Index - Combined",
+      "unit": "2012=100",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2012",
+      "price_basis": "index",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS_GDP.WPI.overall.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "National Accounts Statistics",
+      "indicator_code": "overall",
+      "name": "Wholesale Price Index",
+      "unit": "Index 2011-12=100",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "index",
+      "source_url": "https://www.mospi.gov.in/",
+      "release_policy": "MoSPI SDDS release; preliminary when first released.",
       "default_transform": "level"
     }
   ],
-  "observations": [],
+  "observations": [
+    {
+      "indicator_id": "NAS_GDP.GVA.current.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 7824677,
+      "unit": "Rs. crore",
+      "dimensions": {
+        "price_basis": "current",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "GVA at Basic Price (at Current Prices)"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.GVA.agriculture.current.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 1199589,
+      "unit": "Rs. crore",
+      "dimensions": {
+        "price_basis": "current",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "Agriculture, Livestock, Forestry & Fishing"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.GVA.mining.current.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 135821,
+      "unit": "Rs. crore",
+      "dimensions": {
+        "price_basis": "current",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "(a) Mining & Quarrying"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.GVA.manufacturing.current.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 1091967,
+      "unit": "Rs. crore",
+      "dimensions": {
+        "price_basis": "current",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "(b) Manufacturing"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.GVA.electricity.current.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 203870,
+      "unit": "Rs. crore",
+      "dimensions": {
+        "price_basis": "current",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "(c) Electricity, Gas & Water Supply"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.GVA.construction.current.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 677203,
+      "unit": "Rs. crore",
+      "dimensions": {
+        "price_basis": "current",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "(d) Construction"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.GVA.industries.current.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 2108860,
+      "unit": "Rs. crore",
+      "dimensions": {
+        "price_basis": "current",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "Industries (a+b+c+d)"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.GVA.trade.current.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 1227932,
+      "unit": "Rs. crore",
+      "dimensions": {
+        "price_basis": "current",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "(e)Trade, Hotels, Transport and Communication"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.GVA.finance.current.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 2070505,
+      "unit": "Rs. crore",
+      "dimensions": {
+        "price_basis": "current",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "(f) Financial, Real Estate & Professional Services."
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.GVA.public_admin.current.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 1217790,
+      "unit": "Rs. crore",
+      "dimensions": {
+        "price_basis": "current",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "(g) Public Administration, Defence & other services."
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.GVA.services.current.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 4516227,
+      "unit": "Rs. crore",
+      "dimensions": {
+        "price_basis": "current",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "Services (e+f+g)"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.GVA.constant.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 4463834,
+      "unit": "Rs. crore",
+      "dimensions": {
+        "price_basis": "constant",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "GVA at Basic Price [at Constant (2011- 2012) Prices]"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.GVA.agriculture.constant.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 568374,
+      "unit": "Rs. crore",
+      "dimensions": {
+        "price_basis": "constant",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "Agriculture, Livestock, Forestry & Fishing"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.GVA.mining.constant.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 87327,
+      "unit": "Rs. crore",
+      "dimensions": {
+        "price_basis": "constant",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "(a) Mining & Quarrying"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.GVA.manufacturing.constant.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 761394,
+      "unit": "Rs. crore",
+      "dimensions": {
+        "price_basis": "constant",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "(b) Manufacturing"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.GVA.electricity.constant.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 106470,
+      "unit": "Rs. crore",
+      "dimensions": {
+        "price_basis": "constant",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "(c) Electricity, Gas & Water Supply."
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.GVA.construction.constant.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 398032,
+      "unit": "Rs. crore",
+      "dimensions": {
+        "price_basis": "constant",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "(d) Construction"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.GVA.industries.constant.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 1353223,
+      "unit": "Rs. crore",
+      "dimensions": {
+        "price_basis": "constant",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "Industries(a+b+c+d)"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.GVA.trade.constant.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 748348,
+      "unit": "Rs. crore",
+      "dimensions": {
+        "price_basis": "constant",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "(e) Trade, Hotels, Transport and Communication"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.GVA.finance.constant.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 1232476,
+      "unit": "Rs. crore",
+      "dimensions": {
+        "price_basis": "constant",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "(f) Financial, Real Estate & Professional Services."
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.GVA.public_admin.constant.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 561413,
+      "unit": "Rs. crore",
+      "dimensions": {
+        "price_basis": "constant",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "(g) Public Administration, Defence & other services."
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.GVA.services.constant.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 2542237,
+      "unit": "Rs. crore",
+      "dimensions": {
+        "price_basis": "constant",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "Services(e+f+g)"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.GVA.deflator.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 175.3,
+      "unit": "Index",
+      "dimensions": {
+        "price_basis": "index",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "GVA at Basic Price (Implicit Price Index)"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.GVA.agriculture.deflator.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 211.1,
+      "unit": "Index",
+      "dimensions": {
+        "price_basis": "index",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "Agriculture, Livestock, Forestry & Fishing"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.GVA.mining.deflator.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 155.5,
+      "unit": "Index",
+      "dimensions": {
+        "price_basis": "index",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "(a) Mining & Quarrying"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.GVA.manufacturing.deflator.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 143.4,
+      "unit": "Index",
+      "dimensions": {
+        "price_basis": "index",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "(b) Manufacturing"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.GVA.electricity.deflator.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 191.5,
+      "unit": "Index",
+      "dimensions": {
+        "price_basis": "index",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "(c) Electricity, Gas & Water Supply."
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.GVA.construction.deflator.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 170.1,
+      "unit": "Index",
+      "dimensions": {
+        "price_basis": "index",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "(d) Construction"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.GVA.industries.deflator.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 155.8,
+      "unit": "Index",
+      "dimensions": {
+        "price_basis": "index",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "Industries(a+b+c+d)"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.GVA.trade.deflator.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 164.1,
+      "unit": "Index",
+      "dimensions": {
+        "price_basis": "index",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "(e) Trade, Hotels, Transport and Communication"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.GVA.finance.deflator.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 168,
+      "unit": "Index",
+      "dimensions": {
+        "price_basis": "index",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "(f) Financial, Real Estate & Professional Services."
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.GVA.public_admin.deflator.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 216.9,
+      "unit": "Index",
+      "dimensions": {
+        "price_basis": "index",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "(g) Public Administration, Defence & other services."
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.GVA.services.deflator.2011-12",
+      "geography_id": "IN",
+      "period_id": "Q1_FY2025-26",
+      "value": 177.6,
+      "unit": "Index",
+      "dimensions": {
+        "price_basis": "index",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "Services (e+f+g)"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.IIP.overall.2011-12",
+      "geography_id": "IN",
+      "period_id": "2025-07",
+      "value": 155,
+      "unit": "Index 2011-12=100",
+      "dimensions": {
+        "price_basis": "index",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "Production Index (Index of Industrial Production)"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.IIP.mining.2011-12",
+      "geography_id": "IN",
+      "period_id": "2025-07",
+      "value": 107.7,
+      "unit": "Index 2011-12=100",
+      "dimensions": {
+        "price_basis": "index",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "Mining"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.IIP.manufacturing.2011-12",
+      "geography_id": "IN",
+      "period_id": "2025-07",
+      "value": 156.9,
+      "unit": "Index 2011-12=100",
+      "dimensions": {
+        "price_basis": "index",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "Manufacturing"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.IIP.electricity.2011-12",
+      "geography_id": "IN",
+      "period_id": "2025-07",
+      "value": 221.5,
+      "unit": "Index 2011-12=100",
+      "dimensions": {
+        "price_basis": "index",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "Electricity"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.IIP.capital_goods.2011-12",
+      "geography_id": "IN",
+      "period_id": "2025-07",
+      "value": 119.7,
+      "unit": "Index 2011-12=100",
+      "dimensions": {
+        "price_basis": "index",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "Capital Goods"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.IIP.intermediate_goods.2011-12",
+      "geography_id": "IN",
+      "period_id": "2025-07",
+      "value": 174.1,
+      "unit": "Index 2011-12=100",
+      "dimensions": {
+        "price_basis": "index",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "Intermediate Goods"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.IIP.consumer_durables.2011-12",
+      "geography_id": "IN",
+      "period_id": "2025-07",
+      "value": 136.3,
+      "unit": "Index 2011-12=100",
+      "dimensions": {
+        "price_basis": "index",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "Consumer durables Goods"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.IIP.consumer_non_durables.2011-12",
+      "geography_id": "IN",
+      "period_id": "2025-07",
+      "value": 147.8,
+      "unit": "Index 2011-12=100",
+      "dimensions": {
+        "price_basis": "index",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "Consumer non- durables Goods"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.CPI.industrial_workers.2016",
+      "geography_id": "IN",
+      "period_id": "2025-07",
+      "value": 146.5,
+      "unit": "2016=100",
+      "dimensions": {
+        "price_basis": "index",
+        "base_year": "2016",
+        "revision": "latest",
+        "sector": "CPI-IW"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.CPI.agricultural_labourers.2019",
+      "geography_id": "IN",
+      "period_id": "2025-07",
+      "value": 135.31,
+      "unit": "2019=100",
+      "dimensions": {
+        "price_basis": "index",
+        "base_year": "2019",
+        "revision": "latest",
+        "sector": "CPI-AL"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.CPI.rural_labourers.2019",
+      "geography_id": "IN",
+      "period_id": "2025-07",
+      "value": 135.66,
+      "unit": "2019=100",
+      "dimensions": {
+        "price_basis": "index",
+        "base_year": "2019",
+        "revision": "latest",
+        "sector": "CPI-RL"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.CPI.rural.2012",
+      "geography_id": "IN",
+      "period_id": "2025-07",
+      "value": 197.6,
+      "unit": "2012=100",
+      "dimensions": {
+        "price_basis": "index",
+        "base_year": "2012",
+        "revision": "latest",
+        "sector": "CPI-Rural"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.CPI.urban.2012",
+      "geography_id": "IN",
+      "period_id": "2025-07",
+      "value": 194.2,
+      "unit": "2012=100",
+      "dimensions": {
+        "price_basis": "index",
+        "base_year": "2012",
+        "revision": "latest",
+        "sector": "CPI-Urban"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.CPI.combined.2012",
+      "geography_id": "IN",
+      "period_id": "2025-07",
+      "value": 196,
+      "unit": "2012=100",
+      "dimensions": {
+        "price_basis": "index",
+        "base_year": "2012",
+        "revision": "latest",
+        "sector": "CPI-Combined"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "NAS_GDP.WPI.overall.2011-12",
+      "geography_id": "IN",
+      "period_id": "2025-07",
+      "value": 154.4,
+      "unit": "Index 2011-12=100",
+      "dimensions": {
+        "price_basis": "index",
+        "base_year": "2011-12",
+        "revision": "latest",
+        "sector": "Wholesale Price Index (WPI)"
+      },
+      "source_run_id": "mospi-nas-pdf-parse-2026-05-31",
+      "quality_flags": []
+    }
+  ],
   "quality_report": {
     "validation_status": "passed",
     "duplicate_count": 0,
     "null_count": 0,
     "outlier_count": 0,
-    "coverage": { "india": 0, "states": 0, "periods": 0, "note": "declared not ingested — no observations emitted" },
-    "source_hash": ""
+    "coverage": {
+      "india": 1,
+      "states": 0,
+      "periods": 2,
+      "total_observations": 48
+    },
+    "source_hash": "pdf-extracted"
   },
-  "warnings": [
-    "This dataset is a placeholder for national-level GDP/GVA comparison series.",
-    "When populated, it will serve as the denominator for State SDP share-of-India calculations.",
-    "Planned ingestion: MoSPI National Accounts workbook or eSankhyiki NAS API."
-  ],
-  "manual_source_path": "data/raw/mospi/NAS_GDP/manual/<file>.xls"
+  "warnings": [],
+  "provenance": "Extracted from MoSPI SDDS PDF dated August 29, 2025. Data are preliminary and not seasonally adjusted."
 }

@@ -12,8 +12,8 @@
       "id": "NAS_GDP",
       "title": "National Accounts Statistics — GDP and GVA aggregates",
       "artifact": "/data/mospi/nas-gdp-mvp.json",
-      "source_status": "declared_not_ingested",
-      "observation_count": 0
+      "source_status": "ready",
+      "observation_count": 48
     }
   ]
 }

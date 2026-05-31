@@ -2,12 +2,12 @@
   "schema_version": "2026-06-mospi-state-sdp-mvp-v2",
   "dataset": "STATE_SDP",
   "title": "State Domestic Product and other aggregates, 2011-2012 series",
-  "generated_at": "2026-05-31T12:16:13.114Z",
+  "generated_at": "2026-05-31T13:26:20.197Z",
   "source_status": "source_unavailable",
   "source_runs": [
     {
       "run_id": "mospi-state-sdp-parse-2026-05-31",
-      "fetched_at": "2026-05-31T12:16:13.114Z",
+      "fetched_at": "2026-05-31T13:26:20.197Z",
       "source_url": "https://www.mospi.gov.in/sites/default/files/press_releases_statements/State_wise_SDP_01082025N.xls",
       "parser_version": "state-sdp-parse-v1",
       "row_count": 0,
