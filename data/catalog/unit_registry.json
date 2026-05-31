@@ -1,0 +1,17 @@
+[
+  {
+    "unit_id": "INR_CRORE",
+    "label": "\u20b9 crore",
+    "description": "Indian rupees, crore units, as published by MoSPI State SDP workbooks."
+  },
+  {
+    "unit_id": "INR",
+    "label": "\u20b9",
+    "description": "Indian rupees."
+  },
+  {
+    "unit_id": "PERCENT",
+    "label": "%",
+    "description": "Percentage rate or share."
+  }
+]

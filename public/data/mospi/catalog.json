@@ -1,0 +1,18 @@
+{
+  "schema_version": "2026-05-mospi-public-catalog-v1",
+  "datasets": [
+    {
+      "id": "STATE_SDP",
+      "title": "State Domestic Product and other aggregates, 2011-2012 series",
+      "artifact": "/data/mospi/state-sdp-mvp.json",
+      "source_status": "source_unavailable",
+      "observation_count": 0
+    },
+    {
+      "id": "NAS",
+      "title": "National Accounts Statistics",
+      "source_status": "declared_not_ingested",
+      "observation_count": 0
+    }
+  ]
+}

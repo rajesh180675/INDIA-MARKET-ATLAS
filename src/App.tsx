@@ -11,6 +11,7 @@ import { DATASET_VERSION } from "./domain/dataset-version";
 
 const IndexExplorer = lazy(() => import("./console/workspaces/IndexExplorer"));
 const MacroLab = lazy(() => import("./console/workspaces/MacroLab"));
+const StateEconomyLab = lazy(() => import("./console/workspaces/StateEconomyLab"));
 const AssetRace = lazy(() => import("./console/workspaces/AssetRace"));
 const SipSimulator = lazy(() => import("./console/workspaces/SipSimulator"));
 const VolatilityRisk = lazy(() => import("./console/workspaces/VolatilityRisk"));
@@ -23,6 +24,8 @@ function renderWorkspace(slug: string, theme: string) {
   switch (slug) {
     case "macro":
       return <MacroLab theme={theme} />;
+    case "state-economy":
+      return <StateEconomyLab theme={theme} />;
     case "race":
       return <AssetRace theme={theme} />;
     case "sip":

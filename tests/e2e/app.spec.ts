@@ -18,7 +18,7 @@ test.describe("Research Console", () => {
     ).toBeVisible();
 
     // Workspace rail present
-    for (const name of [/Index Explorer/i, /Macro Lab/i, /Regimes & Crashes/i, /Projection Studio/i]) {
+    for (const name of [/Index Explorer/i, /Macro Lab/i, /State Economy Lab/i, /Regimes & Crashes/i, /Projection Studio/i]) {
       await expect(page.getByRole("button", { name })).toBeVisible();
     }
 

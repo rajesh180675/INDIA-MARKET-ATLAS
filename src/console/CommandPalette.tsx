@@ -32,15 +32,28 @@ export default function CommandPalette() {
   const [activeIdx, setActiveIdx] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
+  const openRef = useRef(open);
   const { navigate, setParams } = useAtlasState();
+
+  useEffect(() => {
+    openRef.current = open;
+  }, [open]);
+
+  const openPalette = useCallback(() => {
+    setQuery("");
+    setActiveIdx(0);
+    setOpen(true);
+    requestAnimationFrame(() => inputRef.current?.focus());
+  }, []);
 
   // Open with Cmd/Ctrl+K, close with Escape
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      const isOpen = e.key === "k" && (e.metaKey || e.ctrlKey);
-      if (isOpen) {
+      const isOpenShortcut = e.key === "k" && (e.metaKey || e.ctrlKey);
+      if (isOpenShortcut) {
         e.preventDefault();
-        setOpen((o) => !o);
+        if (openRef.current) setOpen(false);
+        else openPalette();
         return;
       }
       if (e.key === "Escape") {
@@ -49,16 +62,7 @@ export default function CommandPalette() {
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, []);
-
-  // Focus input on open, reset state on close
-  useEffect(() => {
-    if (open) {
-      setQuery("");
-      setActiveIdx(0);
-      requestAnimationFrame(() => inputRef.current?.focus());
-    }
-  }, [open]);
+  }, [openPalette]);
 
   const commands = useMemo<Command[]>(
     () => [
@@ -121,25 +125,24 @@ export default function CommandPalette() {
     );
   }, [commands, query]);
 
-  // Clamp active index when filtered list shrinks
-  useEffect(() => {
-    if (activeIdx >= filtered.length) setActiveIdx(Math.max(0, filtered.length - 1));
-  }, [filtered.length, activeIdx]);
+  const activeOptionIdx = filtered.length === 0
+    ? 0
+    : Math.min(activeIdx, filtered.length - 1);
 
   const runActive = useCallback(() => {
-    const cmd = filtered[activeIdx];
+    const cmd = filtered[activeOptionIdx];
     if (!cmd) return;
     cmd.run();
     setOpen(false);
-  }, [filtered, activeIdx]);
+  }, [filtered, activeOptionIdx]);
 
   function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "ArrowDown") {
       e.preventDefault();
-      setActiveIdx((i) => Math.min(filtered.length - 1, i + 1));
+      if (filtered.length > 0) setActiveIdx(Math.min(filtered.length - 1, activeOptionIdx + 1));
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
-      setActiveIdx((i) => Math.max(0, i - 1));
+      if (filtered.length > 0) setActiveIdx(Math.max(0, activeOptionIdx - 1));
     } else if (e.key === "Enter") {
       e.preventDefault();
       runActive();
@@ -148,11 +151,11 @@ export default function CommandPalette() {
 
   // Scroll active item into view
   useEffect(() => {
-    const el = listRef.current?.querySelector(`[data-idx="${activeIdx}"]`);
+    const el = listRef.current?.querySelector(`[data-idx="${activeOptionIdx}"]`);
     if (el && "scrollIntoView" in el) {
       (el as HTMLElement).scrollIntoView({ block: "nearest" });
     }
-  }, [activeIdx]);
+  }, [activeOptionIdx]);
 
   if (!open) return null;
 
@@ -194,7 +197,7 @@ export default function CommandPalette() {
             onKeyDown={onKeyDown}
             aria-label="Command palette search"
             aria-controls="atlas-cmd-list"
-            aria-activedescendant={`atlas-cmd-${activeIdx}`}
+            aria-activedescendant={`atlas-cmd-${activeOptionIdx}`}
             className="num"
             style={{
               width: "100%",
@@ -255,7 +258,7 @@ export default function CommandPalette() {
                   );
                   lastGroup = cmd.group;
                 }
-                const active = idx === activeIdx;
+                const active = idx === activeOptionIdx;
                 out.push(
                   <li
                     key={cmd.id}

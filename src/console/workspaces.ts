@@ -26,6 +26,12 @@ export const WORKSPACES: WorkspaceDef[] = [
     usesYearWindow: true,
   },
   {
+    slug: "state-economy",
+    title: "State Economy Lab",
+    scope: "MoSPI State SDP source readiness and state/UT comparisons",
+    usesYearWindow: true,
+  },
+  {
     slug: "race",
     title: "Asset Race",
     scope: "₹100 in 1979 across equity, gold, USD, FD, inflation",

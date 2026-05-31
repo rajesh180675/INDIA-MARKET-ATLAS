@@ -1,0 +1,644 @@
+{
+  "schema_version": "2026-05-mospi-state-sdp-mvp-v1",
+  "dataset": "STATE_SDP",
+  "title": "State Domestic Product and other aggregates, 2011-2012 series",
+  "generated_at": "2026-05-31T10:20:27Z",
+  "source_status": "source_unavailable",
+  "source_runs": [
+    {
+      "run_id": "mospi-state-sdp-discovery-2026-05-31",
+      "fetched_at": "2026-05-31T10:20:27Z",
+      "source_url": "https://www.mospi.gov.in/api/publications-reports/get-web-publications-report-list",
+      "source_file": "data/raw/mospi/STATE_SDP/monthly_upload_aug_2025.xlsx",
+      "content_hash": "sha256:2a64c9c002e71a30daa18abff7f18f8bca338a8d0e90e40203b68fcdf2ca0af8",
+      "parser_version": "state-sdp-discovery-v0",
+      "row_count": 64,
+      "warnings": [
+        "The MoSPI publication metadata lists State_wise_SDP_01082025N.xls through Office viewer.",
+        "The direct workbook URL currently returns HTTP 404 from www.mospi.gov.in, so no numeric observations were emitted.",
+        "Manual source fallback is expected at data/raw/mospi/STATE_SDP/manual/<file>.xls until the live link resolves."
+      ],
+      "errors": []
+    }
+  ],
+  "geographies": [
+    {
+      "geography_id": "IN",
+      "name": "India",
+      "type": "india",
+      "code_system": "ISO-3166-1",
+      "aliases": [
+        "All India",
+        "National"
+      ]
+    },
+    {
+      "geography_id": "IN-AP",
+      "name": "Andhra Pradesh",
+      "type": "state",
+      "code_system": "ISO-3166-2",
+      "aliases": []
+    },
+    {
+      "geography_id": "IN-AR",
+      "name": "Arunachal Pradesh",
+      "type": "state",
+      "code_system": "ISO-3166-2",
+      "aliases": []
+    },
+    {
+      "geography_id": "IN-AS",
+      "name": "Assam",
+      "type": "state",
+      "code_system": "ISO-3166-2",
+      "aliases": []
+    },
+    {
+      "geography_id": "IN-BR",
+      "name": "Bihar",
+      "type": "state",
+      "code_system": "ISO-3166-2",
+      "aliases": []
+    },
+    {
+      "geography_id": "IN-CT",
+      "name": "Chhattisgarh",
+      "type": "state",
+      "code_system": "ISO-3166-2",
+      "aliases": [
+        "Chattisgarh"
+      ]
+    },
+    {
+      "geography_id": "IN-GA",
+      "name": "Goa",
+      "type": "state",
+      "code_system": "ISO-3166-2",
+      "aliases": []
+    },
+    {
+      "geography_id": "IN-GJ",
+      "name": "Gujarat",
+      "type": "state",
+      "code_system": "ISO-3166-2",
+      "aliases": []
+    },
+    {
+      "geography_id": "IN-HR",
+      "name": "Haryana",
+      "type": "state",
+      "code_system": "ISO-3166-2",
+      "aliases": []
+    },
+    {
+      "geography_id": "IN-HP",
+      "name": "Himachal Pradesh",
+      "type": "state",
+      "code_system": "ISO-3166-2",
+      "aliases": []
+    },
+    {
+      "geography_id": "IN-JH",
+      "name": "Jharkhand",
+      "type": "state",
+      "code_system": "ISO-3166-2",
+      "aliases": []
+    },
+    {
+      "geography_id": "IN-KA",
+      "name": "Karnataka",
+      "type": "state",
+      "code_system": "ISO-3166-2",
+      "aliases": []
+    },
+    {
+      "geography_id": "IN-KL",
+      "name": "Kerala",
+      "type": "state",
+      "code_system": "ISO-3166-2",
+      "aliases": []
+    },
+    {
+      "geography_id": "IN-MP",
+      "name": "Madhya Pradesh",
+      "type": "state",
+      "code_system": "ISO-3166-2",
+      "aliases": []
+    },
+    {
+      "geography_id": "IN-MH",
+      "name": "Maharashtra",
+      "type": "state",
+      "code_system": "ISO-3166-2",
+      "aliases": [
+        "Maharastra"
+      ]
+    },
+    {
+      "geography_id": "IN-MN",
+      "name": "Manipur",
+      "type": "state",
+      "code_system": "ISO-3166-2",
+      "aliases": []
+    },
+    {
+      "geography_id": "IN-ML",
+      "name": "Meghalaya",
+      "type": "state",
+      "code_system": "ISO-3166-2",
+      "aliases": []
+    },
+    {
+      "geography_id": "IN-MZ",
+      "name": "Mizoram",
+      "type": "state",
+      "code_system": "ISO-3166-2",
+      "aliases": []
+    },
+    {
+      "geography_id": "IN-NL",
+      "name": "Nagaland",
+      "type": "state",
+      "code_system": "ISO-3166-2",
+      "aliases": []
+    },
+    {
+      "geography_id": "IN-OR",
+      "name": "Odisha",
+      "type": "state",
+      "code_system": "ISO-3166-2",
+      "aliases": [
+        "Orissa"
+      ]
+    },
+    {
+      "geography_id": "IN-PB",
+      "name": "Punjab",
+      "type": "state",
+      "code_system": "ISO-3166-2",
+      "aliases": []
+    },
+    {
+      "geography_id": "IN-RJ",
+      "name": "Rajasthan",
+      "type": "state",
+      "code_system": "ISO-3166-2",
+      "aliases": []
+    },
+    {
+      "geography_id": "IN-SK",
+      "name": "Sikkim",
+      "type": "state",
+      "code_system": "ISO-3166-2",
+      "aliases": []
+    },
+    {
+      "geography_id": "IN-TN",
+      "name": "Tamil Nadu",
+      "type": "state",
+      "code_system": "ISO-3166-2",
+      "aliases": []
+    },
+    {
+      "geography_id": "IN-TG",
+      "name": "Telangana",
+      "type": "state",
+      "code_system": "ISO-3166-2",
+      "aliases": [
+        "Telengana"
+      ]
+    },
+    {
+      "geography_id": "IN-TR",
+      "name": "Tripura",
+      "type": "state",
+      "code_system": "ISO-3166-2",
+      "aliases": []
+    },
+    {
+      "geography_id": "IN-UP",
+      "name": "Uttar Pradesh",
+      "type": "state",
+      "code_system": "ISO-3166-2",
+      "aliases": []
+    },
+    {
+      "geography_id": "IN-UT",
+      "name": "Uttarakhand",
+      "type": "state",
+      "code_system": "ISO-3166-2",
+      "aliases": [
+        "Uttaranchal"
+      ]
+    },
+    {
+      "geography_id": "IN-WB",
+      "name": "West Bengal",
+      "type": "state",
+      "code_system": "ISO-3166-2",
+      "aliases": []
+    },
+    {
+      "geography_id": "IN-AN",
+      "name": "Andaman and Nicobar Islands",
+      "type": "ut",
+      "code_system": "ISO-3166-2",
+      "aliases": [
+        "A & N Islands",
+        "Andaman & Nicobar Islands"
+      ]
+    },
+    {
+      "geography_id": "IN-CH",
+      "name": "Chandigarh",
+      "type": "ut",
+      "code_system": "ISO-3166-2",
+      "aliases": []
+    },
+    {
+      "geography_id": "IN-DH",
+      "name": "Dadra and Nagar Haveli and Daman and Diu",
+      "type": "ut",
+      "code_system": "ISO-3166-2",
+      "aliases": [
+        "Dadra & Nagar Haveli and Daman & Diu",
+        "Daman and Diu"
+      ]
+    },
+    {
+      "geography_id": "IN-DL",
+      "name": "Delhi",
+      "type": "ut",
+      "code_system": "ISO-3166-2",
+      "aliases": [
+        "NCT Delhi",
+        "National Capital Territory of Delhi"
+      ]
+    },
+    {
+      "geography_id": "IN-JK",
+      "name": "Jammu and Kashmir",
+      "type": "ut",
+      "code_system": "ISO-3166-2",
+      "aliases": [
+        "Jammu & Kashmir"
+      ]
+    },
+    {
+      "geography_id": "IN-LA",
+      "name": "Ladakh",
+      "type": "ut",
+      "code_system": "ISO-3166-2",
+      "aliases": []
+    },
+    {
+      "geography_id": "IN-LD",
+      "name": "Lakshadweep",
+      "type": "ut",
+      "code_system": "ISO-3166-2",
+      "aliases": []
+    },
+    {
+      "geography_id": "IN-PY",
+      "name": "Puducherry",
+      "type": "ut",
+      "code_system": "ISO-3166-2",
+      "aliases": [
+        "Pondicherry"
+      ]
+    }
+  ],
+  "indicators": [
+    {
+      "id": "STATE_SDP.GSDP.current.2011-12",
+      "dataset": "STATE_SDP",
+      "source_dataset_code": "State Domestic Product and other aggregates, 2011-2012 series",
+      "indicator_code": "GSDP",
+      "name": "Gross State Domestic Product",
+      "description": "Aggregate State Domestic Product at market prices.",
+      "unit": "\u20b9 crore",
+      "frequency": "annual",
+      "geography_level": "state",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "current",
+      "source_url": "https://www.mospi.gov.in/publications-reports/innerpage/2707",
+      "release_policy": "MoSPI publication/report listing; latest revision only in the MVP.",
+      "default_transform": "level"
+    },
+    {
+      "id": "STATE_SDP.GSDP.constant.2011-12",
+      "dataset": "STATE_SDP",
+      "source_dataset_code": "State Domestic Product and other aggregates, 2011-2012 series",
+      "indicator_code": "GSDP",
+      "name": "Gross State Domestic Product",
+      "description": "Aggregate State Domestic Product at market prices.",
+      "unit": "\u20b9 crore",
+      "frequency": "annual",
+      "geography_level": "state",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "constant",
+      "source_url": "https://www.mospi.gov.in/publications-reports/innerpage/2707",
+      "release_policy": "MoSPI publication/report listing; latest revision only in the MVP.",
+      "default_transform": "level"
+    },
+    {
+      "id": "STATE_SDP.NSDP.current.2011-12",
+      "dataset": "STATE_SDP",
+      "source_dataset_code": "State Domestic Product and other aggregates, 2011-2012 series",
+      "indicator_code": "NSDP",
+      "name": "Net State Domestic Product",
+      "description": "Net State Domestic Product after consumption of fixed capital.",
+      "unit": "\u20b9 crore",
+      "frequency": "annual",
+      "geography_level": "state",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "current",
+      "source_url": "https://www.mospi.gov.in/publications-reports/innerpage/2707",
+      "release_policy": "MoSPI publication/report listing; latest revision only in the MVP.",
+      "default_transform": "level"
+    },
+    {
+      "id": "STATE_SDP.NSDP.constant.2011-12",
+      "dataset": "STATE_SDP",
+      "source_dataset_code": "State Domestic Product and other aggregates, 2011-2012 series",
+      "indicator_code": "NSDP",
+      "name": "Net State Domestic Product",
+      "description": "Net State Domestic Product after consumption of fixed capital.",
+      "unit": "\u20b9 crore",
+      "frequency": "annual",
+      "geography_level": "state",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "constant",
+      "source_url": "https://www.mospi.gov.in/publications-reports/innerpage/2707",
+      "release_policy": "MoSPI publication/report listing; latest revision only in the MVP.",
+      "default_transform": "level"
+    },
+    {
+      "id": "STATE_SDP.PC_NSDP.current.2011-12",
+      "dataset": "STATE_SDP",
+      "source_dataset_code": "State Domestic Product and other aggregates, 2011-2012 series",
+      "indicator_code": "PC_NSDP",
+      "name": "Per-capita NSDP",
+      "description": "Net State Domestic Product divided by population where published.",
+      "unit": "\u20b9",
+      "frequency": "annual",
+      "geography_level": "state",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "current",
+      "source_url": "https://www.mospi.gov.in/publications-reports/innerpage/2707",
+      "release_policy": "MoSPI publication/report listing; latest revision only in the MVP.",
+      "default_transform": "level"
+    },
+    {
+      "id": "STATE_SDP.PC_NSDP.constant.2011-12",
+      "dataset": "STATE_SDP",
+      "source_dataset_code": "State Domestic Product and other aggregates, 2011-2012 series",
+      "indicator_code": "PC_NSDP",
+      "name": "Per-capita NSDP",
+      "description": "Net State Domestic Product divided by population where published.",
+      "unit": "\u20b9",
+      "frequency": "annual",
+      "geography_level": "state",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "constant",
+      "source_url": "https://www.mospi.gov.in/publications-reports/innerpage/2707",
+      "release_policy": "MoSPI publication/report listing; latest revision only in the MVP.",
+      "default_transform": "level"
+    },
+    {
+      "id": "STATE_SDP.MANUFACTURING_GVA.current.2011-12",
+      "dataset": "STATE_SDP",
+      "source_dataset_code": "State Domestic Product and other aggregates, 2011-2012 series",
+      "indicator_code": "MANUFACTURING_GVA",
+      "name": "Manufacturing GVA",
+      "description": "Sectoral GVA for manufacturing where published.",
+      "unit": "\u20b9 crore",
+      "frequency": "annual",
+      "geography_level": "state",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "current",
+      "source_url": "https://www.mospi.gov.in/publications-reports/innerpage/2707",
+      "release_policy": "MoSPI publication/report listing; latest revision only in the MVP.",
+      "default_transform": "level"
+    },
+    {
+      "id": "STATE_SDP.MANUFACTURING_GVA.constant.2011-12",
+      "dataset": "STATE_SDP",
+      "source_dataset_code": "State Domestic Product and other aggregates, 2011-2012 series",
+      "indicator_code": "MANUFACTURING_GVA",
+      "name": "Manufacturing GVA",
+      "description": "Sectoral GVA for manufacturing where published.",
+      "unit": "\u20b9 crore",
+      "frequency": "annual",
+      "geography_level": "state",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "constant",
+      "source_url": "https://www.mospi.gov.in/publications-reports/innerpage/2707",
+      "release_policy": "MoSPI publication/report listing; latest revision only in the MVP.",
+      "default_transform": "level"
+    },
+    {
+      "id": "STATE_SDP.AGRICULTURE_GVA.current.2011-12",
+      "dataset": "STATE_SDP",
+      "source_dataset_code": "State Domestic Product and other aggregates, 2011-2012 series",
+      "indicator_code": "AGRICULTURE_GVA",
+      "name": "Agriculture GVA",
+      "description": "Sectoral GVA for agriculture and allied activities where published.",
+      "unit": "\u20b9 crore",
+      "frequency": "annual",
+      "geography_level": "state",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "current",
+      "source_url": "https://www.mospi.gov.in/publications-reports/innerpage/2707",
+      "release_policy": "MoSPI publication/report listing; latest revision only in the MVP.",
+      "default_transform": "level"
+    },
+    {
+      "id": "STATE_SDP.AGRICULTURE_GVA.constant.2011-12",
+      "dataset": "STATE_SDP",
+      "source_dataset_code": "State Domestic Product and other aggregates, 2011-2012 series",
+      "indicator_code": "AGRICULTURE_GVA",
+      "name": "Agriculture GVA",
+      "description": "Sectoral GVA for agriculture and allied activities where published.",
+      "unit": "\u20b9 crore",
+      "frequency": "annual",
+      "geography_level": "state",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "constant",
+      "source_url": "https://www.mospi.gov.in/publications-reports/innerpage/2707",
+      "release_policy": "MoSPI publication/report listing; latest revision only in the MVP.",
+      "default_transform": "level"
+    },
+    {
+      "id": "STATE_SDP.INDUSTRY_GVA.current.2011-12",
+      "dataset": "STATE_SDP",
+      "source_dataset_code": "State Domestic Product and other aggregates, 2011-2012 series",
+      "indicator_code": "INDUSTRY_GVA",
+      "name": "Industry GVA",
+      "description": "Sectoral GVA for industry where published.",
+      "unit": "\u20b9 crore",
+      "frequency": "annual",
+      "geography_level": "state",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "current",
+      "source_url": "https://www.mospi.gov.in/publications-reports/innerpage/2707",
+      "release_policy": "MoSPI publication/report listing; latest revision only in the MVP.",
+      "default_transform": "level"
+    },
+    {
+      "id": "STATE_SDP.INDUSTRY_GVA.constant.2011-12",
+      "dataset": "STATE_SDP",
+      "source_dataset_code": "State Domestic Product and other aggregates, 2011-2012 series",
+      "indicator_code": "INDUSTRY_GVA",
+      "name": "Industry GVA",
+      "description": "Sectoral GVA for industry where published.",
+      "unit": "\u20b9 crore",
+      "frequency": "annual",
+      "geography_level": "state",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "constant",
+      "source_url": "https://www.mospi.gov.in/publications-reports/innerpage/2707",
+      "release_policy": "MoSPI publication/report listing; latest revision only in the MVP.",
+      "default_transform": "level"
+    },
+    {
+      "id": "STATE_SDP.SERVICES_GVA.current.2011-12",
+      "dataset": "STATE_SDP",
+      "source_dataset_code": "State Domestic Product and other aggregates, 2011-2012 series",
+      "indicator_code": "SERVICES_GVA",
+      "name": "Services GVA",
+      "description": "Sectoral GVA for services where published.",
+      "unit": "\u20b9 crore",
+      "frequency": "annual",
+      "geography_level": "state",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "current",
+      "source_url": "https://www.mospi.gov.in/publications-reports/innerpage/2707",
+      "release_policy": "MoSPI publication/report listing; latest revision only in the MVP.",
+      "default_transform": "level"
+    },
+    {
+      "id": "STATE_SDP.SERVICES_GVA.constant.2011-12",
+      "dataset": "STATE_SDP",
+      "source_dataset_code": "State Domestic Product and other aggregates, 2011-2012 series",
+      "indicator_code": "SERVICES_GVA",
+      "name": "Services GVA",
+      "description": "Sectoral GVA for services where published.",
+      "unit": "\u20b9 crore",
+      "frequency": "annual",
+      "geography_level": "state",
+      "dimensions_schema": [
+        "price_basis",
+        "base_year",
+        "revision",
+        "sector"
+      ],
+      "base_year": "2011-12",
+      "price_basis": "constant",
+      "source_url": "https://www.mospi.gov.in/publications-reports/innerpage/2707",
+      "release_policy": "MoSPI publication/report listing; latest revision only in the MVP.",
+      "default_transform": "level"
+    }
+  ],
+  "observations": [],
+  "quality_report": {
+    "dataset": "STATE_SDP",
+    "indicator_id": "STATE_SDP.*",
+    "coverage": {
+      "states": 0,
+      "fiscal_years": 0,
+      "observations": 0,
+      "latest_revision_only": 1
+    },
+    "null_count": 0,
+    "duplicate_count": 0,
+    "outlier_count": 0,
+    "total_reconciliation": "not_run_source_unavailable",
+    "source_hash": "sha256:2a64c9c002e71a30daa18abff7f18f8bca338a8d0e90e40203b68fcdf2ca0af8",
+    "validation_status": "source_unavailable"
+  },
+  "warnings": [
+    "The MoSPI publication metadata lists State_wise_SDP_01082025N.xls through Office viewer.",
+    "The direct workbook URL currently returns HTTP 404 from www.mospi.gov.in, so no numeric observations were emitted.",
+    "Manual source fallback is expected at data/raw/mospi/STATE_SDP/manual/<file>.xls until the live link resolves."
+  ],
+  "manual_source_path": "data/raw/mospi/STATE_SDP/manual/<file>.xls"
+}
