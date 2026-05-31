@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
+import * as Plot from "@observablehq/plot";
 import { downloadCsv } from "@/lib/csv";
 import { FieldLabel, Readout } from "../controls";
+import PlotFigure from "../PlotFigure";
+import { atlasColors } from "../theme-colors";
 import { readString, useAtlasState } from "../url-state";
 
 type SourceStatus = "ready" | "source_unavailable" | "declared_not_ingested" | "error";
@@ -29,6 +32,7 @@ interface MospiIndicator {
   frequency?: string;
   geography_level?: string;
   source_url?: string;
+  dimensions_schema?: string[];
 }
 
 interface MospiArtifact {
@@ -37,6 +41,11 @@ interface MospiArtifact {
   title: string;
   source_status: SourceStatus;
   indicators: MospiIndicator[];
+  geographies: Array<{
+    geography_id: string;
+    name: string;
+    type: string;
+  }>;
   observations: Array<{
     indicator_id: string;
     geography_id: string;
@@ -104,12 +113,13 @@ function Select({
 }
 
 export default function MospiExplorer({ theme }: { theme: string }) {
-  void theme;
   const { state, setParam } = useAtlasState();
   const selectedDataset = readString(state.params, "mospi_dataset", "all");
   const searchQuery = readString(state.params, "mospi_search", "").toLowerCase().trim();
   const selectedIndicatorId = readString(state.params, "mospi_indicator", "all");
   const selectedGeography = readString(state.params, "mospi_geo", "all");
+
+  const colors = useMemo(() => atlasColors(), [theme]);
 
   const [catalog, setCatalog] = useState<MospiCatalog | null>(null);
   const [artifacts, setArtifacts] = useState<LoadedArtifact[]>([]);
@@ -202,9 +212,66 @@ export default function MospiExplorer({ theme }: { theme: string }) {
     return selectedArtifact.artifactData.observations.filter((obs) => {
       if (obs.indicator_id !== selectedIndicator.id) return false;
       if (selectedGeography !== "all" && obs.geography_id !== selectedGeography) return false;
+      // Apply dynamic dimension filters
+      if (selectedIndicator.dimensions_schema) {
+        for (const dim of selectedIndicator.dimensions_schema as string[]) {
+          const dimValue = readString(state.params, `mospi_dim_${dim}`, "all");
+          if (dimValue !== "all") {
+            const obsVal = obs.dimensions[dim];
+            if (obsVal == null || String(obsVal) !== dimValue) return false;
+          }
+        }
+      }
       return obs.value !== null;
     });
-  }, [selectedIndicator, selectedArtifact, selectedGeography]);
+  }, [selectedIndicator, selectedArtifact, selectedGeography, state.params]);
+
+  const dimensionControls = useMemo(() => {
+    if (!selectedIndicator?.dimensions_schema || !selectedArtifact?.artifactData) return [];
+    return selectedIndicator.dimensions_schema.map((dim) => {
+      const valueSet = new Set<string>();
+      selectedArtifact.artifactData!.observations
+        .filter((o) => o.indicator_id === selectedIndicator.id)
+        .forEach((o) => {
+          const val = o.dimensions[dim];
+          if (val != null) valueSet.add(String(val));
+        });
+      return {
+        name: dim,
+        label: dim.replace(/_/g, " "),
+        values: Array.from(valueSet).sort(),
+        selected: readString(state.params, `mospi_dim_${dim}`, "all"),
+      };
+    });
+  }, [selectedIndicator, selectedArtifact, state.params]);
+
+  const chartOptions = useMemo(() => {
+    if (selectedObservations.length === 0) return null;
+    const geoNames: Record<string, string> = {};
+    selectedArtifact?.artifactData?.geographies.forEach((g: { geography_id: string; name: string }) => {
+      geoNames[g.geography_id] = g.name;
+    });
+    const points = selectedObservations.map((obs) => ({
+      year: Number(obs.period_id.replace(/^FY/, "").split("-")[0]) || 0,
+      value: obs.value!,
+      geography: geoNames[obs.geography_id] ?? obs.geography_id,
+    })).filter((p) => p.year > 0);
+    if (points.length === 0) return null;
+    return {
+      height: 320,
+      marginLeft: 64,
+      marginBottom: 42,
+      grid: true,
+      color: { legend: true, range: colors.cat },
+      x: { label: "Fiscal year" },
+      y: { label: selectedIndicator?.unit ?? "value" },
+      marks: [
+        Plot.ruleY([0], { stroke: colors.rule }),
+        Plot.lineY(points, { x: "year", y: "value", stroke: "geography", strokeWidth: 2 }),
+        Plot.dot(points, { x: "year", y: "value", stroke: "geography", fill: "geography", r: 3 }),
+      ],
+    };
+  }, [selectedObservations, selectedArtifact, selectedIndicator, colors]);
 
   const indicatorOptions = useMemo(() => {
     return filteredIndicators.map((i) => ({ id: i.id, label: `${i.name} (${i.indicator_code}) — ${i.datasetId}` }));
@@ -343,6 +410,20 @@ export default function MospiExplorer({ theme }: { theme: string }) {
             <option key={geo} value={geo}>{geo}</option>
           ))}
         </Select>
+
+        {dimensionControls.map((dim: { name: string; label: string; values: string[]; selected: string }) => (
+          <Select
+            key={dim.name}
+            label={dim.label}
+            value={dim.selected}
+            onChange={(v) => setParam(`mospi_dim_${dim.name}`, v)}
+          >
+            <option value="all">All {dim.label}</option>
+            {dim.values.map((val: string) => (
+              <option key={val} value={val}>{val}</option>
+            ))}
+          </Select>
+        ))}
       </section>
 
       {/* Dataset cards */}
@@ -456,6 +537,19 @@ export default function MospiExplorer({ theme }: { theme: string }) {
               </tbody>
             </table>
           </div>
+        </section>
+      )}
+
+      {/* Chart */}
+      {chartOptions && (
+        <section className="surface p-4 sm:p-5">
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <div>
+              <div className="eyebrow">chart</div>
+              <h3 className="display text-xl">{selectedIndicator?.name}</h3>
+            </div>
+          </div>
+          <PlotFigure options={chartOptions} ariaLabel={`${selectedIndicator?.name} chart`} />
         </section>
       )}
 

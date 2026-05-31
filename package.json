@@ -15,7 +15,8 @@
     "test": "npm run ci",
     "verify": "npm run ci && vercel build --yes",
     "lint": "eslint src/",
-    "build:single": "cross-env SINGLE_FILE=true vite build"
+    "build:single": "cross-env SINGLE_FILE=true vite build",
+    "parse:mospi": "node scripts/parse-mospi-state-sdp.cjs"
   },
   "dependencies": {
     "@observablehq/plot": "^0.6.17",
@@ -50,6 +51,7 @@
     "vite": "7.2.4",
     "vite-plugin-singlefile": "2.3.0",
     "vitest": "^4.1.2",
+    "xlsx": "^0.18.5",
     "zod": "^4.4.3"
   }
 }

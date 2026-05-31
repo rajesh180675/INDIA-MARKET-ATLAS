@@ -102,6 +102,54 @@ const NORMALIZATION_OPTIONS = [
 
 const DEFAULT_STATES = ["IN-MH", "IN-TN", "IN-GJ"];
 const ARTIFACT_URL = "/data/mospi/state-sdp-mvp.json";
+const NAS_ARTIFACT_URL = "/data/mospi/nas-gdp-mvp.json";
+
+type NasArtifact = {
+  schema_version: string;
+  dataset: string;
+  title: string;
+  source_status: SourceStatus;
+  indicators: Array<{
+    id: string;
+    indicator_code: string;
+    name: string;
+    unit: string;
+    base_year?: string;
+    price_basis?: string;
+  }>;
+  observations: Array<{
+    indicator_id: string;
+    geography_id: string;
+    period_id: string;
+    value: number | null;
+    unit: string;
+    dimensions: Record<string, string | number | boolean | null>;
+    source_run_id: string;
+  }>;
+  source_runs: Array<{
+    run_id: string;
+    fetched_at: string;
+    source_url: string;
+    parser_version: string;
+    row_count: number;
+    warnings: string[];
+    errors: string[];
+  }>;
+};
+
+function nationalIndicatorId(stateIndicatorId: string): string | null {
+  // Map STATE_SDP indicator to NAS equivalent
+  // e.g., STATE_SDP.GSDP.constant.2011-12 → NAS.GDP.constant.2011-12
+  const match = stateIndicatorId.match(/^STATE_SDP\.(\w+)\.(current|constant)\.(\S+)$/);
+  if (!match) return null;
+  const [, indicatorCode, priceBasis, baseYear] = match;
+  const nationalCode = indicatorCode === "GSDP" ? "GDP"
+    : indicatorCode === "NSDP" ? "GDP"
+    : indicatorCode === "PC_NSDP" ? "GDP"
+    : null;
+  if (!nationalCode) return null;
+  return `NAS.${nationalCode}.${priceBasis}.${baseYear}`;
+}
 
 function Select({
   label,
@@ -161,6 +209,7 @@ export default function StateEconomyLab({ theme }: { theme: string }) {
   const to = readInt(state.params, "to", 2025);
 
   const [artifact, setArtifact] = useState<StateSdpArtifact | null>(null);
+  const [nasArtifact, setNasArtifact] = useState<NasArtifact | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -178,6 +227,25 @@ export default function StateEconomyLab({ theme }: { theme: string }) {
       .catch((error: Error) => {
         if (!alive) return;
         setLoadError(error.message);
+      });
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    let alive = true;
+    fetch(NAS_ARTIFACT_URL)
+      .then((response) => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json() as Promise<NasArtifact>;
+      })
+      .then((data) => {
+        if (!alive) return;
+        setNasArtifact(data);
+      })
+      .catch(() => {
+        // NAS artifact is allowed to fail silently — it's declared_not_ingested
       });
     return () => {
       alive = false;
@@ -224,9 +292,24 @@ export default function StateEconomyLab({ theme }: { theme: string }) {
   const displayRows = useMemo<DisplayRow[]>(() => {
     if (rawRows.length === 0) return [];
     const indiaByYear = new Map<number, number>();
-    rawRows
-      .filter((row) => row.geography_id === "IN")
-      .forEach((row) => indiaByYear.set(row.year, row.value));
+
+    // Primary: use NAS artifact India observations (cross-artifact comparison)
+    const nationalId = selectedIndicator ? nationalIndicatorId(selectedIndicator.id) : null;
+    if (nasArtifact && nationalId) {
+      nasArtifact.observations
+        .filter((obs) => obs.indicator_id === nationalId && obs.geography_id === "IN" && obs.value != null)
+        .forEach((obs) => {
+          const year = periodYear(obs.period_id);
+          if (year != null) indiaByYear.set(year, obs.value!);
+        });
+    }
+
+    // Fallback: use state artifact's own India observations
+    if (indiaByYear.size === 0) {
+      rawRows
+        .filter((row) => row.geography_id === "IN")
+        .forEach((row) => indiaByYear.set(row.year, row.value));
+    }
 
     return rawRows.map((row) => {
       const firstForState = rawRows.find((candidate) => candidate.geography_id === row.geography_id);
@@ -244,7 +327,7 @@ export default function StateEconomyLab({ theme }: { theme: string }) {
       }
       return { ...row, display };
     });
-  }, [rawRows, normalization]);
+  }, [rawRows, normalization, nasArtifact, selectedIndicator]);
 
   const rankedRows = useMemo(() => {
     return activeStates
