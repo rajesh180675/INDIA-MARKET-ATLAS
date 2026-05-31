@@ -7,7 +7,7 @@ import { expect, test } from "@playwright/test";
 import * as fs from "node:fs";
 import * as path from "node:path";
 
-const WORKSPACES = ["index", "macro", "race", "sip", "vol", "sectors", "formula", "regimes", "projections"];
+const WORKSPACES = ["index", "macro", "state-economy", "race", "sip", "vol", "sectors", "formula", "regimes", "projections"];
 const REPORT_DIR = path.resolve("test-results/a11y-reports");
 
 for (const slug of WORKSPACES) {
@@ -67,4 +67,3 @@ test("a11y: command palette has no critical/serious violations when open", async
 
   expect(blocking, blocking.map((v) => `${v.id}: ${v.help}`).join("; ")).toEqual([]);
 });
-

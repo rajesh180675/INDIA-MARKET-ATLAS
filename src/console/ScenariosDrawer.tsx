@@ -39,15 +39,18 @@ export default function ScenariosDrawer({
   const [importStatus, setImportStatus] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  // Default name = workspace title
+  // Default name = workspace title. Schedule the reset from the open event
+  // tick so the effect is a sync point, not a cascading render.
   useEffect(() => {
-    if (open) {
+    if (!open) return;
+    const raf = requestAnimationFrame(() => {
       setList(listScenarios());
       setName(currentTitle);
       setNote("");
       setImportStatus(null);
       setEditingId(null);
-    }
+    });
+    return () => cancelAnimationFrame(raf);
   }, [open, currentTitle]);
 
   // Escape closes

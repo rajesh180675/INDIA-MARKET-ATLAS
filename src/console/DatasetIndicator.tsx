@@ -6,7 +6,7 @@
 // 2. A dismissible banner shown only when the URL pins to a non-current
 //    version (so users with shared old links know data may have shifted).
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   DATASET_LABEL,
   DATASET_VERSION,
@@ -45,21 +45,18 @@ export function DatasetMismatchBanner() {
   // Re-derive on every render — this is read-only state from the URL.
   const dismissKey =
     requested && !matches ? `${DISMISS_KEY}:${requested}->${DATASET_VERSION}` : null;
-  const [dismissed, setDismissed] = useState(false);
-
-  useEffect(() => {
-    if (!dismissKey) {
-      setDismissed(false);
-      return;
-    }
-    setDismissed(localStorage.getItem(dismissKey) === "1");
-  }, [dismissKey]);
+  const [dismissedKey, setDismissedKey] = useState<string | null>(null);
+  const dismissed = dismissKey
+    ? dismissedKey === dismissKey || localStorage.getItem(dismissKey) === "1"
+    : false;
 
   if (matches || !requested || dismissed) return null;
 
   const dismiss = () => {
-    if (dismissKey) localStorage.setItem(dismissKey, "1");
-    setDismissed(true);
+    if (dismissKey) {
+      localStorage.setItem(dismissKey, "1");
+      setDismissedKey(dismissKey);
+    }
   };
 
   return (

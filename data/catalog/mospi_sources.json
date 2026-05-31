@@ -1,0 +1,20 @@
+{
+  "schema_version": "2026-05-mospi-source-catalog-v1",
+  "sources": [
+    {
+      "dataset": "STATE_SDP",
+      "name": "State Domestic Product and other aggregates, 2011-2012 series",
+      "publication_id": "2707",
+      "discovery_endpoint": "https://www.mospi.gov.in/api/publications-reports/get-web-publications-report-list",
+      "declared_workbook_url": "https://www.mospi.gov.in/sites/default/files/press_releases_statements/State_wise_SDP_01082025N.xls",
+      "manual_fallback": "data/raw/mospi/STATE_SDP/manual/<file>.xls",
+      "status": "source_unavailable"
+    },
+    {
+      "dataset": "NAS",
+      "name": "National Accounts Statistics / eSankhyiki NAS",
+      "discovery_endpoint": "https://api.mospi.gov.in/api",
+      "status": "declared_not_ingested"
+    }
+  ]
+}

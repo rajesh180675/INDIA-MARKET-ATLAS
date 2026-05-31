@@ -1,0 +1,287 @@
+[
+  {
+    "geography_id": "IN",
+    "name": "India",
+    "type": "india",
+    "code_system": "ISO-3166-1",
+    "aliases": [
+      "All India",
+      "National"
+    ]
+  },
+  {
+    "geography_id": "IN-AP",
+    "name": "Andhra Pradesh",
+    "type": "state",
+    "code_system": "ISO-3166-2",
+    "aliases": []
+  },
+  {
+    "geography_id": "IN-AR",
+    "name": "Arunachal Pradesh",
+    "type": "state",
+    "code_system": "ISO-3166-2",
+    "aliases": []
+  },
+  {
+    "geography_id": "IN-AS",
+    "name": "Assam",
+    "type": "state",
+    "code_system": "ISO-3166-2",
+    "aliases": []
+  },
+  {
+    "geography_id": "IN-BR",
+    "name": "Bihar",
+    "type": "state",
+    "code_system": "ISO-3166-2",
+    "aliases": []
+  },
+  {
+    "geography_id": "IN-CT",
+    "name": "Chhattisgarh",
+    "type": "state",
+    "code_system": "ISO-3166-2",
+    "aliases": [
+      "Chattisgarh"
+    ]
+  },
+  {
+    "geography_id": "IN-GA",
+    "name": "Goa",
+    "type": "state",
+    "code_system": "ISO-3166-2",
+    "aliases": []
+  },
+  {
+    "geography_id": "IN-GJ",
+    "name": "Gujarat",
+    "type": "state",
+    "code_system": "ISO-3166-2",
+    "aliases": []
+  },
+  {
+    "geography_id": "IN-HR",
+    "name": "Haryana",
+    "type": "state",
+    "code_system": "ISO-3166-2",
+    "aliases": []
+  },
+  {
+    "geography_id": "IN-HP",
+    "name": "Himachal Pradesh",
+    "type": "state",
+    "code_system": "ISO-3166-2",
+    "aliases": []
+  },
+  {
+    "geography_id": "IN-JH",
+    "name": "Jharkhand",
+    "type": "state",
+    "code_system": "ISO-3166-2",
+    "aliases": []
+  },
+  {
+    "geography_id": "IN-KA",
+    "name": "Karnataka",
+    "type": "state",
+    "code_system": "ISO-3166-2",
+    "aliases": []
+  },
+  {
+    "geography_id": "IN-KL",
+    "name": "Kerala",
+    "type": "state",
+    "code_system": "ISO-3166-2",
+    "aliases": []
+  },
+  {
+    "geography_id": "IN-MP",
+    "name": "Madhya Pradesh",
+    "type": "state",
+    "code_system": "ISO-3166-2",
+    "aliases": []
+  },
+  {
+    "geography_id": "IN-MH",
+    "name": "Maharashtra",
+    "type": "state",
+    "code_system": "ISO-3166-2",
+    "aliases": [
+      "Maharastra"
+    ]
+  },
+  {
+    "geography_id": "IN-MN",
+    "name": "Manipur",
+    "type": "state",
+    "code_system": "ISO-3166-2",
+    "aliases": []
+  },
+  {
+    "geography_id": "IN-ML",
+    "name": "Meghalaya",
+    "type": "state",
+    "code_system": "ISO-3166-2",
+    "aliases": []
+  },
+  {
+    "geography_id": "IN-MZ",
+    "name": "Mizoram",
+    "type": "state",
+    "code_system": "ISO-3166-2",
+    "aliases": []
+  },
+  {
+    "geography_id": "IN-NL",
+    "name": "Nagaland",
+    "type": "state",
+    "code_system": "ISO-3166-2",
+    "aliases": []
+  },
+  {
+    "geography_id": "IN-OR",
+    "name": "Odisha",
+    "type": "state",
+    "code_system": "ISO-3166-2",
+    "aliases": [
+      "Orissa"
+    ]
+  },
+  {
+    "geography_id": "IN-PB",
+    "name": "Punjab",
+    "type": "state",
+    "code_system": "ISO-3166-2",
+    "aliases": []
+  },
+  {
+    "geography_id": "IN-RJ",
+    "name": "Rajasthan",
+    "type": "state",
+    "code_system": "ISO-3166-2",
+    "aliases": []
+  },
+  {
+    "geography_id": "IN-SK",
+    "name": "Sikkim",
+    "type": "state",
+    "code_system": "ISO-3166-2",
+    "aliases": []
+  },
+  {
+    "geography_id": "IN-TN",
+    "name": "Tamil Nadu",
+    "type": "state",
+    "code_system": "ISO-3166-2",
+    "aliases": []
+  },
+  {
+    "geography_id": "IN-TG",
+    "name": "Telangana",
+    "type": "state",
+    "code_system": "ISO-3166-2",
+    "aliases": [
+      "Telengana"
+    ]
+  },
+  {
+    "geography_id": "IN-TR",
+    "name": "Tripura",
+    "type": "state",
+    "code_system": "ISO-3166-2",
+    "aliases": []
+  },
+  {
+    "geography_id": "IN-UP",
+    "name": "Uttar Pradesh",
+    "type": "state",
+    "code_system": "ISO-3166-2",
+    "aliases": []
+  },
+  {
+    "geography_id": "IN-UT",
+    "name": "Uttarakhand",
+    "type": "state",
+    "code_system": "ISO-3166-2",
+    "aliases": [
+      "Uttaranchal"
+    ]
+  },
+  {
+    "geography_id": "IN-WB",
+    "name": "West Bengal",
+    "type": "state",
+    "code_system": "ISO-3166-2",
+    "aliases": []
+  },
+  {
+    "geography_id": "IN-AN",
+    "name": "Andaman and Nicobar Islands",
+    "type": "ut",
+    "code_system": "ISO-3166-2",
+    "aliases": [
+      "A & N Islands",
+      "Andaman & Nicobar Islands"
+    ]
+  },
+  {
+    "geography_id": "IN-CH",
+    "name": "Chandigarh",
+    "type": "ut",
+    "code_system": "ISO-3166-2",
+    "aliases": []
+  },
+  {
+    "geography_id": "IN-DH",
+    "name": "Dadra and Nagar Haveli and Daman and Diu",
+    "type": "ut",
+    "code_system": "ISO-3166-2",
+    "aliases": [
+      "Dadra & Nagar Haveli and Daman & Diu",
+      "Daman and Diu"
+    ]
+  },
+  {
+    "geography_id": "IN-DL",
+    "name": "Delhi",
+    "type": "ut",
+    "code_system": "ISO-3166-2",
+    "aliases": [
+      "NCT Delhi",
+      "National Capital Territory of Delhi"
+    ]
+  },
+  {
+    "geography_id": "IN-JK",
+    "name": "Jammu and Kashmir",
+    "type": "ut",
+    "code_system": "ISO-3166-2",
+    "aliases": [
+      "Jammu & Kashmir"
+    ]
+  },
+  {
+    "geography_id": "IN-LA",
+    "name": "Ladakh",
+    "type": "ut",
+    "code_system": "ISO-3166-2",
+    "aliases": []
+  },
+  {
+    "geography_id": "IN-LD",
+    "name": "Lakshadweep",
+    "type": "ut",
+    "code_system": "ISO-3166-2",
+    "aliases": []
+  },
+  {
+    "geography_id": "IN-PY",
+    "name": "Puducherry",
+    "type": "ut",
+    "code_system": "ISO-3166-2",
+    "aliases": [
+      "Pondicherry"
+    ]
+  }
+]
