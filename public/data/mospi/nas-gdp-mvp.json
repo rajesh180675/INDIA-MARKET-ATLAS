@@ -1,0 +1,116 @@
+{
+  "schema_version": "2026-06-mospi-nas-gdp-mvp-v1",
+  "dataset": "NAS_GDP",
+  "title": "National Accounts Statistics — GDP and GVA aggregates",
+  "generated_at": "2026-05-31T12:00:00Z",
+  "source_status": "declared_not_ingested",
+  "source_runs": [
+    {
+      "run_id": "mospi-nas-gdp-discovery-2026-05-31",
+      "fetched_at": "2026-05-31T12:00:00Z",
+      "source_url": "https://www.mospi.gov.in/web/publications/national-accounts",
+      "parser_version": "nas-gdp-discovery-v0",
+      "row_count": 0,
+      "warnings": [
+        "National GDP/GVA data is declared as a target dataset but not yet ingested.",
+        "Planned sources: MoSPI National Accounts page and eSankhyiki NAS API.",
+        "This artifact serves as the comparison anchor for State SDP share-of-India normalization."
+      ],
+      "errors": []
+    }
+  ],
+  "geographies": [
+    {
+      "geography_id": "IN",
+      "name": "India",
+      "type": "india",
+      "code_system": "ISO-3166-1",
+      "aliases": ["All India", "National"]
+    }
+  ],
+  "indicators": [
+    {
+      "id": "NAS.GDP.current.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "GDP at market prices (current prices), 2011-2012 series",
+      "indicator_code": "GDP",
+      "name": "Gross Domestic Product",
+      "description": "Aggregate GDP at market prices for India.",
+      "unit": "₹ crore",
+      "frequency": "annual",
+      "geography_level": "india",
+      "dimensions_schema": ["price_basis", "base_year", "revision"],
+      "base_year": "2011-12",
+      "price_basis": "current",
+      "source_url": "https://www.mospi.gov.in/web/publications/national-accounts",
+      "release_policy": "MoSPI National Accounts; latest revision only.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS.GDP.constant.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "GDP at market prices (constant prices), 2011-2012 series",
+      "indicator_code": "GDP",
+      "name": "Gross Domestic Product",
+      "description": "Aggregate GDP at constant prices for India.",
+      "unit": "₹ crore",
+      "frequency": "annual",
+      "geography_level": "india",
+      "dimensions_schema": ["price_basis", "base_year", "revision"],
+      "base_year": "2011-12",
+      "price_basis": "constant",
+      "source_url": "https://www.mospi.gov.in/web/publications/national-accounts",
+      "release_policy": "MoSPI National Accounts; latest revision only.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS.GVA.current.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "GVA at basic prices (current prices), 2011-2012 series",
+      "indicator_code": "GVA",
+      "name": "Gross Value Added",
+      "description": "Aggregate GVA at basic prices for India.",
+      "unit": "₹ crore",
+      "frequency": "annual",
+      "geography_level": "india",
+      "dimensions_schema": ["price_basis", "base_year", "revision", "sector"],
+      "base_year": "2011-12",
+      "price_basis": "current",
+      "source_url": "https://www.mospi.gov.in/web/publications/national-accounts",
+      "release_policy": "MoSPI National Accounts; latest revision only.",
+      "default_transform": "level"
+    },
+    {
+      "id": "NAS.GVA.constant.2011-12",
+      "dataset": "NAS_GDP",
+      "source_dataset_code": "GVA at basic prices (constant prices), 2011-2012 series",
+      "indicator_code": "GVA",
+      "name": "Gross Value Added",
+      "description": "Aggregate GVA at constant prices for India.",
+      "unit": "₹ crore",
+      "frequency": "annual",
+      "geography_level": "india",
+      "dimensions_schema": ["price_basis", "base_year", "revision", "sector"],
+      "base_year": "2011-12",
+      "price_basis": "constant",
+      "source_url": "https://www.mospi.gov.in/web/publications/national-accounts",
+      "release_policy": "MoSPI National Accounts; latest revision only.",
+      "default_transform": "level"
+    }
+  ],
+  "observations": [],
+  "quality_report": {
+    "validation_status": "passed",
+    "duplicate_count": 0,
+    "null_count": 0,
+    "outlier_count": 0,
+    "coverage": { "india": 0, "states": 0, "periods": 0, "note": "declared not ingested — no observations emitted" },
+    "source_hash": ""
+  },
+  "warnings": [
+    "This dataset is a placeholder for national-level GDP/GVA comparison series.",
+    "When populated, it will serve as the denominator for State SDP share-of-India calculations.",
+    "Planned ingestion: MoSPI National Accounts workbook or eSankhyiki NAS API."
+  ],
+  "manual_source_path": "data/raw/mospi/NAS_GDP/manual/<file>.xls"
+}

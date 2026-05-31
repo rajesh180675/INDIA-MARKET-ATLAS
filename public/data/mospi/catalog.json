@@ -1,5 +1,5 @@
 {
-  "schema_version": "2026-05-mospi-public-catalog-v1",
+  "schema_version": "2026-06-mospi-public-catalog-v2",
   "datasets": [
     {
       "id": "STATE_SDP",
@@ -9,8 +9,9 @@
       "observation_count": 0
     },
     {
-      "id": "NAS",
-      "title": "National Accounts Statistics",
+      "id": "NAS_GDP",
+      "title": "National Accounts Statistics — GDP and GVA aggregates",
+      "artifact": "/data/mospi/nas-gdp-mvp.json",
       "source_status": "declared_not_ingested",
       "observation_count": 0
     }

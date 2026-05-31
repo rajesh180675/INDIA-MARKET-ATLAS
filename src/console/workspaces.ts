@@ -32,6 +32,12 @@ export const WORKSPACES: WorkspaceDef[] = [
     usesYearWindow: true,
   },
   {
+    slug: "mospi-explorer",
+    title: "MOSPI Explorer",
+    scope: "Browse all MoSPI datasets, search indicators, inspect dimensions",
+    usesYearWindow: true,
+  },
+  {
     slug: "race",
     title: "Asset Race",
     scope: "₹100 in 1979 across equity, gold, USD, FD, inflation",
