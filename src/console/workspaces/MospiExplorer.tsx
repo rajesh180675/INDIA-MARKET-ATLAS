@@ -186,6 +186,15 @@ export default function MospiExplorer({ theme }: { theme: string }) {
     return result;
   }, [artifacts]);
 
+  // Auto-select first indicator when dataset changes (so chart appears immediately)
+  useEffect(() => {
+    if (selectedDataset === "all") return;
+    const firstInd = allIndicators.find((i) => i.dataset === selectedDataset);
+    if (firstInd && selectedIndicatorId !== firstInd.id) {
+      setParam("mospi_indicator", firstInd.id);
+    }
+  }, [selectedDataset, allIndicators, selectedIndicatorId, setParam]);
+
   const filteredIndicators = useMemo(() => {
     return allIndicators.filter((ind) => {
       if (selectedDataset !== "all" && ind.dataset !== selectedDataset) return false;
@@ -247,31 +256,172 @@ export default function MospiExplorer({ theme }: { theme: string }) {
 
   const chartOptions = useMemo(() => {
     if (selectedObservations.length === 0) return null;
+
     const geoNames: Record<string, string> = {};
-    selectedArtifact?.artifactData?.geographies.forEach((g: { geography_id: string; name: string }) => {
-      geoNames[g.geography_id] = g.name;
+    selectedArtifact?.artifactData?.geographies.forEach((g: { geography_id: string; name?: string }) => {
+      geoNames[g.geography_id] = g.name || g.geography_id;
     });
+
+    // --- Robust period parsing ---
+    function parseYear(pid: string): number {
+      // FY2024-25, Q1_FY2025-26, FY2025_26, etc.
+      const fyMatch = pid.match(/FY(\d{4})/i);
+      if (fyMatch) return Number(fyMatch[1]);
+      // Plain year prefix: 2024-25, 2026-04, 2025
+      const yearMatch = pid.match(/^(\d{4})/);
+      if (yearMatch) return Number(yearMatch[1]);
+      return 0;
+    }
+
+    // --- Detect data shape ---
+    const uniquePeriods = new Set(selectedObservations.map((o) => o.period_id)).size;
+    const uniqueGeographies = new Set(selectedObservations.map((o) => o.geography_id)).size;
+
+    const isTimeSeries = uniquePeriods >= 2 && selectedObservations.length >= 2;
+    const isPanelGeo = uniqueGeographies >= 3;
+
+    const c = colors;
+
+    if (isTimeSeries && !isPanelGeo) {
+      // Classic line chart: one indicator across time
+      const points = selectedObservations
+        .map((obs) => ({
+          year: parseYear(obs.period_id),
+          value: obs.value!,
+          geography: geoNames[obs.geography_id] ?? obs.geography_id,
+        }))
+        .filter((p) => p.year > 0);
+      if (points.length === 0) return null;
+      return {
+        height: 320,
+        marginLeft: 64,
+        marginBottom: 42,
+        grid: true,
+        color: { legend: true, range: c.cat },
+        x: { label: "Year", tickFormat: (d: number) => String(d) },
+        y: { label: selectedIndicator?.unit ?? "value" },
+        marks: [
+          Plot.ruleY([0], { stroke: c.rule }),
+          Plot.lineY(points, { x: "year", y: "value", stroke: "geography", strokeWidth: 2, curve: "monotone-x" }),
+          Plot.dot(points, { x: "year", y: "value", stroke: "geography", fill: "geography", r: 3 }),
+        ],
+      };
+    }
+
+    if (isPanelGeo) {
+      // Many geographies — grouped bar or dot plot
+      const points = selectedObservations.map((obs) => ({
+        geography: geoNames[obs.geography_id] ?? obs.geography_id,
+        year: parseYear(obs.period_id),
+        period: obs.period_id,
+        value: obs.value!,
+      }));
+      if (uniquePeriods >= 2) {
+        // Grouped bar by geography, color by period
+        return {
+          height: Math.max(240, uniqueGeographies * 18 + 80),
+          marginLeft: 120,
+          marginBottom: 42,
+          grid: true,
+          color: { legend: true, range: c.cat },
+          x: { label: selectedIndicator?.unit ?? "value" },
+          y: { label: null },
+          marks: [
+            Plot.ruleX([0], { stroke: c.rule }),
+            Plot.barX(points, { y: "geography", x: "value", fill: "period", sort: { y: "-x" } }),
+          ],
+        };
+      }
+      // Single period — horizontal bar sorted by value
+      return {
+        height: Math.max(240, uniqueGeographies * 18 + 80),
+        marginLeft: 120,
+        marginBottom: 42,
+        grid: true,
+        x: { label: selectedIndicator?.unit ?? "value" },
+        y: { label: null },
+        marks: [
+          Plot.ruleX([0], { stroke: c.rule }),
+          Plot.barX(points, { y: "geography", x: "value", fill: c.cat[0], sort: { y: "-x" } }),
+          Plot.text(points, { y: "geography", x: "value", text: (d: { value: number }) => d.value.toLocaleString("en-IN"), dx: 4, textAnchor: "start", fontSize: 10, fill: c.ink }),
+        ],
+      };
+    }
+
+    // Fallback: dot plot for sparse / single values
     const points = selectedObservations.map((obs) => ({
-      year: Number(obs.period_id.replace(/^FY/, "").split("-")[0]) || 0,
+      period: obs.period_id,
       value: obs.value!,
       geography: geoNames[obs.geography_id] ?? obs.geography_id,
-    })).filter((p) => p.year > 0);
-    if (points.length === 0) return null;
+    }));
     return {
-      height: 320,
+      height: 280,
       marginLeft: 64,
       marginBottom: 42,
       grid: true,
-      color: { legend: true, range: colors.cat },
-      x: { label: "Fiscal year" },
+      x: { label: "Period" },
       y: { label: selectedIndicator?.unit ?? "value" },
       marks: [
-        Plot.ruleY([0], { stroke: colors.rule }),
-        Plot.lineY(points, { x: "year", y: "value", stroke: "geography", strokeWidth: 2 }),
-        Plot.dot(points, { x: "year", y: "value", stroke: "geography", fill: "geography", r: 3 }),
+        Plot.ruleY([0], { stroke: c.rule }),
+        Plot.dot(points, { x: "period", y: "value", stroke: c.cat[0], fill: c.cat[0], r: 5 }),
+        Plot.text(points, { x: "period", y: "value", text: (d: { value: number }) => d.value.toLocaleString("en-IN"), dy: -10, fontSize: 10, fill: c.ink }),
       ],
     };
   }, [selectedObservations, selectedArtifact, selectedIndicator, colors]);
+
+  // Dataset overview chart: all indicators for latest period (cross-sectional ranking)
+  const datasetChart = useMemo(() => {
+    if (selectedDataset === "all") return null;
+    const artifact = artifacts.find((a) => a.id === selectedDataset);
+    if (!artifact?.artifactData || artifact.artifactData.observations.length === 0) return null;
+
+    // Find latest period
+    const periods = [...new Set(artifact.artifactData.observations.map((o) => o.period_id))];
+    const latestPeriod = periods.sort().pop();
+    if (!latestPeriod) return null;
+
+    // Aggregate: one bar per indicator, latest period only
+    const indNames: Record<string, string> = {};
+    artifact.artifactData.indicators.forEach((ind) => {
+      indNames[ind.id] = ind.name.length > 40 ? ind.name.slice(0, 40) + "…" : ind.name;
+    });
+
+    const points = artifact.artifactData.observations
+      .filter((o) => o.period_id === latestPeriod && o.value != null)
+      .map((o) => ({
+        indicator: indNames[o.indicator_id] ?? o.indicator_id,
+        value: o.value!,
+        unit: o.unit,
+      }));
+
+    if (points.length === 0) return null;
+
+    const c = colors;
+    return {
+      chart: {
+        height: Math.max(240, points.length * 22 + 80),
+        marginLeft: 200,
+        marginBottom: 42,
+        grid: true,
+        x: { label: points[0]?.unit ?? "value" },
+        y: { label: null },
+        marks: [
+          Plot.ruleX([0], { stroke: c.rule }),
+          Plot.barX(points, { y: "indicator", x: "value", fill: c.cat[0], sort: { y: "-x" } }),
+          Plot.text(points, {
+            y: "indicator",
+            x: "value",
+            text: (d: { value: number }) => d.value.toLocaleString("en-IN"),
+            dx: 4,
+            textAnchor: "start",
+            fontSize: 10,
+            fill: c.ink,
+          }),
+        ],
+      } as import("@observablehq/plot").PlotOptions,
+      title: `${artifact.title} — ${latestPeriod}`,
+    };
+  }, [selectedDataset, artifacts, colors]);
 
   const indicatorOptions = useMemo(() => {
     return filteredIndicators.map((i) => ({ id: i.id, label: `${i.name} (${i.indicator_code}) — ${i.datasetId}` }));
@@ -481,6 +631,17 @@ export default function MospiExplorer({ theme }: { theme: string }) {
           );
         })}
       </section>
+
+      {/* Dataset overview chart */}
+      {datasetChart && (
+        <section className="surface p-4 sm:p-5">
+          <div className="mb-3">
+            <div className="eyebrow">dataset overview</div>
+            <h3 className="display text-xl">{datasetChart.title}</h3>
+          </div>
+          <PlotFigure options={datasetChart.chart} ariaLabel="Dataset overview chart" />
+        </section>
+      )}
 
       {/* Indicator detail + observations */}
       {selectedIndicator && selectedArtifact && (
