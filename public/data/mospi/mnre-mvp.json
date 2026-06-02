@@ -2,14 +2,14 @@
   "schema_version": "2026-06-mospi-nas-gdp-mvp-v2",
   "dataset": "MNRE",
   "title": "Ministry of New and Renewable Energy Statistics",
-  "generated_at": "2026-06-02T14:51:08.370Z",
+  "generated_at": "2026-06-02T16:08:48.886Z",
   "source_status": "ready",
   "source_runs": [
     {
       "run_id": "mospi-mnre-2026-06-02",
-      "fetched_at": "2026-06-02T14:51:08.369Z",
+      "fetched_at": "2026-06-02T16:08:48.885Z",
       "source_url": "https://api.mospi.gov.in/api/mnre/getDataByEnergy",
-      "content_hash": "0125128a5c5509c59eba44cd4cf8f070e6b1d3cc1666f6da53f81eb79a2b8290",
+      "content_hash": "18e0d49c3baed1aa9915c914adefaac77bdd2b9159e65170cbcf549e08be165a",
       "parser_version": "mnre-api-v1",
       "row_count": 50,
       "warnings": [

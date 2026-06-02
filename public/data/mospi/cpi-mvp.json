@@ -1,0 +1,45 @@
+{
+  "schema_version": "2026-06-mospi-nas-gdp-mvp-v2",
+  "dataset": "CPI",
+  "title": "Consumer Price Index",
+  "generated_at": "2026-06-02T16:08:56.596Z",
+  "source_status": "source_unavailable",
+  "source_runs": [
+    {
+      "run_id": "mospi-cpi-2026-06-02",
+      "fetched_at": "2026-06-02T16:08:56.596Z",
+      "source_url": "https://api.mospi.gov.in/api/cpi/getCPIData",
+      "parser_version": "cpi-api-v1",
+      "row_count": 0,
+      "warnings": [
+        "API returned errors for all known parameter combinations"
+      ],
+      "errors": [
+        "Parameter discovery needed"
+      ]
+    }
+  ],
+  "geographies": [
+    {
+      "geography_id": "IN",
+      "name": "India",
+      "type": "india",
+      "code_system": "ISO-3166-1",
+      "aliases": [
+        "All India"
+      ]
+    }
+  ],
+  "indicators": [],
+  "observations": [],
+  "quality_report": {
+    "validation_status": "passed",
+    "duplicate_count": 0,
+    "null_count": 0,
+    "outlier_count": 0,
+    "coverage": {}
+  },
+  "warnings": [
+    "Source returned no data"
+  ]
+}

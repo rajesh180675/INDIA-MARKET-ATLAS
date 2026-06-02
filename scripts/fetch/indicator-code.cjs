@@ -102,7 +102,7 @@ function makeFetcher(config) {
     };
     const artifact = buildArtifact({
       dataset: datasetId, title, source_status: "ready",
-      source_run, geographies: [{ geography_id: "IN", name: "India", type: "india", code_system: "ISO-3166-1", aliases: ["All India"] }],
+      source_run: sourceRun, geographies: [{ geography_id: "IN", name: "India", type: "india", code_system: "ISO-3166-1", aliases: ["All India"] }],
       indicators: Array.from(indicatorMap.values()), observations,
     });
     const artifactPath = saveArtifact(datasetId, artifact);

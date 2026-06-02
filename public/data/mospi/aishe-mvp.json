@@ -1,0 +1,196 @@
+{
+  "schema_version": "2026-06-mospi-nas-gdp-mvp-v2",
+  "dataset": "AISHE",
+  "title": "All India Survey on Higher Education",
+  "generated_at": "2026-06-02T16:15:38.870Z",
+  "source_status": "ready",
+  "source_runs": [
+    {
+      "run_id": "mospi-aishe-2026-06-02",
+      "fetched_at": "2026-06-02T16:15:38.869Z",
+      "source_url": "https://api.mospi.gov.in/api/aishe/getAisheRecords?indicator_code=1",
+      "content_hash": "4b2ca5fbd74824cc454d65d293d06b18f7c9870afdb573fbff4238065508e8f0",
+      "parser_version": "aishe-api-v1",
+      "row_count": 10,
+      "warnings": [],
+      "errors": []
+    }
+  ],
+  "geographies": [
+    {
+      "geography_id": "IN",
+      "name": "India",
+      "type": "india",
+      "code_system": "ISO-3166-1",
+      "aliases": [
+        "All India"
+      ]
+    }
+  ],
+  "indicators": [
+    {
+      "id": "AISHE.number_of_universities_.1.value.annual",
+      "dataset": "AISHE",
+      "source_dataset_code": "https://api.mospi.gov.in/api/aishe/getAisheRecords",
+      "indicator_code": "number_of_universities_.1",
+      "name": "Number of Universities ",
+      "unit": "value",
+      "frequency": "annual",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "indicator_code"
+      ],
+      "source_url": "https://api.mospi.gov.in/api/aishe/getAisheRecords",
+      "release_policy": "indicator_code=1",
+      "default_transform": "level"
+    }
+  ],
+  "observations": [
+    {
+      "indicator_id": "AISHE.number_of_universities_.1.value.annual",
+      "geography_id": "IN",
+      "period_id": "2021-22",
+      "value": 47,
+      "unit": "value",
+      "dimensions": {
+        "indicator_code": 1
+      },
+      "source_run_id": "mospi-aishe-2026-06-02",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "AISHE.number_of_universities_.1.value.annual",
+      "geography_id": "IN",
+      "period_id": "2021-22",
+      "value": 10,
+      "unit": "value",
+      "dimensions": {
+        "indicator_code": 1
+      },
+      "source_run_id": "mospi-aishe-2026-06-02",
+      "quality_flags": [
+        "DUPLICATE_KEY"
+      ]
+    },
+    {
+      "indicator_id": "AISHE.number_of_universities_.1.value.annual",
+      "geography_id": "IN",
+      "period_id": "2021-22",
+      "value": 30,
+      "unit": "value",
+      "dimensions": {
+        "indicator_code": 1
+      },
+      "source_run_id": "mospi-aishe-2026-06-02",
+      "quality_flags": [
+        "DUPLICATE_KEY"
+      ]
+    },
+    {
+      "indicator_id": "AISHE.number_of_universities_.1.value.annual",
+      "geography_id": "IN",
+      "period_id": "2021-22",
+      "value": 37,
+      "unit": "value",
+      "dimensions": {
+        "indicator_code": 1
+      },
+      "source_run_id": "mospi-aishe-2026-06-02",
+      "quality_flags": [
+        "DUPLICATE_KEY"
+      ]
+    },
+    {
+      "indicator_id": "AISHE.number_of_universities_.1.value.annual",
+      "geography_id": "IN",
+      "period_id": "2021-22",
+      "value": 34,
+      "unit": "value",
+      "dimensions": {
+        "indicator_code": 1
+      },
+      "source_run_id": "mospi-aishe-2026-06-02",
+      "quality_flags": [
+        "DUPLICATE_KEY"
+      ]
+    },
+    {
+      "indicator_id": "AISHE.number_of_universities_.1.value.annual",
+      "geography_id": "IN",
+      "period_id": "2021-22",
+      "value": 30,
+      "unit": "value",
+      "dimensions": {
+        "indicator_code": 1
+      },
+      "source_run_id": "mospi-aishe-2026-06-02",
+      "quality_flags": [
+        "DUPLICATE_KEY"
+      ]
+    },
+    {
+      "indicator_id": "AISHE.number_of_universities_.1.value.annual",
+      "geography_id": "IN",
+      "period_id": "2021-22",
+      "value": 3,
+      "unit": "value",
+      "dimensions": {
+        "indicator_code": 1
+      },
+      "source_run_id": "mospi-aishe-2026-06-02",
+      "quality_flags": [
+        "DUPLICATE_KEY"
+      ]
+    },
+    {
+      "indicator_id": "AISHE.number_of_universities_.1.value.annual",
+      "geography_id": "IN",
+      "period_id": "2021-22",
+      "value": 91,
+      "unit": "value",
+      "dimensions": {
+        "indicator_code": 1
+      },
+      "source_run_id": "mospi-aishe-2026-06-02",
+      "quality_flags": [
+        "DUPLICATE_KEY"
+      ]
+    },
+    {
+      "indicator_id": "AISHE.number_of_universities_.1.value.annual",
+      "geography_id": "IN",
+      "period_id": "2021-22",
+      "value": 56,
+      "unit": "value",
+      "dimensions": {
+        "indicator_code": 1
+      },
+      "source_run_id": "mospi-aishe-2026-06-02",
+      "quality_flags": [
+        "DUPLICATE_KEY"
+      ]
+    },
+    {
+      "indicator_id": "AISHE.number_of_universities_.1.value.annual",
+      "geography_id": "IN",
+      "period_id": "2021-22",
+      "value": 30,
+      "unit": "value",
+      "dimensions": {
+        "indicator_code": 1
+      },
+      "source_run_id": "mospi-aishe-2026-06-02",
+      "quality_flags": [
+        "DUPLICATE_KEY"
+      ]
+    }
+  ],
+  "quality_report": {
+    "validation_status": "warning",
+    "duplicate_count": 9,
+    "null_count": 0,
+    "outlier_count": 0,
+    "coverage": {}
+  },
+  "warnings": []
+}

@@ -2,12 +2,12 @@
   "schema_version": "2026-06-mospi-nas-gdp-mvp-v2",
   "dataset": "WPI",
   "title": "Wholesale Price Index",
-  "generated_at": "2026-06-02T14:50:56.513Z",
+  "generated_at": "2026-06-02T16:08:21.431Z",
   "source_status": "ready",
   "source_runs": [
     {
       "run_id": "mospi-wpi-2026-06-02",
-      "fetched_at": "2026-06-02T14:50:56.512Z",
+      "fetched_at": "2026-06-02T16:08:21.430Z",
       "source_url": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
       "content_hash": "f06cf16936180bf256d31b9d80e071e6103cb23c86519e7c3c8277c813bd9688",
       "parser_version": "wpi-api-v1",

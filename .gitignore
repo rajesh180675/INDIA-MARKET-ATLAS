@@ -4,3 +4,7 @@ dist
 .vercel
 playwright-report
 test-results
+
+# MoSPI API raw response cache (ephemeral, recreatable)
+data/raw/mospi/*/20*.json
+data/raw/mospi/discovery/*.json

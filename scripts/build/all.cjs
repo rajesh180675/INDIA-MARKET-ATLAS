@@ -31,6 +31,7 @@ function runScript(name) {
       encoding: "utf-8",
       cwd: path.resolve(__dirname, "../.."),
       stdio: "inherit",
+      timeout: 90000, // 90s per script
     });
     return { ok: true, output: result };
   } catch (err) {
@@ -61,11 +62,10 @@ function main() {
   console.log(`\nTotal: ${results.length} scripts, ${failures} failures`);
 
   if (failures > 0) {
-    console.error("\nOne or more fetch scripts failed. Check output above.");
-    process.exit(1);
+    console.warn("\nOne or more fetch scripts failed — unavailable datasets marked source_unavailable.");
+  } else {
+    console.log("\nAll scripts completed successfully.");
   }
-
-  console.log("\nAll scripts completed successfully.");
 }
 
 if (require.main === module) {

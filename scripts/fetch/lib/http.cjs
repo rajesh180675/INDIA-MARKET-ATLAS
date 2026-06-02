@@ -12,10 +12,10 @@ const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
 
-const DEFAULT_TIMEOUT_MS = 20000;
-const DEFAULT_RETRIES = 3;
+const DEFAULT_TIMEOUT_MS = 12000;
+const DEFAULT_RETRIES = 1;
 const DEFAULT_RETRY_DELAY_MS = 2000;
-const RATE_LIMIT_MS = 1200; // 1.2s between MoSPI calls
+const RATE_LIMIT_MS = 3000; // 1.2s between MoSPI calls
 
 let lastRequestTime = 0;
 

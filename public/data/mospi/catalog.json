@@ -35,6 +35,48 @@
       "artifact": "/data/mospi/state-sdp-mvp.json",
       "source_status": "source_unavailable",
       "observation_count": 0
+    },
+    {
+      "id": "CPI",
+      "title": "Consumer Price Index",
+      "artifact": "/data/mospi/cpi-mvp.json",
+      "source_status": "source_unavailable",
+      "observation_count": 0
+    },
+    {
+      "id": "IIP",
+      "title": "Index of Industrial Production",
+      "artifact": "/data/mospi/iip-mvp.json",
+      "source_status": "source_unavailable",
+      "observation_count": 0
+    },
+    {
+      "id": "RBI",
+      "title": "Reserve Bank of India Statistics",
+      "artifact": "/data/mospi/rbi-mvp.json",
+      "source_status": "source_unavailable",
+      "observation_count": 0
+    },
+    {
+      "id": "AISHE",
+      "title": "All India Survey on Higher Education",
+      "artifact": "/data/mospi/aishe-mvp.json",
+      "source_status": "ready",
+      "observation_count": 10
+    },
+    {
+      "id": "UDISE",
+      "title": "Unified District Information System for Education",
+      "artifact": "/data/mospi/udise-mvp.json",
+      "source_status": "ready",
+      "observation_count": 10
+    },
+    {
+      "id": "ENVSTATS",
+      "title": "Environment Statistics",
+      "artifact": "/data/mospi/envstats-mvp.json",
+      "source_status": "ready",
+      "observation_count": 1746
     }
   ]
 }

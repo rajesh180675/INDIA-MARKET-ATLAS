@@ -1,0 +1,196 @@
+{
+  "schema_version": "2026-06-mospi-nas-gdp-mvp-v2",
+  "dataset": "UDISE",
+  "title": "Unified District Information System for Education",
+  "generated_at": "2026-06-02T16:16:25.162Z",
+  "source_status": "ready",
+  "source_runs": [
+    {
+      "run_id": "mospi-udise-2026-06-02",
+      "fetched_at": "2026-06-02T16:16:25.161Z",
+      "source_url": "https://api.mospi.gov.in/api/udise/getUdiseRecords?indicator_code=1",
+      "content_hash": "e8005100a5a4585c7c369188595a9686ef62fabb5442d8cb7f5f4f1cef8a70fd",
+      "parser_version": "udise-api-v1",
+      "row_count": 10,
+      "warnings": [],
+      "errors": []
+    }
+  ],
+  "geographies": [
+    {
+      "geography_id": "IN",
+      "name": "India",
+      "type": "india",
+      "code_system": "ISO-3166-1",
+      "aliases": [
+        "All India"
+      ]
+    }
+  ],
+  "indicators": [
+    {
+      "id": "UDISE.total_number_of_school.1.value.annual",
+      "dataset": "UDISE",
+      "source_dataset_code": "https://api.mospi.gov.in/api/udise/getUdiseRecords",
+      "indicator_code": "total_number_of_school.1",
+      "name": "Total number of School",
+      "unit": "value",
+      "frequency": "annual",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "indicator_code"
+      ],
+      "source_url": "https://api.mospi.gov.in/api/udise/getUdiseRecords",
+      "release_policy": "indicator_code=1",
+      "default_transform": "level"
+    }
+  ],
+  "observations": [
+    {
+      "indicator_id": "UDISE.total_number_of_school.1.value.annual",
+      "geography_id": "IN",
+      "period_id": "2024-25",
+      "value": 408,
+      "unit": "value",
+      "dimensions": {
+        "indicator_code": 1
+      },
+      "source_run_id": "mospi-udise-2026-06-02",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "UDISE.total_number_of_school.1.value.annual",
+      "geography_id": "IN",
+      "period_id": "2024-25",
+      "value": 61317,
+      "unit": "value",
+      "dimensions": {
+        "indicator_code": 1
+      },
+      "source_run_id": "mospi-udise-2026-06-02",
+      "quality_flags": [
+        "DUPLICATE_KEY"
+      ]
+    },
+    {
+      "indicator_id": "UDISE.total_number_of_school.1.value.annual",
+      "geography_id": "IN",
+      "period_id": "2024-25",
+      "value": 3229,
+      "unit": "value",
+      "dimensions": {
+        "indicator_code": 1
+      },
+      "source_run_id": "mospi-udise-2026-06-02",
+      "quality_flags": [
+        "DUPLICATE_KEY"
+      ]
+    },
+    {
+      "indicator_id": "UDISE.total_number_of_school.1.value.annual",
+      "geography_id": "IN",
+      "period_id": "2024-25",
+      "value": 55283,
+      "unit": "value",
+      "dimensions": {
+        "indicator_code": 1
+      },
+      "source_run_id": "mospi-udise-2026-06-02",
+      "quality_flags": [
+        "DUPLICATE_KEY"
+      ]
+    },
+    {
+      "indicator_id": "UDISE.total_number_of_school.1.value.annual",
+      "geography_id": "IN",
+      "period_id": "2024-25",
+      "value": 94339,
+      "unit": "value",
+      "dimensions": {
+        "indicator_code": 1
+      },
+      "source_run_id": "mospi-udise-2026-06-02",
+      "quality_flags": [
+        "DUPLICATE_KEY"
+      ]
+    },
+    {
+      "indicator_id": "UDISE.total_number_of_school.1.value.annual",
+      "geography_id": "IN",
+      "period_id": "2024-25",
+      "value": 207,
+      "unit": "value",
+      "dimensions": {
+        "indicator_code": 1
+      },
+      "source_run_id": "mospi-udise-2026-06-02",
+      "quality_flags": [
+        "DUPLICATE_KEY"
+      ]
+    },
+    {
+      "indicator_id": "UDISE.total_number_of_school.1.value.annual",
+      "geography_id": "IN",
+      "period_id": "2024-25",
+      "value": 56802,
+      "unit": "value",
+      "dimensions": {
+        "indicator_code": 1
+      },
+      "source_run_id": "mospi-udise-2026-06-02",
+      "quality_flags": [
+        "DUPLICATE_KEY"
+      ]
+    },
+    {
+      "indicator_id": "UDISE.total_number_of_school.1.value.annual",
+      "geography_id": "IN",
+      "period_id": "2024-25",
+      "value": 433,
+      "unit": "value",
+      "dimensions": {
+        "indicator_code": 1
+      },
+      "source_run_id": "mospi-udise-2026-06-02",
+      "quality_flags": [
+        "DUPLICATE_KEY"
+      ]
+    },
+    {
+      "indicator_id": "UDISE.total_number_of_school.1.value.annual",
+      "geography_id": "IN",
+      "period_id": "2024-25",
+      "value": 5556,
+      "unit": "value",
+      "dimensions": {
+        "indicator_code": 1
+      },
+      "source_run_id": "mospi-udise-2026-06-02",
+      "quality_flags": [
+        "DUPLICATE_KEY"
+      ]
+    },
+    {
+      "indicator_id": "UDISE.total_number_of_school.1.value.annual",
+      "geography_id": "IN",
+      "period_id": "2024-25",
+      "value": 1479,
+      "unit": "value",
+      "dimensions": {
+        "indicator_code": 1
+      },
+      "source_run_id": "mospi-udise-2026-06-02",
+      "quality_flags": [
+        "DUPLICATE_KEY"
+      ]
+    }
+  ],
+  "quality_report": {
+    "validation_status": "warning",
+    "duplicate_count": 9,
+    "null_count": 0,
+    "outlier_count": 0,
+    "coverage": {}
+  },
+  "warnings": []
+}

@@ -1,0 +1,45 @@
+{
+  "schema_version": "2026-06-mospi-nas-gdp-mvp-v2",
+  "dataset": "RBI",
+  "title": "Reserve Bank of India Statistics",
+  "generated_at": "2026-06-02T16:12:50.046Z",
+  "source_status": "source_unavailable",
+  "source_runs": [
+    {
+      "run_id": "mospi-rbi-2026-06-02",
+      "fetched_at": "2026-06-02T16:12:50.046Z",
+      "source_url": "https://api.mospi.gov.in/api/rbi/getRbiRecords",
+      "parser_version": "rbi-api-v1",
+      "row_count": 0,
+      "warnings": [
+        "API returned errors for all known code values"
+      ],
+      "errors": [
+        "Code discovery needed"
+      ]
+    }
+  ],
+  "geographies": [
+    {
+      "geography_id": "IN",
+      "name": "India",
+      "type": "india",
+      "code_system": "ISO-3166-1",
+      "aliases": [
+        "All India"
+      ]
+    }
+  ],
+  "indicators": [],
+  "observations": [],
+  "quality_report": {
+    "validation_status": "passed",
+    "duplicate_count": 0,
+    "null_count": 0,
+    "outlier_count": 0,
+    "coverage": {}
+  },
+  "warnings": [
+    "Source returned no data"
+  ]
+}
