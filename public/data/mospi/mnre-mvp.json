@@ -1,0 +1,1058 @@
+{
+  "schema_version": "2026-06-mospi-nas-gdp-mvp-v2",
+  "dataset": "MNRE",
+  "title": "Ministry of New and Renewable Energy Statistics",
+  "generated_at": "2026-06-02T14:51:08.370Z",
+  "source_status": "ready",
+  "source_runs": [
+    {
+      "run_id": "mospi-mnre-2026-06-02",
+      "fetched_at": "2026-06-02T14:51:08.369Z",
+      "source_url": "https://api.mospi.gov.in/api/mnre/getDataByEnergy",
+      "content_hash": "0125128a5c5509c59eba44cd4cf8f070e6b1d3cc1666f6da53f81eb79a2b8290",
+      "parser_version": "mnre-api-v1",
+      "row_count": 50,
+      "warnings": [
+        "Capped at 5 pages of 4059; 40586 total records"
+      ],
+      "errors": []
+    }
+  ],
+  "geographies": [
+    {
+      "geography_id": "IN",
+      "name": "India",
+      "type": "india",
+      "code_system": "ISO-3166-2",
+      "aliases": []
+    },
+    {
+      "geography_id": "IN-AP",
+      "name": "IN-AP",
+      "type": "state",
+      "code_system": "ISO-3166-2",
+      "aliases": []
+    },
+    {
+      "geography_id": "IN-AR",
+      "name": "IN-AR",
+      "type": "state",
+      "code_system": "ISO-3166-2",
+      "aliases": []
+    }
+  ],
+  "indicators": [
+    {
+      "id": "MNRE.solar_power.ground_mounted_solar_power.mw.monthly",
+      "dataset": "MNRE",
+      "source_dataset_code": "https://api.mospi.gov.in/api/mnre/getDataByEnergy",
+      "indicator_code": "solar_power.ground_mounted_solar_power",
+      "name": "Solar Power — Ground Mounted Solar Power",
+      "unit": "MW",
+      "frequency": "monthly",
+      "geography_level": "state",
+      "dimensions_schema": [
+        "energy_type",
+        "category"
+      ],
+      "source_url": "https://api.mospi.gov.in/api/mnre/getDataByEnergy",
+      "release_policy": "MNRE upstream mirror",
+      "default_transform": "level"
+    },
+    {
+      "id": "MNRE.solar_power.rooftop_solar_power.mw.monthly",
+      "dataset": "MNRE",
+      "source_dataset_code": "https://api.mospi.gov.in/api/mnre/getDataByEnergy",
+      "indicator_code": "solar_power.rooftop_solar_power",
+      "name": "Solar Power — Rooftop Solar Power",
+      "unit": "MW",
+      "frequency": "monthly",
+      "geography_level": "state",
+      "dimensions_schema": [
+        "energy_type",
+        "category"
+      ],
+      "source_url": "https://api.mospi.gov.in/api/mnre/getDataByEnergy",
+      "release_policy": "MNRE upstream mirror",
+      "default_transform": "level"
+    },
+    {
+      "id": "MNRE.solar_power._hybrid_solar_component.mw.monthly",
+      "dataset": "MNRE",
+      "source_dataset_code": "https://api.mospi.gov.in/api/mnre/getDataByEnergy",
+      "indicator_code": "solar_power._hybrid_solar_component",
+      "name": "Solar Power —  Hybrid Solar Component",
+      "unit": "MW",
+      "frequency": "monthly",
+      "geography_level": "state",
+      "dimensions_schema": [
+        "energy_type",
+        "category"
+      ],
+      "source_url": "https://api.mospi.gov.in/api/mnre/getDataByEnergy",
+      "release_policy": "MNRE upstream mirror",
+      "default_transform": "level"
+    },
+    {
+      "id": "MNRE.solar_power.off-grid_solar_power/kusum.mw.monthly",
+      "dataset": "MNRE",
+      "source_dataset_code": "https://api.mospi.gov.in/api/mnre/getDataByEnergy",
+      "indicator_code": "solar_power.off-grid_solar_power/kusum",
+      "name": "Solar Power — Off-Grid Solar Power/KUSUM",
+      "unit": "MW",
+      "frequency": "monthly",
+      "geography_level": "state",
+      "dimensions_schema": [
+        "energy_type",
+        "category"
+      ],
+      "source_url": "https://api.mospi.gov.in/api/mnre/getDataByEnergy",
+      "release_policy": "MNRE upstream mirror",
+      "default_transform": "level"
+    },
+    {
+      "id": "MNRE.solar_power.solar_power_total.mw.monthly",
+      "dataset": "MNRE",
+      "source_dataset_code": "https://api.mospi.gov.in/api/mnre/getDataByEnergy",
+      "indicator_code": "solar_power.solar_power_total",
+      "name": "Solar Power — Solar Power Total",
+      "unit": "MW",
+      "frequency": "monthly",
+      "geography_level": "state",
+      "dimensions_schema": [
+        "energy_type",
+        "category"
+      ],
+      "source_url": "https://api.mospi.gov.in/api/mnre/getDataByEnergy",
+      "release_policy": "MNRE upstream mirror",
+      "default_transform": "level"
+    },
+    {
+      "id": "MNRE.wind_power.wind_power.mw.monthly",
+      "dataset": "MNRE",
+      "source_dataset_code": "https://api.mospi.gov.in/api/mnre/getDataByEnergy",
+      "indicator_code": "wind_power.wind_power",
+      "name": "Wind Power — Wind Power",
+      "unit": "MW",
+      "frequency": "monthly",
+      "geography_level": "state",
+      "dimensions_schema": [
+        "energy_type",
+        "category"
+      ],
+      "source_url": "https://api.mospi.gov.in/api/mnre/getDataByEnergy",
+      "release_policy": "MNRE upstream mirror",
+      "default_transform": "level"
+    },
+    {
+      "id": "MNRE.hydro_power.small_hydro_power.mw.monthly",
+      "dataset": "MNRE",
+      "source_dataset_code": "https://api.mospi.gov.in/api/mnre/getDataByEnergy",
+      "indicator_code": "hydro_power.small_hydro_power",
+      "name": "Hydro Power — Small Hydro Power",
+      "unit": "MW",
+      "frequency": "monthly",
+      "geography_level": "state",
+      "dimensions_schema": [
+        "energy_type",
+        "category"
+      ],
+      "source_url": "https://api.mospi.gov.in/api/mnre/getDataByEnergy",
+      "release_policy": "MNRE upstream mirror",
+      "default_transform": "level"
+    },
+    {
+      "id": "MNRE.hydro_power.large_hydro_power.mw.monthly",
+      "dataset": "MNRE",
+      "source_dataset_code": "https://api.mospi.gov.in/api/mnre/getDataByEnergy",
+      "indicator_code": "hydro_power.large_hydro_power",
+      "name": "Hydro Power — Large Hydro Power",
+      "unit": "MW",
+      "frequency": "monthly",
+      "geography_level": "state",
+      "dimensions_schema": [
+        "energy_type",
+        "category"
+      ],
+      "source_url": "https://api.mospi.gov.in/api/mnre/getDataByEnergy",
+      "release_policy": "MNRE upstream mirror",
+      "default_transform": "level"
+    },
+    {
+      "id": "MNRE.bio_power.waste_to_energy.mw.monthly",
+      "dataset": "MNRE",
+      "source_dataset_code": "https://api.mospi.gov.in/api/mnre/getDataByEnergy",
+      "indicator_code": "bio_power.waste_to_energy",
+      "name": "Bio Power — Waste to Energy",
+      "unit": "MW",
+      "frequency": "monthly",
+      "geography_level": "state",
+      "dimensions_schema": [
+        "energy_type",
+        "category"
+      ],
+      "source_url": "https://api.mospi.gov.in/api/mnre/getDataByEnergy",
+      "release_policy": "MNRE upstream mirror",
+      "default_transform": "level"
+    },
+    {
+      "id": "MNRE.bio_power.biomass_power/bagasse_cogeneration.mw.monthly",
+      "dataset": "MNRE",
+      "source_dataset_code": "https://api.mospi.gov.in/api/mnre/getDataByEnergy",
+      "indicator_code": "bio_power.biomass_power/bagasse_cogeneration",
+      "name": "Bio Power — Biomass Power/Bagasse Cogeneration",
+      "unit": "MW",
+      "frequency": "monthly",
+      "geography_level": "state",
+      "dimensions_schema": [
+        "energy_type",
+        "category"
+      ],
+      "source_url": "https://api.mospi.gov.in/api/mnre/getDataByEnergy",
+      "release_policy": "MNRE upstream mirror",
+      "default_transform": "level"
+    },
+    {
+      "id": "MNRE.bio_power.biomass_cogeneration_(non-bagasse).mw.monthly",
+      "dataset": "MNRE",
+      "source_dataset_code": "https://api.mospi.gov.in/api/mnre/getDataByEnergy",
+      "indicator_code": "bio_power.biomass_cogeneration_(non-bagasse)",
+      "name": "Bio Power — Biomass Cogeneration (Non-Bagasse)",
+      "unit": "MW",
+      "frequency": "monthly",
+      "geography_level": "state",
+      "dimensions_schema": [
+        "energy_type",
+        "category"
+      ],
+      "source_url": "https://api.mospi.gov.in/api/mnre/getDataByEnergy",
+      "release_policy": "MNRE upstream mirror",
+      "default_transform": "level"
+    },
+    {
+      "id": "MNRE.bio_power.waste_to_energy_off-grid.mw.monthly",
+      "dataset": "MNRE",
+      "source_dataset_code": "https://api.mospi.gov.in/api/mnre/getDataByEnergy",
+      "indicator_code": "bio_power.waste_to_energy_off-grid",
+      "name": "Bio Power — Waste to Energy Off-Grid",
+      "unit": "MW",
+      "frequency": "monthly",
+      "geography_level": "state",
+      "dimensions_schema": [
+        "energy_type",
+        "category"
+      ],
+      "source_url": "https://api.mospi.gov.in/api/mnre/getDataByEnergy",
+      "release_policy": "MNRE upstream mirror",
+      "default_transform": "level"
+    },
+    {
+      "id": "MNRE.bio_power.bio_power_total.mw.monthly",
+      "dataset": "MNRE",
+      "source_dataset_code": "https://api.mospi.gov.in/api/mnre/getDataByEnergy",
+      "indicator_code": "bio_power.bio_power_total",
+      "name": "Bio Power — Bio Power Total",
+      "unit": "MW",
+      "frequency": "monthly",
+      "geography_level": "state",
+      "dimensions_schema": [
+        "energy_type",
+        "category"
+      ],
+      "source_url": "https://api.mospi.gov.in/api/mnre/getDataByEnergy",
+      "release_policy": "MNRE upstream mirror",
+      "default_transform": "level"
+    },
+    {
+      "id": "MNRE.total_power.total_power.mw.monthly",
+      "dataset": "MNRE",
+      "source_dataset_code": "https://api.mospi.gov.in/api/mnre/getDataByEnergy",
+      "indicator_code": "total_power.total_power",
+      "name": "Total Power — Total Power",
+      "unit": "MW",
+      "frequency": "monthly",
+      "geography_level": "state",
+      "dimensions_schema": [
+        "energy_type",
+        "category"
+      ],
+      "source_url": "https://api.mospi.gov.in/api/mnre/getDataByEnergy",
+      "release_policy": "MNRE upstream mirror",
+      "default_transform": "level"
+    }
+  ],
+  "observations": [
+    {
+      "indicator_id": "MNRE.solar_power.ground_mounted_solar_power.mw.monthly",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 117356.65,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Solar Power",
+        "category": "Ground Mounted Solar Power"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.solar_power.rooftop_solar_power.mw.monthly",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 26747.04,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Solar Power",
+        "category": "Rooftop Solar Power"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.solar_power._hybrid_solar_component.mw.monthly",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 3964.9,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Solar Power",
+        "category": " Hybrid Solar Component"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.solar_power.off-grid_solar_power/kusum.mw.monthly",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 6167.51,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Solar Power",
+        "category": "Off-Grid Solar Power/KUSUM"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.solar_power.solar_power_total.mw.monthly",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 154236.11,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Solar Power",
+        "category": "Solar Power Total"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.wind_power.wind_power.mw.monthly",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 56436.59,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Wind Power",
+        "category": "Wind Power"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.hydro_power.small_hydro_power.mw.monthly",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 5171.36,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Hydro Power",
+        "category": "Small Hydro Power"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.hydro_power.large_hydro_power.mw.monthly",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 51664.67,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Hydro Power",
+        "category": "Large Hydro Power"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.bio_power.waste_to_energy.mw.monthly",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 324.24,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Bio Power",
+        "category": "Waste to Energy"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.bio_power.biomass_power/bagasse_cogeneration.mw.monthly",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 9821.32,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Bio Power",
+        "category": "Biomass Power/Bagasse Cogeneration"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.bio_power.biomass_cogeneration_(non-bagasse).mw.monthly",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 1047.85,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Bio Power",
+        "category": "Biomass Cogeneration (Non-Bagasse)"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.bio_power.waste_to_energy_off-grid.mw.monthly",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 553.12,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Bio Power",
+        "category": "Waste to Energy Off-Grid"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.bio_power.bio_power_total.mw.monthly",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 11746.53,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Bio Power",
+        "category": "Bio Power Total"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.total_power.total_power.mw.monthly",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 279255.25,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Total Power",
+        "category": "Total Power"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.solar_power.ground_mounted_solar_power.mw.monthly",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 25.05,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Solar Power",
+        "category": "Ground Mounted Solar Power"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE",
+        "DUPLICATE_KEY"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.solar_power.rooftop_solar_power.mw.monthly",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 7.5,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Solar Power",
+        "category": "Rooftop Solar Power"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE",
+        "DUPLICATE_KEY"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.solar_power._hybrid_solar_component.mw.monthly",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 0,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Solar Power",
+        "category": " Hybrid Solar Component"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE",
+        "DUPLICATE_KEY"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.solar_power.off-grid_solar_power/kusum.mw.monthly",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 0.27,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Solar Power",
+        "category": "Off-Grid Solar Power/KUSUM"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE",
+        "DUPLICATE_KEY"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.solar_power.solar_power_total.mw.monthly",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 32.82,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Solar Power",
+        "category": "Solar Power Total"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE",
+        "DUPLICATE_KEY"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.wind_power.wind_power.mw.monthly",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 0,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Wind Power",
+        "category": "Wind Power"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE",
+        "DUPLICATE_KEY"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.hydro_power.small_hydro_power.mw.monthly",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 5.25,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Hydro Power",
+        "category": "Small Hydro Power"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE",
+        "DUPLICATE_KEY"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.hydro_power.large_hydro_power.mw.monthly",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 0,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Hydro Power",
+        "category": "Large Hydro Power"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE",
+        "DUPLICATE_KEY"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.bio_power.waste_to_energy.mw.monthly",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 0,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Bio Power",
+        "category": "Waste to Energy"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE",
+        "DUPLICATE_KEY"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.bio_power.biomass_power/bagasse_cogeneration.mw.monthly",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 0,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Bio Power",
+        "category": "Biomass Power/Bagasse Cogeneration"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE",
+        "DUPLICATE_KEY"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.bio_power.biomass_cogeneration_(non-bagasse).mw.monthly",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 0,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Bio Power",
+        "category": "Biomass Cogeneration (Non-Bagasse)"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE",
+        "DUPLICATE_KEY"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.bio_power.waste_to_energy_off-grid.mw.monthly",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 0,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Bio Power",
+        "category": "Waste to Energy Off-Grid"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE",
+        "DUPLICATE_KEY"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.bio_power.bio_power_total.mw.monthly",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 0,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Bio Power",
+        "category": "Bio Power Total"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE",
+        "DUPLICATE_KEY"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.total_power.total_power.mw.monthly",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 38.07,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Total Power",
+        "category": "Total Power"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE",
+        "DUPLICATE_KEY"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.solar_power.ground_mounted_solar_power.mw.monthly",
+      "geography_id": "IN-AP",
+      "period_id": "2026-04",
+      "value": 6527.66,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Solar Power",
+        "category": "Ground Mounted Solar Power"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.solar_power.rooftop_solar_power.mw.monthly",
+      "geography_id": "IN-AP",
+      "period_id": "2026-04",
+      "value": 827.3,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Solar Power",
+        "category": "Rooftop Solar Power"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.solar_power._hybrid_solar_component.mw.monthly",
+      "geography_id": "IN-AP",
+      "period_id": "2026-04",
+      "value": 249.42,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Solar Power",
+        "category": " Hybrid Solar Component"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.solar_power.off-grid_solar_power/kusum.mw.monthly",
+      "geography_id": "IN-AP",
+      "period_id": "2026-04",
+      "value": 88.34,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Solar Power",
+        "category": "Off-Grid Solar Power/KUSUM"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.solar_power.solar_power_total.mw.monthly",
+      "geography_id": "IN-AP",
+      "period_id": "2026-04",
+      "value": 7692.72,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Solar Power",
+        "category": "Solar Power Total"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.wind_power.wind_power.mw.monthly",
+      "geography_id": "IN-AP",
+      "period_id": "2026-04",
+      "value": 4415.78,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Wind Power",
+        "category": "Wind Power"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.hydro_power.small_hydro_power.mw.monthly",
+      "geography_id": "IN-AP",
+      "period_id": "2026-04",
+      "value": 164.51,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Hydro Power",
+        "category": "Small Hydro Power"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.hydro_power.large_hydro_power.mw.monthly",
+      "geography_id": "IN-AP",
+      "period_id": "2026-04",
+      "value": 3290,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Hydro Power",
+        "category": "Large Hydro Power"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.bio_power.waste_to_energy.mw.monthly",
+      "geography_id": "IN-AP",
+      "period_id": "2026-04",
+      "value": 53.16,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Bio Power",
+        "category": "Waste to Energy"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.bio_power.biomass_power/bagasse_cogeneration.mw.monthly",
+      "geography_id": "IN-AP",
+      "period_id": "2026-04",
+      "value": 378.1,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Bio Power",
+        "category": "Biomass Power/Bagasse Cogeneration"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.bio_power.biomass_cogeneration_(non-bagasse).mw.monthly",
+      "geography_id": "IN-AP",
+      "period_id": "2026-04",
+      "value": 134.57,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Bio Power",
+        "category": "Biomass Cogeneration (Non-Bagasse)"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.bio_power.waste_to_energy_off-grid.mw.monthly",
+      "geography_id": "IN-AP",
+      "period_id": "2026-04",
+      "value": 49.19,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Bio Power",
+        "category": "Waste to Energy Off-Grid"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.bio_power.bio_power_total.mw.monthly",
+      "geography_id": "IN-AP",
+      "period_id": "2026-04",
+      "value": 615.02,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Bio Power",
+        "category": "Bio Power Total"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.total_power.total_power.mw.monthly",
+      "geography_id": "IN-AP",
+      "period_id": "2026-04",
+      "value": 16178.03,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Total Power",
+        "category": "Total Power"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.solar_power.ground_mounted_solar_power.mw.monthly",
+      "geography_id": "IN-AR",
+      "period_id": "2026-04",
+      "value": 1.27,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Solar Power",
+        "category": "Ground Mounted Solar Power"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.solar_power.rooftop_solar_power.mw.monthly",
+      "geography_id": "IN-AR",
+      "period_id": "2026-04",
+      "value": 6.68,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Solar Power",
+        "category": "Rooftop Solar Power"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.solar_power._hybrid_solar_component.mw.monthly",
+      "geography_id": "IN-AR",
+      "period_id": "2026-04",
+      "value": 0,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Solar Power",
+        "category": " Hybrid Solar Component"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.solar_power.off-grid_solar_power/kusum.mw.monthly",
+      "geography_id": "IN-AR",
+      "period_id": "2026-04",
+      "value": 7.77,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Solar Power",
+        "category": "Off-Grid Solar Power/KUSUM"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.solar_power.solar_power_total.mw.monthly",
+      "geography_id": "IN-AR",
+      "period_id": "2026-04",
+      "value": 15.71,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Solar Power",
+        "category": "Solar Power Total"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.wind_power.wind_power.mw.monthly",
+      "geography_id": "IN-AR",
+      "period_id": "2026-04",
+      "value": 0,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Wind Power",
+        "category": "Wind Power"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.hydro_power.small_hydro_power.mw.monthly",
+      "geography_id": "IN-AR",
+      "period_id": "2026-04",
+      "value": 140.61,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Hydro Power",
+        "category": "Small Hydro Power"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    },
+    {
+      "indicator_id": "MNRE.hydro_power.large_hydro_power.mw.monthly",
+      "geography_id": "IN-AR",
+      "period_id": "2026-04",
+      "value": 1865,
+      "unit": "MW",
+      "dimensions": {
+        "energy_type": "Hydro Power",
+        "category": "Large Hydro Power"
+      },
+      "source_run_id": "mospi-mnre-2026-06-02",
+      "quality_flags": [
+        "PAGINATED_SOURCE"
+      ]
+    }
+  ],
+  "quality_report": {
+    "validation_status": "warning",
+    "duplicate_count": 14,
+    "null_count": 0,
+    "outlier_count": 0,
+    "coverage": {}
+  },
+  "warnings": []
+}

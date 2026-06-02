@@ -1,0 +1,623 @@
+{
+  "schema_version": "2026-06-mospi-nas-gdp-mvp-v2",
+  "dataset": "WPI",
+  "title": "Wholesale Price Index",
+  "generated_at": "2026-06-02T14:50:56.513Z",
+  "source_status": "ready",
+  "source_runs": [
+    {
+      "run_id": "mospi-wpi-2026-06-02",
+      "fetched_at": "2026-06-02T14:50:56.512Z",
+      "source_url": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "content_hash": "f06cf16936180bf256d31b9d80e071e6103cb23c86519e7c3c8277c813bd9688",
+      "parser_version": "wpi-api-v1",
+      "row_count": 20,
+      "warnings": [],
+      "errors": []
+    }
+  ],
+  "geographies": [
+    {
+      "geography_id": "IN",
+      "name": "India",
+      "type": "india",
+      "code_system": "ISO-3166-1",
+      "aliases": [
+        "All India",
+        "National"
+      ]
+    }
+  ],
+  "indicators": [
+    {
+      "id": "WPI.wholesale_price_index.index.2011-12",
+      "dataset": "WPI",
+      "source_dataset_code": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "indicator_code": "wholesale_price_index",
+      "name": "Wholesale price index",
+      "unit": "index",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "base_year"
+      ],
+      "base_year": "2011-12",
+      "source_url": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "release_policy": "DPIIT/OEA custodian; MoSPI mirror",
+      "default_transform": "level"
+    },
+    {
+      "id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).cereals.paddy.index.2011-12",
+      "dataset": "WPI",
+      "source_dataset_code": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "indicator_code": "primary_articles.food_articles.food_grains_(cereals+pulses).cereals.paddy",
+      "name": "Paddy",
+      "unit": "index",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "base_year"
+      ],
+      "base_year": "2011-12",
+      "source_url": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "release_policy": "DPIIT/OEA custodian; MoSPI mirror",
+      "default_transform": "level"
+    },
+    {
+      "id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).cereals.wheat.index.2011-12",
+      "dataset": "WPI",
+      "source_dataset_code": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "indicator_code": "primary_articles.food_articles.food_grains_(cereals+pulses).cereals.wheat",
+      "name": "Wheat",
+      "unit": "index",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "base_year"
+      ],
+      "base_year": "2011-12",
+      "source_url": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "release_policy": "DPIIT/OEA custodian; MoSPI mirror",
+      "default_transform": "level"
+    },
+    {
+      "id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).cereals.jowar.index.2011-12",
+      "dataset": "WPI",
+      "source_dataset_code": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "indicator_code": "primary_articles.food_articles.food_grains_(cereals+pulses).cereals.jowar",
+      "name": "Jowar",
+      "unit": "index",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "base_year"
+      ],
+      "base_year": "2011-12",
+      "source_url": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "release_policy": "DPIIT/OEA custodian; MoSPI mirror",
+      "default_transform": "level"
+    },
+    {
+      "id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).cereals.bajra.index.2011-12",
+      "dataset": "WPI",
+      "source_dataset_code": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "indicator_code": "primary_articles.food_articles.food_grains_(cereals+pulses).cereals.bajra",
+      "name": "Bajra",
+      "unit": "index",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "base_year"
+      ],
+      "base_year": "2011-12",
+      "source_url": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "release_policy": "DPIIT/OEA custodian; MoSPI mirror",
+      "default_transform": "level"
+    },
+    {
+      "id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).cereals.maize.index.2011-12",
+      "dataset": "WPI",
+      "source_dataset_code": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "indicator_code": "primary_articles.food_articles.food_grains_(cereals+pulses).cereals.maize",
+      "name": "Maize",
+      "unit": "index",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "base_year"
+      ],
+      "base_year": "2011-12",
+      "source_url": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "release_policy": "DPIIT/OEA custodian; MoSPI mirror",
+      "default_transform": "level"
+    },
+    {
+      "id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).cereals.barley.index.2011-12",
+      "dataset": "WPI",
+      "source_dataset_code": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "indicator_code": "primary_articles.food_articles.food_grains_(cereals+pulses).cereals.barley",
+      "name": "Barley",
+      "unit": "index",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "base_year"
+      ],
+      "base_year": "2011-12",
+      "source_url": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "release_policy": "DPIIT/OEA custodian; MoSPI mirror",
+      "default_transform": "level"
+    },
+    {
+      "id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).cereals.ragi.index.2011-12",
+      "dataset": "WPI",
+      "source_dataset_code": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "indicator_code": "primary_articles.food_articles.food_grains_(cereals+pulses).cereals.ragi",
+      "name": "Ragi",
+      "unit": "index",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "base_year"
+      ],
+      "base_year": "2011-12",
+      "source_url": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "release_policy": "DPIIT/OEA custodian; MoSPI mirror",
+      "default_transform": "level"
+    },
+    {
+      "id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).cereals.index.2011-12",
+      "dataset": "WPI",
+      "source_dataset_code": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "indicator_code": "primary_articles.food_articles.food_grains_(cereals+pulses).cereals",
+      "name": "Cereals",
+      "unit": "index",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "base_year"
+      ],
+      "base_year": "2011-12",
+      "source_url": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "release_policy": "DPIIT/OEA custodian; MoSPI mirror",
+      "default_transform": "level"
+    },
+    {
+      "id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).pulses.gram.index.2011-12",
+      "dataset": "WPI",
+      "source_dataset_code": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "indicator_code": "primary_articles.food_articles.food_grains_(cereals+pulses).pulses.gram",
+      "name": "Gram",
+      "unit": "index",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "base_year"
+      ],
+      "base_year": "2011-12",
+      "source_url": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "release_policy": "DPIIT/OEA custodian; MoSPI mirror",
+      "default_transform": "level"
+    },
+    {
+      "id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).pulses.arhar.index.2011-12",
+      "dataset": "WPI",
+      "source_dataset_code": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "indicator_code": "primary_articles.food_articles.food_grains_(cereals+pulses).pulses.arhar",
+      "name": "Arhar",
+      "unit": "index",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "base_year"
+      ],
+      "base_year": "2011-12",
+      "source_url": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "release_policy": "DPIIT/OEA custodian; MoSPI mirror",
+      "default_transform": "level"
+    },
+    {
+      "id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).pulses.moong.index.2011-12",
+      "dataset": "WPI",
+      "source_dataset_code": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "indicator_code": "primary_articles.food_articles.food_grains_(cereals+pulses).pulses.moong",
+      "name": "Moong",
+      "unit": "index",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "base_year"
+      ],
+      "base_year": "2011-12",
+      "source_url": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "release_policy": "DPIIT/OEA custodian; MoSPI mirror",
+      "default_transform": "level"
+    },
+    {
+      "id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).pulses.masur.index.2011-12",
+      "dataset": "WPI",
+      "source_dataset_code": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "indicator_code": "primary_articles.food_articles.food_grains_(cereals+pulses).pulses.masur",
+      "name": "Masur",
+      "unit": "index",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "base_year"
+      ],
+      "base_year": "2011-12",
+      "source_url": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "release_policy": "DPIIT/OEA custodian; MoSPI mirror",
+      "default_transform": "level"
+    },
+    {
+      "id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).pulses.urad.index.2011-12",
+      "dataset": "WPI",
+      "source_dataset_code": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "indicator_code": "primary_articles.food_articles.food_grains_(cereals+pulses).pulses.urad",
+      "name": "Urad",
+      "unit": "index",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "base_year"
+      ],
+      "base_year": "2011-12",
+      "source_url": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "release_policy": "DPIIT/OEA custodian; MoSPI mirror",
+      "default_transform": "level"
+    },
+    {
+      "id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).pulses.peas/chawali.index.2011-12",
+      "dataset": "WPI",
+      "source_dataset_code": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "indicator_code": "primary_articles.food_articles.food_grains_(cereals+pulses).pulses.peas/chawali",
+      "name": "Peas/chawali",
+      "unit": "index",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "base_year"
+      ],
+      "base_year": "2011-12",
+      "source_url": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "release_policy": "DPIIT/OEA custodian; MoSPI mirror",
+      "default_transform": "level"
+    },
+    {
+      "id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).pulses.rajma.index.2011-12",
+      "dataset": "WPI",
+      "source_dataset_code": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "indicator_code": "primary_articles.food_articles.food_grains_(cereals+pulses).pulses.rajma",
+      "name": "Rajma",
+      "unit": "index",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "base_year"
+      ],
+      "base_year": "2011-12",
+      "source_url": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "release_policy": "DPIIT/OEA custodian; MoSPI mirror",
+      "default_transform": "level"
+    },
+    {
+      "id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).pulses.index.2011-12",
+      "dataset": "WPI",
+      "source_dataset_code": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "indicator_code": "primary_articles.food_articles.food_grains_(cereals+pulses).pulses",
+      "name": "Pulses",
+      "unit": "index",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "base_year"
+      ],
+      "base_year": "2011-12",
+      "source_url": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "release_policy": "DPIIT/OEA custodian; MoSPI mirror",
+      "default_transform": "level"
+    },
+    {
+      "id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).index.2011-12",
+      "dataset": "WPI",
+      "source_dataset_code": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "indicator_code": "primary_articles.food_articles.food_grains_(cereals+pulses)",
+      "name": "Food grains (cereals+pulses)",
+      "unit": "index",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "base_year"
+      ],
+      "base_year": "2011-12",
+      "source_url": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "release_policy": "DPIIT/OEA custodian; MoSPI mirror",
+      "default_transform": "level"
+    },
+    {
+      "id": "WPI.primary_articles.food_articles.fruits_&_vegetables.vegetables.potato.index.2011-12",
+      "dataset": "WPI",
+      "source_dataset_code": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "indicator_code": "primary_articles.food_articles.fruits_&_vegetables.vegetables.potato",
+      "name": "Potato",
+      "unit": "index",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "base_year"
+      ],
+      "base_year": "2011-12",
+      "source_url": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "release_policy": "DPIIT/OEA custodian; MoSPI mirror",
+      "default_transform": "level"
+    },
+    {
+      "id": "WPI.primary_articles.food_articles.fruits_&_vegetables.vegetables.sweet_potato.index.2011-12",
+      "dataset": "WPI",
+      "source_dataset_code": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "indicator_code": "primary_articles.food_articles.fruits_&_vegetables.vegetables.sweet_potato",
+      "name": "Sweet potato",
+      "unit": "index",
+      "frequency": "monthly",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "base_year"
+      ],
+      "base_year": "2011-12",
+      "source_url": "https://api.mospi.gov.in/api/wpi/getWpiRecords",
+      "release_policy": "DPIIT/OEA custodian; MoSPI mirror",
+      "default_transform": "level"
+    }
+  ],
+  "observations": [
+    {
+      "indicator_id": "WPI.wholesale_price_index.index.2011-12",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 167,
+      "unit": "index",
+      "dimensions": {
+        "base_year": "2011-12"
+      },
+      "source_run_id": "mospi-wpi-2026-06-02",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).cereals.paddy.index.2011-12",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 202,
+      "unit": "index",
+      "dimensions": {
+        "base_year": "2011-12"
+      },
+      "source_run_id": "mospi-wpi-2026-06-02",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).cereals.wheat.index.2011-12",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 212.4,
+      "unit": "index",
+      "dimensions": {
+        "base_year": "2011-12"
+      },
+      "source_run_id": "mospi-wpi-2026-06-02",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).cereals.jowar.index.2011-12",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 223.3,
+      "unit": "index",
+      "dimensions": {
+        "base_year": "2011-12"
+      },
+      "source_run_id": "mospi-wpi-2026-06-02",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).cereals.bajra.index.2011-12",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 243.4,
+      "unit": "index",
+      "dimensions": {
+        "base_year": "2011-12"
+      },
+      "source_run_id": "mospi-wpi-2026-06-02",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).cereals.maize.index.2011-12",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 182.1,
+      "unit": "index",
+      "dimensions": {
+        "base_year": "2011-12"
+      },
+      "source_run_id": "mospi-wpi-2026-06-02",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).cereals.barley.index.2011-12",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 226,
+      "unit": "index",
+      "dimensions": {
+        "base_year": "2011-12"
+      },
+      "source_run_id": "mospi-wpi-2026-06-02",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).cereals.ragi.index.2011-12",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 330.2,
+      "unit": "index",
+      "dimensions": {
+        "base_year": "2011-12"
+      },
+      "source_run_id": "mospi-wpi-2026-06-02",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).cereals.index.2011-12",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 206.6,
+      "unit": "index",
+      "dimensions": {
+        "base_year": "2011-12"
+      },
+      "source_run_id": "mospi-wpi-2026-06-02",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).pulses.gram.index.2011-12",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 187.9,
+      "unit": "index",
+      "dimensions": {
+        "base_year": "2011-12"
+      },
+      "source_run_id": "mospi-wpi-2026-06-02",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).pulses.arhar.index.2011-12",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 212,
+      "unit": "index",
+      "dimensions": {
+        "base_year": "2011-12"
+      },
+      "source_run_id": "mospi-wpi-2026-06-02",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).pulses.moong.index.2011-12",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 188.6,
+      "unit": "index",
+      "dimensions": {
+        "base_year": "2011-12"
+      },
+      "source_run_id": "mospi-wpi-2026-06-02",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).pulses.masur.index.2011-12",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 194.2,
+      "unit": "index",
+      "dimensions": {
+        "base_year": "2011-12"
+      },
+      "source_run_id": "mospi-wpi-2026-06-02",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).pulses.urad.index.2011-12",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 200.5,
+      "unit": "index",
+      "dimensions": {
+        "base_year": "2011-12"
+      },
+      "source_run_id": "mospi-wpi-2026-06-02",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).pulses.peas/chawali.index.2011-12",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 183.7,
+      "unit": "index",
+      "dimensions": {
+        "base_year": "2011-12"
+      },
+      "source_run_id": "mospi-wpi-2026-06-02",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).pulses.rajma.index.2011-12",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 232.6,
+      "unit": "index",
+      "dimensions": {
+        "base_year": "2011-12"
+      },
+      "source_run_id": "mospi-wpi-2026-06-02",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).pulses.index.2011-12",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 195.4,
+      "unit": "index",
+      "dimensions": {
+        "base_year": "2011-12"
+      },
+      "source_run_id": "mospi-wpi-2026-06-02",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "WPI.primary_articles.food_articles.food_grains_(cereals+pulses).index.2011-12",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 204.6,
+      "unit": "index",
+      "dimensions": {
+        "base_year": "2011-12"
+      },
+      "source_run_id": "mospi-wpi-2026-06-02",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "WPI.primary_articles.food_articles.fruits_&_vegetables.vegetables.potato.index.2011-12",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 143.7,
+      "unit": "index",
+      "dimensions": {
+        "base_year": "2011-12"
+      },
+      "source_run_id": "mospi-wpi-2026-06-02",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "WPI.primary_articles.food_articles.fruits_&_vegetables.vegetables.sweet_potato.index.2011-12",
+      "geography_id": "IN",
+      "period_id": "2026-04",
+      "value": 126.7,
+      "unit": "index",
+      "dimensions": {
+        "base_year": "2011-12"
+      },
+      "source_run_id": "mospi-wpi-2026-06-02",
+      "quality_flags": []
+    }
+  ],
+  "quality_report": {
+    "validation_status": "passed",
+    "duplicate_count": 0,
+    "null_count": 0,
+    "outlier_count": 0,
+    "coverage": {}
+  },
+  "warnings": []
+}

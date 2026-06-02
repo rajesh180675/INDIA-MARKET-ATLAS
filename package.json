@@ -16,7 +16,8 @@
     "verify": "npm run ci && vercel build --yes",
     "lint": "eslint src/",
     "build:single": "cross-env SINGLE_FILE=true vite build",
-    "parse:mospi": "node scripts/parse-mospi-state-sdp.cjs"
+    "parse:mospi": "node scripts/parse-mospi-state-sdp.cjs",
+    "build:mospi": "node scripts/build/all.cjs"
   },
   "dependencies": {
     "@observablehq/plot": "^0.6.17",

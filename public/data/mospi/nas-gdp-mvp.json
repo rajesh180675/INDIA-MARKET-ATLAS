@@ -2,12 +2,12 @@
   "schema_version": "2026-06-mospi-nas-gdp-mvp-v2",
   "dataset": "NAS_GDP",
   "title": "National Accounts Statistics — GDP and GVA aggregates",
-  "generated_at": "2026-05-31T13:46:17.318Z",
+  "generated_at": "2026-06-02T14:44:43.627Z",
   "source_status": "ready",
   "source_runs": [
     {
-      "run_id": "mospi-nas-pdf-parse-2026-05-31",
-      "fetched_at": "2026-05-31T13:46:17.318Z",
+      "run_id": "mospi-nas-pdf-parse-2026-06-02",
+      "fetched_at": "2026-06-02T14:44:43.627Z",
       "source_url": "MoSPI SDDS PDF (data/raw/mospi/STATE_SDP/nsdp_2025_09_01.pdf)",
       "source_file": "data/raw/mospi/STATE_SDP/nsdp_2025_09_01.pdf",
       "content_hash": "pdf-extracted",

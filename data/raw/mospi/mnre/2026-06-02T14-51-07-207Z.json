@@ -1,0 +1,9 @@
+{
+  "fetched_at": "2026-06-02T14:51:07.207Z",
+  "url": "https://api.mospi.gov.in/api/mnre/getDataByEnergy?page=4",
+  "status_code": 200,
+  "content_hash": "6713bf12a11b1b4764e38c8c6bce7e62edd0d0e7019c70a883ecd8c93f86995a",
+  "body_size_bytes": 1621
+}
+
+{"data":[{"type_of_renewable_energy":"Solar Power","year":2026,"month":"April","state":"Andhra Pradesh","category":" Hybrid Solar Component","value":"249.42"},{"type_of_renewable_energy":"Solar Power","year":2026,"month":"April","state":"Andhra Pradesh","category":"Off-Grid Solar Power/KUSUM","value":"88.34"},{"type_of_renewable_energy":"Solar Power","year":2026,"month":"April","state":"Andhra Pradesh","category":"Solar Power Total","value":"7692.72"},{"type_of_renewable_energy":"Wind Power","year":2026,"month":"April","state":"Andhra Pradesh","category":"Wind Power","value":"4415.78"},{"type_of_renewable_energy":"Hydro Power","year":2026,"month":"April","state":"Andhra Pradesh","category":"Small Hydro Power","value":"164.51"},{"type_of_renewable_energy":"Hydro Power","year":2026,"month":"April","state":"Andhra Pradesh","category":"Large Hydro Power","value":"3290.00"},{"type_of_renewable_energy":"Bio Power","year":2026,"month":"April","state":"Andhra Pradesh","category":"Waste to Energy","value":"53.16"},{"type_of_renewable_energy":"Bio Power","year":2026,"month":"April","state":"Andhra Pradesh","category":"Biomass Power/Bagasse Cogeneration","value":"378.10"},{"type_of_renewable_energy":"Bio Power","year":2026,"month":"April","state":"Andhra Pradesh","category":"Biomass Cogeneration (Non-Bagasse)","value":"134.57"},{"type_of_renewable_energy":"Bio Power","year":2026,"month":"April","state":"Andhra Pradesh","category":"Waste to Energy Off-Grid","value":"49.19"}],"meta_data":{"page":4,"totalRecords":40586,"totalPages":4059,"recordPerPage":10},"msg":"Data fetched successfully","statusCode":true}

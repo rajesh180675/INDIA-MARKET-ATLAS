@@ -2,11 +2,25 @@
   "schema_version": "2026-06-mospi-public-catalog-v2",
   "datasets": [
     {
-      "id": "STATE_SDP",
-      "title": "State Domestic Product and other aggregates, 2011-2012 series",
-      "artifact": "/data/mospi/state-sdp-mvp.json",
-      "source_status": "source_unavailable",
-      "observation_count": 0
+      "id": "WPI",
+      "title": "Wholesale Price Index",
+      "artifact": "/data/mospi/wpi-mvp.json",
+      "source_status": "ready",
+      "observation_count": 20
+    },
+    {
+      "id": "ASUSE",
+      "title": "Annual Survey of Unincorporated Sector Enterprises",
+      "artifact": "/data/mospi/asuse-mvp.json",
+      "source_status": "ready",
+      "observation_count": 10
+    },
+    {
+      "id": "MNRE",
+      "title": "Ministry of New and Renewable Energy Statistics",
+      "artifact": "/data/mospi/mnre-mvp.json",
+      "source_status": "ready",
+      "observation_count": 50
     },
     {
       "id": "NAS_GDP",
@@ -14,6 +28,13 @@
       "artifact": "/data/mospi/nas-gdp-mvp.json",
       "source_status": "ready",
       "observation_count": 48
+    },
+    {
+      "id": "STATE_SDP",
+      "title": "State Domestic Product and other aggregates, 2011-2012 series",
+      "artifact": "/data/mospi/state-sdp-mvp.json",
+      "source_status": "source_unavailable",
+      "observation_count": 0
     }
   ]
 }

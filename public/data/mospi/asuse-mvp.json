@@ -1,0 +1,360 @@
+{
+  "schema_version": "2026-06-mospi-nas-gdp-mvp-v2",
+  "dataset": "ASUSE",
+  "title": "Annual Survey of Unincorporated Sector Enterprises",
+  "generated_at": "2026-06-02T14:51:02.205Z",
+  "source_status": "ready",
+  "source_runs": [
+    {
+      "run_id": "mospi-asuse-2026-06-02",
+      "fetched_at": "2026-06-02T14:51:02.204Z",
+      "source_url": "https://api.mospi.gov.in/api/asuse/getAsuseRecords",
+      "content_hash": "ff34c2c4473061e2bffaafdefe1ea947cc7ec6fbf62e8a13d0fec782294dd278",
+      "parser_version": "asuse-api-v1",
+      "row_count": 10,
+      "warnings": [],
+      "errors": []
+    }
+  ],
+  "geographies": [
+    {
+      "geography_id": "IN",
+      "name": "India",
+      "type": "india",
+      "code_system": "ISO-3166-2",
+      "aliases": []
+    }
+  ],
+  "indicators": [
+    {
+      "id": "ASUSE.estimated_number_of_establishments_pursu.hired_worker_establishments(hw.rural.cotton_ginning,_cleaning_and_b.count.annual",
+      "dataset": "ASUSE",
+      "source_dataset_code": "https://api.mospi.gov.in/api/asuse/getAsuseRecords",
+      "indicator_code": "estimated_number_of_establishments_pursu.hired_worker_establishments(hw.rural.cotton_ginning,_cleaning_and_b",
+      "name": "Estimated Number of Establishments Pursuing Mixed Activities for Each Activity Category — Hired Worker Establishments(HWE)",
+      "unit": "count",
+      "frequency": "annual",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "sector",
+        "activity_category",
+        "establishment_type"
+      ],
+      "source_url": "https://api.mospi.gov.in/api/asuse/getAsuseRecords",
+      "release_policy": "Irregular rounds; aggregates only",
+      "default_transform": "level"
+    },
+    {
+      "id": "ASUSE.estimated_number_of_establishments_pursu.own_account_establishments(oae.rural.cotton_ginning,_cleaning_and_b.count.annual",
+      "dataset": "ASUSE",
+      "source_dataset_code": "https://api.mospi.gov.in/api/asuse/getAsuseRecords",
+      "indicator_code": "estimated_number_of_establishments_pursu.own_account_establishments(oae.rural.cotton_ginning,_cleaning_and_b",
+      "name": "Estimated Number of Establishments Pursuing Mixed Activities for Each Activity Category — Own Account Establishments(OAE)",
+      "unit": "count",
+      "frequency": "annual",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "sector",
+        "activity_category",
+        "establishment_type"
+      ],
+      "source_url": "https://api.mospi.gov.in/api/asuse/getAsuseRecords",
+      "release_policy": "Irregular rounds; aggregates only",
+      "default_transform": "level"
+    },
+    {
+      "id": "ASUSE.estimated_number_of_establishments_pursu.all_establishments(all).rural.cotton_ginning,_cleaning_and_b.count.annual",
+      "dataset": "ASUSE",
+      "source_dataset_code": "https://api.mospi.gov.in/api/asuse/getAsuseRecords",
+      "indicator_code": "estimated_number_of_establishments_pursu.all_establishments(all).rural.cotton_ginning,_cleaning_and_b",
+      "name": "Estimated Number of Establishments Pursuing Mixed Activities for Each Activity Category — All Establishments(All)",
+      "unit": "count",
+      "frequency": "annual",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "sector",
+        "activity_category",
+        "establishment_type"
+      ],
+      "source_url": "https://api.mospi.gov.in/api/asuse/getAsuseRecords",
+      "release_policy": "Irregular rounds; aggregates only",
+      "default_transform": "level"
+    },
+    {
+      "id": "ASUSE.estimated_number_of_establishments_pursu.hired_worker_establishments(hw.rural.manufacture_of_food_products.count.annual",
+      "dataset": "ASUSE",
+      "source_dataset_code": "https://api.mospi.gov.in/api/asuse/getAsuseRecords",
+      "indicator_code": "estimated_number_of_establishments_pursu.hired_worker_establishments(hw.rural.manufacture_of_food_products",
+      "name": "Estimated Number of Establishments Pursuing Mixed Activities for Each Activity Category — Hired Worker Establishments(HWE)",
+      "unit": "count",
+      "frequency": "annual",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "sector",
+        "activity_category",
+        "establishment_type"
+      ],
+      "source_url": "https://api.mospi.gov.in/api/asuse/getAsuseRecords",
+      "release_policy": "Irregular rounds; aggregates only",
+      "default_transform": "level"
+    },
+    {
+      "id": "ASUSE.estimated_number_of_establishments_pursu.own_account_establishments(oae.rural.manufacture_of_food_products.count.annual",
+      "dataset": "ASUSE",
+      "source_dataset_code": "https://api.mospi.gov.in/api/asuse/getAsuseRecords",
+      "indicator_code": "estimated_number_of_establishments_pursu.own_account_establishments(oae.rural.manufacture_of_food_products",
+      "name": "Estimated Number of Establishments Pursuing Mixed Activities for Each Activity Category — Own Account Establishments(OAE)",
+      "unit": "count",
+      "frequency": "annual",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "sector",
+        "activity_category",
+        "establishment_type"
+      ],
+      "source_url": "https://api.mospi.gov.in/api/asuse/getAsuseRecords",
+      "release_policy": "Irregular rounds; aggregates only",
+      "default_transform": "level"
+    },
+    {
+      "id": "ASUSE.estimated_number_of_establishments_pursu.all_establishments(all).rural.manufacture_of_food_products.count.annual",
+      "dataset": "ASUSE",
+      "source_dataset_code": "https://api.mospi.gov.in/api/asuse/getAsuseRecords",
+      "indicator_code": "estimated_number_of_establishments_pursu.all_establishments(all).rural.manufacture_of_food_products",
+      "name": "Estimated Number of Establishments Pursuing Mixed Activities for Each Activity Category — All Establishments(All)",
+      "unit": "count",
+      "frequency": "annual",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "sector",
+        "activity_category",
+        "establishment_type"
+      ],
+      "source_url": "https://api.mospi.gov.in/api/asuse/getAsuseRecords",
+      "release_policy": "Irregular rounds; aggregates only",
+      "default_transform": "level"
+    },
+    {
+      "id": "ASUSE.estimated_number_of_establishments_pursu.hired_worker_establishments(hw.rural.manufacture_of_beverages.count.annual",
+      "dataset": "ASUSE",
+      "source_dataset_code": "https://api.mospi.gov.in/api/asuse/getAsuseRecords",
+      "indicator_code": "estimated_number_of_establishments_pursu.hired_worker_establishments(hw.rural.manufacture_of_beverages",
+      "name": "Estimated Number of Establishments Pursuing Mixed Activities for Each Activity Category — Hired Worker Establishments(HWE)",
+      "unit": "count",
+      "frequency": "annual",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "sector",
+        "activity_category",
+        "establishment_type"
+      ],
+      "source_url": "https://api.mospi.gov.in/api/asuse/getAsuseRecords",
+      "release_policy": "Irregular rounds; aggregates only",
+      "default_transform": "level"
+    },
+    {
+      "id": "ASUSE.estimated_number_of_establishments_pursu.own_account_establishments(oae.rural.manufacture_of_beverages.count.annual",
+      "dataset": "ASUSE",
+      "source_dataset_code": "https://api.mospi.gov.in/api/asuse/getAsuseRecords",
+      "indicator_code": "estimated_number_of_establishments_pursu.own_account_establishments(oae.rural.manufacture_of_beverages",
+      "name": "Estimated Number of Establishments Pursuing Mixed Activities for Each Activity Category — Own Account Establishments(OAE)",
+      "unit": "count",
+      "frequency": "annual",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "sector",
+        "activity_category",
+        "establishment_type"
+      ],
+      "source_url": "https://api.mospi.gov.in/api/asuse/getAsuseRecords",
+      "release_policy": "Irregular rounds; aggregates only",
+      "default_transform": "level"
+    },
+    {
+      "id": "ASUSE.estimated_number_of_establishments_pursu.all_establishments(all).rural.manufacture_of_beverages.count.annual",
+      "dataset": "ASUSE",
+      "source_dataset_code": "https://api.mospi.gov.in/api/asuse/getAsuseRecords",
+      "indicator_code": "estimated_number_of_establishments_pursu.all_establishments(all).rural.manufacture_of_beverages",
+      "name": "Estimated Number of Establishments Pursuing Mixed Activities for Each Activity Category — All Establishments(All)",
+      "unit": "count",
+      "frequency": "annual",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "sector",
+        "activity_category",
+        "establishment_type"
+      ],
+      "source_url": "https://api.mospi.gov.in/api/asuse/getAsuseRecords",
+      "release_policy": "Irregular rounds; aggregates only",
+      "default_transform": "level"
+    },
+    {
+      "id": "ASUSE.estimated_number_of_establishments_pursu.hired_worker_establishments(hw.rural.manufacture_of_tobacco_product.count.annual",
+      "dataset": "ASUSE",
+      "source_dataset_code": "https://api.mospi.gov.in/api/asuse/getAsuseRecords",
+      "indicator_code": "estimated_number_of_establishments_pursu.hired_worker_establishments(hw.rural.manufacture_of_tobacco_product",
+      "name": "Estimated Number of Establishments Pursuing Mixed Activities for Each Activity Category — Hired Worker Establishments(HWE)",
+      "unit": "count",
+      "frequency": "annual",
+      "geography_level": "india",
+      "dimensions_schema": [
+        "sector",
+        "activity_category",
+        "establishment_type"
+      ],
+      "source_url": "https://api.mospi.gov.in/api/asuse/getAsuseRecords",
+      "release_policy": "Irregular rounds; aggregates only",
+      "default_transform": "level"
+    }
+  ],
+  "observations": [
+    {
+      "indicator_id": "ASUSE.estimated_number_of_establishments_pursu.hired_worker_establishments(hw.rural.cotton_ginning,_cleaning_and_b.count.annual",
+      "geography_id": "IN",
+      "period_id": "2021-22",
+      "value": 774,
+      "unit": "count",
+      "dimensions": {
+        "sector": "Rural",
+        "activity_category": "Cotton Ginning, Cleaning and Bailing",
+        "establishment_type": "Hired Worker Establishments(HWE)"
+      },
+      "source_run_id": "mospi-asuse-2026-06-02",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "ASUSE.estimated_number_of_establishments_pursu.own_account_establishments(oae.rural.cotton_ginning,_cleaning_and_b.count.annual",
+      "geography_id": "IN",
+      "period_id": "2021-22",
+      "value": 1422,
+      "unit": "count",
+      "dimensions": {
+        "sector": "Rural",
+        "activity_category": "Cotton Ginning, Cleaning and Bailing",
+        "establishment_type": "Own Account Establishments(OAE)"
+      },
+      "source_run_id": "mospi-asuse-2026-06-02",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "ASUSE.estimated_number_of_establishments_pursu.all_establishments(all).rural.cotton_ginning,_cleaning_and_b.count.annual",
+      "geography_id": "IN",
+      "period_id": "2021-22",
+      "value": 2195,
+      "unit": "count",
+      "dimensions": {
+        "sector": "Rural",
+        "activity_category": "Cotton Ginning, Cleaning and Bailing",
+        "establishment_type": "All Establishments(All)"
+      },
+      "source_run_id": "mospi-asuse-2026-06-02",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "ASUSE.estimated_number_of_establishments_pursu.hired_worker_establishments(hw.rural.manufacture_of_food_products.count.annual",
+      "geography_id": "IN",
+      "period_id": "2021-22",
+      "value": 127508,
+      "unit": "count",
+      "dimensions": {
+        "sector": "Rural",
+        "activity_category": "Manufacture of Food Products",
+        "establishment_type": "Hired Worker Establishments(HWE)"
+      },
+      "source_run_id": "mospi-asuse-2026-06-02",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "ASUSE.estimated_number_of_establishments_pursu.own_account_establishments(oae.rural.manufacture_of_food_products.count.annual",
+      "geography_id": "IN",
+      "period_id": "2021-22",
+      "value": 1116198,
+      "unit": "count",
+      "dimensions": {
+        "sector": "Rural",
+        "activity_category": "Manufacture of Food Products",
+        "establishment_type": "Own Account Establishments(OAE)"
+      },
+      "source_run_id": "mospi-asuse-2026-06-02",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "ASUSE.estimated_number_of_establishments_pursu.all_establishments(all).rural.manufacture_of_food_products.count.annual",
+      "geography_id": "IN",
+      "period_id": "2021-22",
+      "value": 1243706,
+      "unit": "count",
+      "dimensions": {
+        "sector": "Rural",
+        "activity_category": "Manufacture of Food Products",
+        "establishment_type": "All Establishments(All)"
+      },
+      "source_run_id": "mospi-asuse-2026-06-02",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "ASUSE.estimated_number_of_establishments_pursu.hired_worker_establishments(hw.rural.manufacture_of_beverages.count.annual",
+      "geography_id": "IN",
+      "period_id": "2021-22",
+      "value": 7690,
+      "unit": "count",
+      "dimensions": {
+        "sector": "Rural",
+        "activity_category": "Manufacture of Beverages",
+        "establishment_type": "Hired Worker Establishments(HWE)"
+      },
+      "source_run_id": "mospi-asuse-2026-06-02",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "ASUSE.estimated_number_of_establishments_pursu.own_account_establishments(oae.rural.manufacture_of_beverages.count.annual",
+      "geography_id": "IN",
+      "period_id": "2021-22",
+      "value": 71127,
+      "unit": "count",
+      "dimensions": {
+        "sector": "Rural",
+        "activity_category": "Manufacture of Beverages",
+        "establishment_type": "Own Account Establishments(OAE)"
+      },
+      "source_run_id": "mospi-asuse-2026-06-02",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "ASUSE.estimated_number_of_establishments_pursu.all_establishments(all).rural.manufacture_of_beverages.count.annual",
+      "geography_id": "IN",
+      "period_id": "2021-22",
+      "value": 78817,
+      "unit": "count",
+      "dimensions": {
+        "sector": "Rural",
+        "activity_category": "Manufacture of Beverages",
+        "establishment_type": "All Establishments(All)"
+      },
+      "source_run_id": "mospi-asuse-2026-06-02",
+      "quality_flags": []
+    },
+    {
+      "indicator_id": "ASUSE.estimated_number_of_establishments_pursu.hired_worker_establishments(hw.rural.manufacture_of_tobacco_product.count.annual",
+      "geography_id": "IN",
+      "period_id": "2021-22",
+      "value": 6281,
+      "unit": "count",
+      "dimensions": {
+        "sector": "Rural",
+        "activity_category": "Manufacture of Tobacco Products",
+        "establishment_type": "Hired Worker Establishments(HWE)"
+      },
+      "source_run_id": "mospi-asuse-2026-06-02",
+      "quality_flags": []
+    }
+  ],
+  "quality_report": {
+    "validation_status": "passed",
+    "duplicate_count": 0,
+    "null_count": 0,
+    "outlier_count": 0,
+    "coverage": {}
+  },
+  "warnings": []
+}

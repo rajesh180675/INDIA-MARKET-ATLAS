@@ -1,0 +1,9 @@
+{
+  "fetched_at": "2026-06-02T14:51:05.978Z",
+  "url": "https://api.mospi.gov.in/api/mnre/getDataByEnergy?page=3",
+  "status_code": 200,
+  "content_hash": "b23363a0d5da52efeccb7f7f65e715c2f30dde71de13f5d8e6c9d49bf4511d13",
+  "body_size_bytes": 1705
+}
+
+{"data":[{"type_of_renewable_energy":"Hydro Power","year":2026,"month":"April","state":"Andaman and Nicobar Islands","category":"Small Hydro Power","value":"5.25"},{"type_of_renewable_energy":"Hydro Power","year":2026,"month":"April","state":"Andaman and Nicobar Islands","category":"Large Hydro Power","value":"0.00"},{"type_of_renewable_energy":"Bio Power","year":2026,"month":"April","state":"Andaman and Nicobar Islands","category":"Waste to Energy","value":"0.00"},{"type_of_renewable_energy":"Bio Power","year":2026,"month":"April","state":"Andaman and Nicobar Islands","category":"Biomass Power/Bagasse Cogeneration","value":"0.00"},{"type_of_renewable_energy":"Bio Power","year":2026,"month":"April","state":"Andaman and Nicobar Islands","category":"Biomass Cogeneration (Non-Bagasse)","value":"0.00"},{"type_of_renewable_energy":"Bio Power","year":2026,"month":"April","state":"Andaman and Nicobar Islands","category":"Waste to Energy Off-Grid","value":"0.00"},{"type_of_renewable_energy":"Bio Power","year":2026,"month":"April","state":"Andaman and Nicobar Islands","category":"Bio Power Total","value":"0.00"},{"type_of_renewable_energy":"Total Power","year":2026,"month":"April","state":"Andaman and Nicobar Islands","category":"Total Power","value":"38.07"},{"type_of_renewable_energy":"Solar Power","year":2026,"month":"April","state":"Andhra Pradesh","category":"Ground Mounted Solar Power","value":"6527.66"},{"type_of_renewable_energy":"Solar Power","year":2026,"month":"April","state":"Andhra Pradesh","category":"Rooftop Solar Power","value":"827.30"}],"meta_data":{"page":3,"totalRecords":40586,"totalPages":4059,"recordPerPage":10},"msg":"Data fetched successfully","statusCode":true}

@@ -1,0 +1,9 @@
+{
+  "fetched_at": "2026-06-02T14:51:08.368Z",
+  "url": "https://api.mospi.gov.in/api/mnre/getDataByEnergy?page=5",
+  "status_code": 200,
+  "content_hash": "c47db6a0045929cc12d3efe35aac8d2f0fe81523dfa043e8029533fe9406fced",
+  "body_size_bytes": 1607
+}
+
+{"data":[{"type_of_renewable_energy":"Bio Power","year":2026,"month":"April","state":"Andhra Pradesh","category":"Bio Power Total","value":"615.02"},{"type_of_renewable_energy":"Total Power","year":2026,"month":"April","state":"Andhra Pradesh","category":"Total Power","value":"16178.03"},{"type_of_renewable_energy":"Solar Power","year":2026,"month":"April","state":"Arunachal Pradesh","category":"Ground Mounted Solar Power","value":"1.27"},{"type_of_renewable_energy":"Solar Power","year":2026,"month":"April","state":"Arunachal Pradesh","category":"Rooftop Solar Power","value":"6.68"},{"type_of_renewable_energy":"Solar Power","year":2026,"month":"April","state":"Arunachal Pradesh","category":" Hybrid Solar Component","value":"0.00"},{"type_of_renewable_energy":"Solar Power","year":2026,"month":"April","state":"Arunachal Pradesh","category":"Off-Grid Solar Power/KUSUM","value":"7.77"},{"type_of_renewable_energy":"Solar Power","year":2026,"month":"April","state":"Arunachal Pradesh","category":"Solar Power Total","value":"15.71"},{"type_of_renewable_energy":"Wind Power","year":2026,"month":"April","state":"Arunachal Pradesh","category":"Wind Power","value":"0.00"},{"type_of_renewable_energy":"Hydro Power","year":2026,"month":"April","state":"Arunachal Pradesh","category":"Small Hydro Power","value":"140.61"},{"type_of_renewable_energy":"Hydro Power","year":2026,"month":"April","state":"Arunachal Pradesh","category":"Large Hydro Power","value":"1865.00"}],"meta_data":{"page":5,"totalRecords":40586,"totalPages":4059,"recordPerPage":10},"msg":"Data fetched successfully","statusCode":true}

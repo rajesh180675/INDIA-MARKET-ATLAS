@@ -1,0 +1,9 @@
+{
+  "fetched_at": "2026-06-02T14:51:04.373Z",
+  "url": "https://api.mospi.gov.in/api/mnre/getDataByEnergy?page=1",
+  "status_code": 200,
+  "content_hash": "5308e811c87a61dd2236433a7b0116f6bbdd79c49e0dccb31ec8687f9dbf75c2",
+  "body_size_bytes": 1578
+}
+
+{"data":[{"type_of_renewable_energy":"Solar Power","year":2026,"month":"April","state":"All India","category":"Ground Mounted Solar Power","value":"117356.65"},{"type_of_renewable_energy":"Solar Power","year":2026,"month":"April","state":"All India","category":"Rooftop Solar Power","value":"26747.04"},{"type_of_renewable_energy":"Solar Power","year":2026,"month":"April","state":"All India","category":" Hybrid Solar Component","value":"3964.90"},{"type_of_renewable_energy":"Solar Power","year":2026,"month":"April","state":"All India","category":"Off-Grid Solar Power/KUSUM","value":"6167.51"},{"type_of_renewable_energy":"Solar Power","year":2026,"month":"April","state":"All India","category":"Solar Power Total","value":"154236.11"},{"type_of_renewable_energy":"Wind Power","year":2026,"month":"April","state":"All India","category":"Wind Power","value":"56436.59"},{"type_of_renewable_energy":"Hydro Power","year":2026,"month":"April","state":"All India","category":"Small Hydro Power","value":"5171.36"},{"type_of_renewable_energy":"Hydro Power","year":2026,"month":"April","state":"All India","category":"Large Hydro Power","value":"51664.67"},{"type_of_renewable_energy":"Bio Power","year":2026,"month":"April","state":"All India","category":"Waste to Energy","value":"324.24"},{"type_of_renewable_energy":"Bio Power","year":2026,"month":"April","state":"All India","category":"Biomass Power/Bagasse Cogeneration","value":"9821.32"}],"meta_data":{"page":1,"totalRecords":40586,"totalPages":4059,"recordPerPage":10},"msg":"Data fetched successfully","statusCode":true}
