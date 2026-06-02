@@ -12,6 +12,12 @@ const FETCH_SCRIPTS = [
   "asuse.cjs",
   "mnre.cjs",
   "nas-pdf.cjs",
+  "cpi.cjs",
+  "iip.cjs",
+  "aishe.cjs",
+  "udise.cjs",
+  "envstats.cjs",
+  "rbi.cjs",
 ];
 
 function runScript(name) {
